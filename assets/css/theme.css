@@ -5847,3 +5847,6 @@ label {
 	margin-bottom: 15px;
 	font-size: 24px;
 }
+.top-center-bg {
+	background-position: top center !important;
+}
