@@ -325,6 +325,15 @@ a.al-at-link:hover, a.al-at-link:focus {
 	color: #EEE;
 }
 .album-single-item .asi-info .s-icon {
+	color: #fbb614;
+}
+.album-single-item .asi-info .s-icon:hover {
+	color: #EEE;
+}
+.album-single-item .asi-info .c-icon {
+	color: #fbb614;
+}
+.album-single-item .asi-info .c-icon:hover {
 	color: #EEE;
 }
 #gallery.hover-simple .asi-cover {

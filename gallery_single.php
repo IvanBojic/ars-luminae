@@ -149,7 +149,7 @@ include 'header.php';
 								* Use classes "gutter-1", "gutter-2" or "gutter-3" to add more space between items.
 								* Use class "col-1", "col-2", "col-3", "col-4", "col-5" or "col-6" for columns.
 								-->
-								<div class="isotope gutter-2 col-5">
+								<div class="isotope gutter-2 col-5 col-xs-12">
 
 									<!-- Begin gallery top content -->
 									<div class="gallery-top-content">
@@ -200,7 +200,7 @@ include 'header.php';
 									* Note1: For grid layout make sure that your images are the same dimensions.
 									* Note2: For masonry layout make sure that your images are the different dimensions.
 									-->
-									<div id="gallery" class="isotope-items-wrap lightgallery hover-center hover-boxed">
+									<div id="gallery" class="isotope-items-wrap lightgallery">
 
 										<!-- Grid sizer (do not remove!!!) -->
 										<div class="grid-sizer"></div>
@@ -216,8 +216,9 @@ include 'header.php';
                                                     <img class="asi-img" src="<?= $slika['path']; ?>" alt="image">
                                                     <!-- Begin item cover -->
                                                     <div class="asi-cover">
-                                                        <a class="asi-link lg-trigger" href="<?= $slika['path']; ?>" data-exthumbnail="<?= $slika['path']; ?>" data-sub-html="<h4>Lana Melray</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>">
+                                                        <a class="asi-link lg-trigger" href="<?= $slika['path']; ?>" data-exthumbnail="<?= $slika['path']; ?>" data-sub-html="<h4></h4><p>Cena: 250.00RSD</p>">
                                                             <div class="asi-info">
+                                                                <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
                                                                 <span class="s-icon"><i class="fas fa-search"></i></span>
                                                             </div>
                                                         </a>
