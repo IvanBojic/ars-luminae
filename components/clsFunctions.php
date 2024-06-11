@@ -20,14 +20,29 @@ class clsFunctions
                 if (is_file($putanjaDoDatoteke) && $datoteka !== '.' && $datoteka !== '..' && preg_match("/\.(jpg|jpeg|png|gif)$/i", $datoteka)) {
                     $nazivSlike = pathinfo($datoteka, PATHINFO_FILENAME);
 
-                    // Dobijanje vremena kreiranja fajla
-                    $vremeKreiranja = filectime($putanjaDoDatoteke);
-                    $formatiranoVreme = date("H:i", $vremeKreiranja);
+                    // Preuzimanje EXIF podataka
+                    $exif = exif_read_data($putanjaDoDatoteke, 0, true);
+
+                    // Provera i formatiranje datuma snimanja slike
+                    $dateTaken = isset($exif['EXIF']['DateTimeOriginal']) ? $exif['EXIF']['DateTimeOriginal'] : 'N/A';
+
+                    if ($dateTaken !== 'N/A') {
+                        // Kreiranje DateTime objekta
+                        $dateTime = DateTime::createFromFormat('Y:m:d H:i:s', $dateTaken);
+                        if ($dateTime) {
+                            // Formatiranje vremena u 'HH:MM'
+                            $timeTaken = $dateTime->format('H:i');
+                        } else {
+                            $timeTaken = 'N/A';
+                        }
+                    } else {
+                        $timeTaken = '';
+                    }
 
                     $slike[] = [
                         'path'    => $folder . '/' . $datoteka,
                         'title'   => $nazivSlike,
-                        'created_time' => $formatiranoVreme
+                        'created_time' => $timeTaken
                     ];
 
                 }
