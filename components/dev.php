@@ -9,4 +9,9 @@ class dev
         die();
     }
 
+    public static function p($data = null)
+    {
+        print_r($data);
+    }
+
 }

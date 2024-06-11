@@ -60,7 +60,6 @@ include 'header.php';
 					<div class="row">
 						<div class="col-md-8">
 
-                            <!--TODO: Napraviti dinamicki iz foldera-->
 							<h1 class="album-title"><?= $album_naziv; ?></h1>
 
 							<!-- Begin album meta -->
@@ -214,14 +213,23 @@ include 'header.php';
                                                 <!-- Begin album single item -->
                                                 <div class="album-single-item">
                                                     <img class="asi-img" src="<?= $slika['path']; ?>" alt="image">
+                                                    <div class="asi-text-overlay">
+                                                        <?= $slika['created_time']; ?>
+                                                    </div>
                                                     <!-- Begin item cover -->
                                                     <div class="asi-cover">
-                                                        <a class="asi-link lg-trigger" href="<?= $slika['path']; ?>" data-exthumbnail="<?= $slika['path']; ?>" data-sub-html="<h4></h4><p>Cena: 250.00RSD</p>">
-                                                            <div class="asi-info">
-                                                                <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
-                                                                <span class="s-icon"><i class="fas fa-search"></i></span>
+                                                        <div class="asi-info">
+                                                            <div class="icon-wrapper">
+                                                                <a class="c-link" href="path_to_shopping_cart">
+                                                                    <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
+                                                                </a>
                                                             </div>
-                                                        </a>
+                                                            <div class="icon-wrapper">
+                                                                <a class="s-link lg-trigger" href="<?= $slika['path']; ?>" data-exthumbnail="<?= $slika['path']; ?>" data-sub-html="<h4><?= $slika['created_time']; ?></h4><p>Cena: 250.00RSD</p>">
+                                                                    <span class="s-icon"><i class="fas fa-search"></i></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <!-- End item cover -->
                                                 </div>

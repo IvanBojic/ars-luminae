@@ -17,12 +17,17 @@ class clsFunctions
                 $putanjaDoDatoteke = $putanjaDoFoldera . '/' . $datoteka;
 
                 // Provera da li je datoteka slika
-                if (is_file($putanjaDoDatoteke) && preg_match("/\.(jpg|jpeg|png|gif)$/", $datoteka)) {
+                if (is_file($putanjaDoDatoteke) && $datoteka !== '.' && $datoteka !== '..' && preg_match("/\.(jpg|jpeg|png|gif)$/i", $datoteka)) {
                     $nazivSlike = pathinfo($datoteka, PATHINFO_FILENAME);
+
+                    // Dobijanje vremena kreiranja fajla
+                    $vremeKreiranja = filectime($putanjaDoDatoteke);
+                    $formatiranoVreme = date("H:i", $vremeKreiranja);
 
                     $slike[] = [
                         'path'    => $folder . '/' . $datoteka,
                         'title'   => $nazivSlike,
+                        'created_time' => $formatiranoVreme
                     ];
 
                 }
@@ -107,7 +112,7 @@ class clsFunctions
 
                     $putanjaDoDatoteke = $putanjaDoFoldera . '/' . $datoteka;
                     // Provera da li je datoteka slika
-                    if (is_file($putanjaDoDatoteke) && preg_match("/\.(jpg|jpeg|png|gif)$/", $datoteka)) {
+                    if (is_file($putanjaDoDatoteke) && preg_match("/\.(jpg|jpeg|png|gif)$/i", $datoteka)) {
                         $brojSlika++;
                     }
                 }

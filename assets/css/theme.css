@@ -2137,7 +2137,7 @@ section {
 	.album-single .isotope.col-4 .width2,
 	.album-single .isotope.col-5 .width2,
 	.album-single .isotope.col-6 .width2 {
-		width: 50%;
+		width: 100%;
 	}
 }
 
@@ -3311,22 +3311,39 @@ section {
 	top: 10px; /* Podesite vrednost po potrebi */
 	right: 10px; /* Podesite vrednost po potrebi */
 	z-index: 3; /* Visok z-index da bi bio iznad ostalih elemenata */
-	background-color: rgba(0, 0, 0, 0.5); /* Podesite boju i prozirnost po potrebi */
-	border-radius: 10%; /* Zaobljene ivice */
-	padding: 10px; /* Podesite vrednost po potrebi */
-	color: #fff; /* Boja ikone */
 	display: flex;
 	flex-direction: column;
 	align-items: center; /* Poravnava ikonice po sredini */
-	gap: 5px; /* Razmak između ikonica, podesite po potrebi */
+	gap: 10px; /* Razmak između ikonica, podesite po potrebi */
 }
-.album-single-item .asi-info .s-icon {
+
+/* icon wrapper */
+.album-single-item .icon-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* c-icon i s-icon stilovi */
+.album-single-item .c-icon,
+.album-single-item .s-icon {
 	font-size: 18px; /* Podesite veličinu ikone po potrebi */
 	color: #fff; /* Boja ikone */
+	background-color: rgba(0, 0, 0, 0.5); /* Pozadina ikone */
+	padding: 10px; /* Podesite padding po potrebi */
+	border-radius: 10%; /* Zaobljene ivice */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.album-single-item .asi-info .c-icon {
-	font-size: 18px; /* Podesite veličinu ikone po potrebi */
-	color: #fff; /* Boja ikone */
+
+/* Individualni link stilovi, opcionalno */
+.album-single-item .asi-info .c-link,
+.album-single-item .asi-info .s-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
 }
 /* album single item title */
 .album-single-item .asi-title {
@@ -3576,7 +3593,7 @@ section {
 		-ms-transform: scale(1) !important;
 		transform: scale(1) !important;
 	}
-	.album-single-item .asi-info, .album-single-item .favorite-btn {
+	.album-single-item .favorite-btn {
 		display: none !important;
 	}
 }
@@ -5889,4 +5906,17 @@ label {
 }
 .top-center-bg {
 	background-position: top center !important;
+}
+.asi-text-overlay {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 20px;
+	background: rgba(0, 0, 0, 0.5); /* Blaga senka */
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 14px; /* Podesite veličinu fonta po potrebi */
+	box-shadow: 0px -2px 5px rgba(0, 0, 0, 1.2); /* Blaga senka */
 }
