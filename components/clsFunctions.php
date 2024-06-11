@@ -117,4 +117,19 @@ class clsFunctions
         return $brojSlika;
     }
 
+    public static function getFirstImage($albumTitle) {
+        $imagePath = "assets/img/album-single/$albumTitle/";
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Dodajte ostale ekstenzije ako je potrebno
+
+        foreach ($imageExtensions as $ext) {
+            $imageFile = glob($imagePath . $albumTitle . ".*");
+            if (!empty($imageFile)) {
+                return $imageFile[0]; // Pronađena prva slika
+            }
+        }
+
+        // Defaultna slika ili fallback u slučaju da slika ne postoji
+        return "assets/img/album-list/grid/img-1.jpg";
+    }
+
 }

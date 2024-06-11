@@ -1,9 +1,9 @@
 <?php
 include_once 'components/php_composer.php';
 
-$album = $_GET['album'];
+$album_naziv = $_GET['album'];
 
-$fajl = 'assets/img/album-single/' . $album;
+$fajl = 'assets/img/album-single/' . $album_naziv;
 $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
 $broj_fotografija = clsFunctions::prebrojSlikeIzFoldera($fajl);
 
@@ -61,7 +61,7 @@ include 'header.php';
 						<div class="col-md-8">
 
                             <!--TODO: Napraviti dinamicki iz foldera-->
-							<h1 class="album-title">Beauty &amp; Fashion</h1>
+							<h1 class="album-title"><?= $album_naziv; ?></h1>
 
 							<!-- Begin album meta -->
 							<div class="album-meta">

@@ -19,12 +19,6 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 ================== -->
 <body id="body">
 
-<!-- Begin page preloader -->
-<div id="preloader">
-	<div class="pulse bg-main"></div>
-</div>
-<!-- End page preloader -->
-
 <?php
         /* Including header */
         include 'header.php';
@@ -102,7 +96,9 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 										<div class="grid-sizer"></div>
 
 
-                                        <?php foreach ($albumi as $album) { ?>
+                                        <?php foreach ($albumi as $album) {
+                                            $imageSrc = clsFunctions::getFirstImage($album['title']);
+                                        ?>
 										<!-- //////////////////
 										// Begin isotope item. Note: use class "width2" for alternative item width (works best on first item)
 										/////////////////////// -->
@@ -112,7 +108,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 											<div class="album-list-item">
 												<a class="ali-link" href="gallery_single.php?album=<?= $album['title']; ?>">
 													<div class="ali-img-wrap">
-														<img class="ali-img" src="assets/img/album-list/grid/img-1.jpg" alt="image">
+														<img class="ali-img" src="<?= $imageSrc ?>" alt="image">
 													</div>
 													<div class="ali-caption">
 														<h2 class="ali-title"><?= $album['title']; ?></h2>
