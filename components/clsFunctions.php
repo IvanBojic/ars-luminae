@@ -49,6 +49,14 @@ class clsFunctions
             }
         }
 
+        // Sortiranje slika prema 'created_time'
+        usort($slike, function($a, $b) {
+            if ($a['created_time'] == $b['created_time']) {
+                return 0;
+            }
+            return ($a['created_time'] < $b['created_time']) ? -1 : 1;
+        });
+
         return $slike;
     }
 
