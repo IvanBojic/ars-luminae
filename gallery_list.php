@@ -19,6 +19,12 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 ================== -->
 <body id="body">
 
+<!-- Begin page preloader -->
+<div id="preloader">
+    <div class="pulse bg-main"></div>
+</div>
+<!-- End page preloader -->
+
 <?php
         /* Including header */
         include 'header.php';
