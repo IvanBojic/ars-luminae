@@ -21,17 +21,6 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 		</div>
 		<!-- End logo -->
 
-		<!-- Begin header tools -->
-		<div class="header-tools">
-			<ul>
-				<li>
-					<!-- off-canvas menu trigger (menu button) -->
-					<a id="cd-menu-trigger" href="#0"><span class="cd-menu-icon"></span>menu</a>
-				</li>
-			</ul>
-		</div>
-		<!-- End header tools -->
-
 		<!-- Begin menu (Bootstrap navbar)
 		===================================
 		* Use class "navbar-default" or "navbar-border-bottom" for navbar style.
@@ -40,13 +29,21 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 			<div class="navbar-inner">
 
 				<!-- Toggle for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
+				<div id="nav" class="navbar-header">
+                    <!-- off-canvas menu trigger (menu button) -->
+                   <!-- <div id="shopping-cart">-->
+                        <a href="index.php" class="cart-link">
+                            <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
+                        </a>
+                    <!--</div>-->
+                    <div id="mobile-menu">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
 				</div> <!-- /.navbar-header -->
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -60,15 +57,6 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 						* Use class "dropdown-menu-dark" to enable dark dropdown menu.
 						-->
 						<li><a href="index.php">Naslovna</a></li>
-						<!-- End dropdown -->
-
-						<!-- Begin dropdown
-						====================
-						* Use class "dropdown-hover" to make navigation toggle on desktop hover.
-						* Use class "dropdown-menu-right" to right align the dropdown menu.
-						* Use class "dropdown-menu-dark" to enable dark dropdown menu.
-						-->
-						<!--								<li><a href="page-about-me.html">About Me</a></li>-->
 						<!-- End dropdown -->
 
 						<!-- Begin dropdown

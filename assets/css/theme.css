@@ -5610,6 +5610,18 @@ label {
 		margin-left: 0;
 		margin-right: 5px;
 	}
+    .navbar-inner {
+        display: flex;
+        justify-content: flex-end;
+		flex-direction: row;
+    }
+	#nav {
+		order: 2;
+		margin-left: 1.5em;
+	}
+	#navbar-collapse-1 {
+		order: 1;
+	}
 }
 
 .nav-justified > li:last-child > a {
@@ -5919,4 +5931,17 @@ label {
 	align-items: center;
 	font-size: 14px; /* Podesite veličinu fonta po potrebi */
 	box-shadow: 0px -2px 5px rgba(0, 0, 0, 1.2); /* Blaga senka */
+}
+.cart-link {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 4%;
+}
+.cart-icon {
+	font-size: 2em; /* Povećanje veličine ikone */
+}
+.navbar-header {
+    display: flex;
+	justify-content: flex-end;
 }
