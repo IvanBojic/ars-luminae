@@ -7,6 +7,13 @@ $fajl = 'assets/img/album-single/' . $album_naziv;
 $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
 $broj_fotografija = clsFunctions::prebrojSlikeIzFoldera($fajl);
 
+$items_per_page = 10; // broj stavki po stranici
+$current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$total_items = count($slike);
+$total_pages = ceil($total_items / $items_per_page);
+
+$start_index = ($current_page - 1) * $items_per_page;
+$slike_to_display = array_slice($slike, $start_index, $items_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +52,7 @@ include 'header.php';
 			================================= -->
 			<section id="page-header-secion">
 
-				<!-- Begin page header image 
+				<!-- Begin page header image
 				===============================
 				* Use class "parallax" to enable parallax effect.
 				-->
@@ -80,7 +87,7 @@ include 'header.php';
 
 						<div class="col-md-4">
 
-							<!-- Begin album nav 
+							<!-- Begin album nav
 							===================== -->
 							<div class="album-nav">
 
@@ -125,7 +132,7 @@ include 'header.php';
 
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
-				</div> 
+				</div>
 				<!-- End page header info -->
 
 			</section>
@@ -171,18 +178,17 @@ include 'header.php';
 													<li class="hide-from-md">
 														<form class="form-inline show-on-page margin-right-15">
 															<div class="form-group">
-																<label for="show-items">Show:</label>
+																<label for="show-items">Prikaži:</label>
 																<select id="show-items" class="select-styled">
-																	<option value="show-15-items">15 items</option>
-																	<option value="show-25-items">25 items</option>
-																	<option value="show-50-items">50 items</option>
-																	<option value="show-all-items">Show All</option>
+																	<option value="show-15-items">50 fotografija</option>
+																	<option value="show-25-items">75 fotografija</option>
+																	<option value="show-50-items">100 fotografija</option>
 																</select>
 															</div>
 														</form>
 													</li>
 													<!-- End show items on page -->
-													
+
 												</ul>
 												<!-- End album attributes -->
 
@@ -191,10 +197,10 @@ include 'header.php';
 
 									</div>
 									<!-- End gallery top content -->
-									
+
 
 									<!-- Begin isotope items (album single items)
-									=============================================== 
+									===============================================
 									* Use classes "hover-center", "hover-boxed", "hover-dark", "hover-simple" to change album single item hover variations.
 									* Note1: For grid layout make sure that your images are the same dimensions.
 									* Note2: For masonry layout make sure that your images are the different dimensions.
@@ -207,16 +213,13 @@ include 'header.php';
 										<!-- //////////////////
 										// Begin isotope item. Note: use class "width2" for alternative item width (works best on first item).
 										/////////////////////// -->
-                                        <?php foreach ($slike as $slika) { ?>
+                                        <?php foreach ($slike_to_display as $slika) { ?>
                                             <div class="isotope-item">
-
-                                                <!-- Begin album single item -->
                                                 <div class="album-single-item">
                                                     <img class="asi-img" src="<?= $slika['path']; ?>" alt="image">
                                                     <div class="asi-text-overlay">
                                                         <?= $slika['created_time']; ?>
                                                     </div>
-                                                    <!-- Begin item cover -->
                                                     <div class="asi-cover">
                                                         <div class="asi-info">
                                                             <div class="icon-wrapper">
@@ -225,16 +228,13 @@ include 'header.php';
                                                                 </a>
                                                             </div>
                                                             <div class="icon-wrapper">
-                                                                <a class="s-link lg-trigger" href="<?= $slika['path']; ?>" data-exthumbnail="<?= $slika['path']; ?>" data-sub-html="<h4><?= $slika['created_time']; ?></h4><p>Cena: 250.00RSD</p>">
+                                                                <a class="s-link lg-trigger" href="<?= $slika['path']; ?>" data-exthumbnail="<?= $slika['path']; ?>" data-sub-html="<h4><?= $slika['created_time']; ?></h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
                                                                     <span class="s-icon"><i class="fas fa-search"></i></span>
                                                                 </a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- End item cover -->
                                                 </div>
-                                                <!-- End album single item -->
-
                                             </div>
                                         <?php } ?>
 										<!-- End isotope item -->
@@ -247,7 +247,7 @@ include 'header.php';
 
 							</div>
 							<!-- End content wrap -->
-							
+
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
 
@@ -255,29 +255,29 @@ include 'header.php';
 						<div class="col-md-12">
 
 							<!-- Begin pagination -->
-							<nav class="pagination-wrap">
-								<ul class="pagination">
-									<li>
-										<a href="" aria-label="Previous">
-											<span aria-hidden="true"><<</span>
-										</a>
-									</li>
-									<li><a href=""><</a></li>
-									<li class="active"><a href="#0">1</a></li>
-									<li><a href="">2</a></li>
-									<li><a href="">3</a></li>
-									<li><a href="#0">...</a></li>
-									<li><a href="">6</a></li>
-									<li><a href="">7</a></li>
-									<li><a href="">8</a></li>
-									<li><a href="">></a></li>
-									<li>
-										<a href="" aria-label="Next">
-											<span aria-hidden="true">>></span>
-										</a>
-									</li>
-								</ul>
-							</nav>
+                            <nav class="pagination-wrap">
+                                <ul class="pagination">
+                                    <?php if ($current_page > 1) { ?>
+                                        <li>
+                                            <a href="?album=<?= $album_naziv; ?>&page=<?= $current_page - 1; ?>" aria-label="Previous">
+                                                <span aria-hidden="true"><<</span>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                    <?php for ($page = 1; $page <= $total_pages; $page++) { ?>
+                                        <li class="<?= $page == $current_page ? 'active' : ''; ?>">
+                                            <a href="?album=<?= $album_naziv; ?>&page=<?= $page; ?>"><?= $page; ?></a>
+                                        </li>
+                                    <?php } ?>
+                                    <?php if ($current_page < $total_pages) { ?>
+                                        <li>
+                                            <a href="?album=<?= $album_naziv; ?>&page=<?= $current_page + 1; ?>" aria-label="Next">
+                                                <span aria-hidden="true">>></span>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                            </nav>
 							<!-- End pagination -->
 
 						</div> <!-- /.col -->
