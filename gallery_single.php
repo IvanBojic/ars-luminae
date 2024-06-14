@@ -257,25 +257,7 @@ include 'header.php';
 							<!-- Begin pagination -->
                             <nav class="pagination-wrap">
                                 <ul class="pagination">
-                                    <?php if ($current_page > 1) { ?>
-                                        <li>
-                                            <a href="?album=<?= $album_naziv; ?>&page=<?= $current_page - 1; ?>" aria-label="Previous">
-                                                <span aria-hidden="true"><<</span>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
-                                    <?php for ($page = 1; $page <= $total_pages; $page++) { ?>
-                                        <li class="<?= $page == $current_page ? 'active' : ''; ?>">
-                                            <a href="?album=<?= $album_naziv; ?>&page=<?= $page; ?>"><?= $page; ?></a>
-                                        </li>
-                                    <?php } ?>
-                                    <?php if ($current_page < $total_pages) { ?>
-                                        <li>
-                                            <a href="?album=<?= $album_naziv; ?>&page=<?= $current_page + 1; ?>" aria-label="Next">
-                                                <span aria-hidden="true">>></span>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
+                                    <?php clsFunctions::render_pagination($current_page, $total_pages, $album_naziv); ?>
                                 </ul>
                             </nav>
 							<!-- End pagination -->

@@ -160,4 +160,41 @@ class clsFunctions
         return "assets/img/album-list/grid/img-1.jpg";
     }
 
+    public static function render_pagination($current_page, $total_pages, $album_naziv) {
+        $max_pages_to_show = 5;
+        $pages = [];
+
+        if ($total_pages <= $max_pages_to_show) {
+            for ($i = 1; $i <= $total_pages; $i++) {
+                $pages[] = $i;
+            }
+        } else {
+            $pages[] = 1;
+            if ($current_page > 3) {
+                $pages[] = '...';
+            }
+
+            $start = max(2, $current_page - 1);
+            $end = min($total_pages - 1, $current_page + 1);
+
+            for ($i = $start; $i <= $end; $i++) {
+                $pages[] = $i;
+            }
+
+            if ($current_page < $total_pages - 2) {
+                $pages[] = '...';
+            }
+            $pages[] = $total_pages;
+        }
+
+        foreach ($pages as $page) {
+            if ($page === '...') {
+                echo '<li><span>...</span></li>';
+            } else {
+                $active_class = $page == $current_page ? 'class="active"' : '';
+                echo '<li ' . $active_class . '><a href="?album=' . $album_naziv . '&page=' . $page . '">' . $page . '</a></li>';
+            }
+        }
+    }
+
 }
