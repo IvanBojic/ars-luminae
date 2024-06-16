@@ -86,6 +86,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 							<ul class="dropdown-menu">
 								<li><a href="page-about-me.php">O nama</a></li>
                                 <li><a href="page-contact.php">Kontakt</a></li>
+                                <li><a href="privacy.php">Politika privatnosti</a></li>
 							</ul>
 						</li>
 						<!-- End dropdown -->

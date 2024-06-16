@@ -14,6 +14,14 @@ $total_pages = ceil($total_items / $items_per_page);
 
 $start_index = ($current_page - 1) * $items_per_page;
 $slike_to_display = array_slice($slike, $start_index, $items_per_page);
+
+// Prikupljanje jedinstvenih vremena
+$vremena = array_map(function($slika) {
+    return date('H', strtotime($slika['created_time']));
+}, $slike);
+
+$jedinstvena_vremena = array_unique($vremena);
+sort($jedinstvena_vremena);
 ?>
 
 <!DOCTYPE html>
@@ -161,35 +169,50 @@ include 'header.php';
 									<div class="gallery-top-content">
 
 										<div class="row margin-bottom-40">
-											<div class="col-xs-4">
-
-
+											<div class="row">
+                                                <!-- Filter za vreme -->
+                                                <div class="form-group timeline">
+                                                    <ul class="timeline-options">
+                                                        <?php foreach ($jedinstvena_vremena as $vreme) { ?>
+                                                            <li class="timeline-value" data-value="<?= $vreme; ?>"><strong><?= $vreme; ?>h</strong></li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                </div>
 											</div> <!-- /.col -->
 
-											<div class="col-xs-8">
+											<div class="row">
 
 												<!-- Begin album attributes -->
-												<ul class="album-attributes">
+                                                <ul class="album-attributes">
+                                                    <!-- Begin show items on page for desktop -->
+                                                    <li class="hide-from-md" id="desktop-options">
+                                                        <form class="form-inline show-on-page margin-right-15">
+                                                            <div class="form-group">
+                                                                <label for="show-items-desktop">Prikaži:</label>
+                                                                <select id="show-items-desktop" class="select-styled">
+                                                                    <option value="50">50 fotografija</option>
+                                                                    <option value="75">75 fotografija</option>
+                                                                    <option value="100">100 fotografija</option>
+                                                                </select>
+                                                            </div>
+                                                        </form>
+                                                    </li>
+                                                    <!-- End show items on page for desktop -->
 
-													<!-- Begin show items on page
-													==============================
-													* Use class "options-dark" to enable dark dropdown menu.
-													-->
-													<li class="hide-from-md">
-														<form class="form-inline show-on-page margin-right-15">
-															<div class="form-group">
-																<label for="show-items">Prikaži:</label>
-																<select id="show-items" class="select-styled">
-																	<option value="show-15-items">50 fotografija</option>
-																	<option value="show-25-items">75 fotografija</option>
-																	<option value="show-50-items">100 fotografija</option>
-																</select>
-															</div>
-														</form>
-													</li>
-													<!-- End show items on page -->
-
-												</ul>
+                                                    <!-- Begin show items on page for mobile -->
+                                                    <li class="hide-from-xl" id="mobile-options">
+                                                        <form class="form-inline show-on-page margin-right-15">
+                                                            <div class="form-group">
+                                                                <label for="show-items-mobile">Prikaži:</label>
+                                                                <select id="show-items-mobile" class="select-styled">
+                                                                    <option value="25">25 fotografija</option>
+                                                                    <option value="50">50 fotografija</option>
+                                                                </select>
+                                                            </div>
+                                                        </form>
+                                                    </li>
+                                                    <!-- End show items on page for mobile -->
+                                                </ul>
 												<!-- End album attributes -->
 
 											</div> <!-- /.col -->
@@ -214,7 +237,7 @@ include 'header.php';
 										// Begin isotope item. Note: use class "width2" for alternative item width (works best on first item).
 										/////////////////////// -->
                                         <?php foreach ($slike_to_display as $slika) { ?>
-                                            <div class="isotope-item">
+                                            <div class="isotope-item" data-time="<?= date('H', strtotime($slika['created_time'])); ?>">
                                                 <div class="album-single-item">
                                                     <img class="asi-img" src="<?= $slika['path']; ?>" alt="image">
                                                     <div class="asi-text-overlay">

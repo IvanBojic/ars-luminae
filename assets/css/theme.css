@@ -274,8 +274,41 @@ section {
 	#header {
 		padding: 0;
 	}
+
+	/* General header styles */
+	#header .header-inner {
+		display: flex;
+	}
+
+	/* Shopping cart */
+	#header .cart-link {
+		margin-right: 10px;
+		margin-left: 10px;
+	}
+
+	.navbar-collapse.collapse.in {
+		display: table-row;
+	}
+
+    /* Hide desktop options on mobile */
+    #desktop-options {
+        display: none;
+    }
+
+    /* Show mobile options on mobile */
+    #mobile-options {
+        display: block;
+    }
 }
 
+/* Hide desktop options on mobile */
+#desktop-options {
+    display: block;
+}
+/* Ensure dropdown menu is fully displayed */
+.navbar-collapse {
+	width: 100%;
+}
 .header-inner {
 	position: relative;
 	padding-left: 15px;
@@ -285,6 +318,10 @@ section {
 	.header-inner {
 		padding-left: 45px;
 		padding-right: 45px;
+	}
+	/* Hide mobile options on desktop */
+	#mobile-options {
+		display: none;
 	}
 }
 
@@ -3720,6 +3757,9 @@ body.lg-on {
 	text-align: right;
 	list-style: none;
 }
+.album-attributes #mobile-options {
+	text-align: center;
+}
 .album-attributes > li {
 	display: inline-block;
 	padding: 0;
@@ -5944,4 +5984,41 @@ label {
 .navbar-header {
     display: flex;
 	justify-content: flex-end;
+}
+/* Stajling za timeline div */
+.form-group.timeline {
+    display: flex;
+    justify-content: center; /* Centrira ul horizontalno */
+    align-items: center; /* Centrira ul vertikalno */
+    width: 100%;
+}
+.timeline-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+.timeline-value {
+    margin-right: 10px; /* Dodajte razmak između stavki po potrebi */
+    padding: 5px 10px;
+    border-radius: 20px; /* Zaobljeni uglovi */
+    border: 1px solid #fbb614;
+    cursor: pointer;
+}
+.timeline-value.active {
+	background: #26262c;
+}
+.timeline-options li:hover {
+	background: #d0d0d0;
+}
+.section-heading {
+	font-size: 50px;
+	color: #fbb614;
+	font-family: candara-bold;
+	margin: 0;
+	letter-spacing: 3px;
+	text-align: center;
+	padding: 2em 0;
 }
