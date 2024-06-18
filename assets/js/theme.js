@@ -804,86 +804,103 @@ $(document).ready(function(){
 		if (!isActive) {
 			$(this).addClass('active');
 		} else {
-			// Ako je element već aktivan, uklonite klasu 'active' i resetujte prikaz
-			$('.isotope-item').show();
+			// Ako je element već aktivan, resetujemo filtere i prikazujemo sve slike
+			$(this).removeClass('active');
+			loadImages('all', $('#album-naziv').val(), 1);
 			return;
 		}
 
 		var time = $(this).data('value');
 		var album = $('#album-naziv').val(); // Dobijanje naziva albuma iz skrivenog inputa
 
-		// Ako je izabran 'all', prikazuje sve slike
-		if (time === 'all') {
-			$('.isotope-item').show();
-		} else {
-			// AJAX zahtev za filtriranje slika
-			$.ajax({
-				url: 'api.php', // Putanja do vašeg AJAX handler fajla
-				type: 'POST',
-				data: { time: time, album: album },
-				success: function(response) {
-					//console.log('Original Response:', response); // Logovanje originalnog odgovora
-
-					var slike;
-					try {
-						// Parsirajte JSON odgovor
-						slike = typeof response === 'string' ? JSON.parse(response) : response;
-						//console.log('Parsed Response:', slike);
-
-						// Proverite da li je odgovor niz
-						if (!Array.isArray(slike)) {
-							console.error('Response nije niz');
-							return;
-						}
-
-						$('.isotope-items-wrap').empty(); // Očisti trenutne slike
-
-						// Dodaj filtrirane slike u DOM
-						for (var i = 0; i < slike.length; i++) {
-							var slika = slike[i];
-							if (!slika.path || !slika.title || !slika.created_time) {
-								console.error('Nedostaju podaci za sliku', slika);
-								continue;
-							}
-							// Kreiranje HTML strukture
-							var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours(); // Pretvorite u sate
-							var html = `
-								<div class="isotope-item" data-time="${createdTime}">
-									<div class="album-single-item">
-										<img class="asi-img" src="${slika.path}" alt="image">
-										<div class="asi-text-overlay">
-											${slika.created_time}
-										</div>
-										<div class="asi-cover">
-											<div class="asi-info">
-												<div class="icon-wrapper">
-													<a class="c-link" href="path_to_shopping_cart">
-														<span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
-													</a>
-												</div>
-												<div class="icon-wrapper">
-													<a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
-														<span class="s-icon"><i class="fas fa-search"></i></span>
-													</a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>`;
-
-							$('.isotope-items-wrap').append(html);
-						}
-					} catch (e) {
-						console.error('Greška pri parsiranju JSON odgovora:', e);
-					}
-				},
-				error: function() {
-					console.error('Greška pri filtriranju slika');
-				}
-			});
-		}
+		// Učitaj slike sa filterom ili bez filtera
+		loadImages(time, album, 1); // Učitaj slike za prvu stranicu
 	});
+
+	// Funkcija za učitavanje slika
+	function loadImages(time, album, page) {
+		$.ajax({
+			url: 'api.php', // Putanja do vašeg AJAX handler fajla
+			type: 'POST',
+			data: { time: time, album: album, page: page },
+			success: function(response) {
+				console.log('Original Response:', response); // Logovanje originalnog odgovora
+
+				var slike, pagination;
+				try {
+					// Parsirajte JSON odgovor
+					var parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+					slike = parsedResponse.images;
+					pagination = parsedResponse.pagination;
+					console.log('Parsed Images:', slike);
+					console.log('Parsed Pagination:', pagination);
+
+					// Proverite da li je odgovor niz
+					if (!Array.isArray(slike)) {
+						console.error('Images response nije niz');
+						return;
+					}
+
+					$('.isotope-items-wrap').empty(); // Očisti trenutne slike
+
+					// Dodaj filtrirane slike u DOM
+					for (var i = 0; i < slike.length; i++) {
+						var slika = slike[i];
+						if (!slika.path || !slika.title || !slika.created_time) {
+							console.error('Nedostaju podaci za sliku', slika);
+							continue;
+						}
+
+						// Kreiranje HTML strukture
+						var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours(); // Pretvorite u sate
+						var html = `
+                            <div class="isotope-item" data-time="${createdTime}">
+                                <div class="album-single-item">
+                                    <img class="asi-img" src="${slika.path}" alt="image">
+                                    <div class="asi-text-overlay">
+                                        ${slika.created_time}
+                                    </div>
+                                    <div class="asi-cover">
+                                        <div class="asi-info">
+                                            <div class="icon-wrapper">
+                                                <a class="c-link" href="path_to_shopping_cart">
+                                                    <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
+                                                </a>
+                                            </div>
+                                            <div class="icon-wrapper">
+                                                <a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
+                                                    <span class="s-icon"><i class="fas fa-search"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+
+						$('.isotope-items-wrap').append(html);
+					}
+
+					// Ažuriranje paginacije
+					$('.pagination').html(pagination.html);
+
+					// Dodavanje događaja za klikanje na stranice paginacije
+					$('.pagination-link').click(function(e) {
+						e.preventDefault();
+						var page = $(this).data('page');
+						loadImages(time, album, page);
+					});
+
+				} catch (e) {
+					console.error('Greška pri parsiranju JSON odgovora:', e);
+				}
+			},
+			error: function() {
+				console.error('Greška pri filtriranju slika');
+			}
+		});
+	}
 });
+
 
 // ===============
 // Window resize
