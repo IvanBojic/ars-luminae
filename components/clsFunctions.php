@@ -3,7 +3,7 @@
 class clsFunctions
 {
 
-    public static function procitajSlikeIzFoldera($folder)
+    public static function procitajSlikeIzFoldera($folder, $filterTime = null)
     {
         $slike = array();
         $putanjaDoFoldera = __DIR__ . '/../' . $folder; // Prilagodite putanju ako je potrebno
@@ -32,11 +32,17 @@ class clsFunctions
                         if ($dateTime) {
                             // Formatiranje vremena u 'HH:MM'
                             $timeTaken = $dateTime->format('H:i');
+                            $timeToFilter = $dateTime->format('H');
                         } else {
                             $timeTaken = 'N/A';
                         }
                     } else {
                         $timeTaken = '';
+                    }
+
+                    // Ako je filter postavljen, preskoči slike koje ne odgovaraju filteru
+                    if ($filterTime && $filterTime !== 'all' && $timeToFilter !== $filterTime) {
+                        continue;
                     }
 
                     $slike[] = [
@@ -58,6 +64,12 @@ class clsFunctions
         });
 
         return $slike;
+    }
+
+    // Funkcija koja obavlja filtriranje i vraća JSON odgovor
+    public static function filtrirajSlike($folder, $filterTime) {
+        $slike = self::procitajSlikeIzFoldera($folder, $filterTime);
+        return json_encode($slike);
     }
 
     public static function procitajSlikeIzJSON($jsonFile)

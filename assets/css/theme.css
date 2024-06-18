@@ -6003,15 +6003,18 @@ label {
 .timeline-value {
     margin-right: 10px; /* Dodajte razmak između stavki po potrebi */
     padding: 5px 10px;
-    border-radius: 20px; /* Zaobljeni uglovi */
-    border: 1px solid #fbb614;
+    border-radius: 100%; /* Zaobljeni uglovi */
+	background-color: #292929;
+    border: 1px solid #414141;
     cursor: pointer;
 }
 .timeline-value.active {
-	background: #26262c;
+	background: #444444;
+	color: #f1f1f1;
 }
 .timeline-options li:hover {
-	background: #d0d0d0;
+	background: #333333;
+	color: #f1f1f1;
 }
 .section-heading {
 	font-size: 50px;

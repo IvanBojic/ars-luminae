@@ -7,6 +7,8 @@ $fajl = 'assets/img/album-single/' . $album_naziv;
 $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
 $broj_fotografija = clsFunctions::prebrojSlikeIzFoldera($fajl);
 
+// local storage ako nema tu onda daj 10
+// korpa kroz cookie ide
 $items_per_page = 10; // broj stavki po stranici
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $total_items = count($slike);
@@ -79,7 +81,6 @@ include 'header.php';
 
 							<!-- Begin album meta -->
 							<div class="album-meta">
-                                <!--TODO: Napraviti dinamicki iz foldera-->
 								<span class="photos-count"><?= $broj_fotografija; ?> Photos</span>
 							</div>
 							<!-- End album meta -->
@@ -182,14 +183,17 @@ include 'header.php';
 
 											<div class="row">
 
+                                                <input type="hidden" id="album-naziv" value="<?php echo htmlspecialchars($album_naziv); ?>">
 												<!-- Begin album attributes -->
                                                 <ul class="album-attributes">
                                                     <!-- Begin show items on page for desktop -->
                                                     <li class="hide-from-md" id="desktop-options">
                                                         <form class="form-inline show-on-page margin-right-15">
                                                             <div class="form-group">
+                                                                <!-- on change -->
                                                                 <label for="show-items-desktop">Prikaži:</label>
                                                                 <select id="show-items-desktop" class="select-styled">
+                                                                    <option value="25">25 fotografija</option>
                                                                     <option value="50">50 fotografija</option>
                                                                     <option value="75">75 fotografija</option>
                                                                     <option value="100">100 fotografija</option>
@@ -200,7 +204,7 @@ include 'header.php';
                                                     <!-- End show items on page for desktop -->
 
                                                     <!-- Begin show items on page for mobile -->
-                                                    <li class="hide-from-xl" id="mobile-options">
+                                                    <?php /* <li class="hide-from-xl" id="mobile-options">
                                                         <form class="form-inline show-on-page margin-right-15">
                                                             <div class="form-group">
                                                                 <label for="show-items-mobile">Prikaži:</label>
@@ -210,7 +214,7 @@ include 'header.php';
                                                                 </select>
                                                             </div>
                                                         </form>
-                                                    </li>
+                                                    </li> */ ?>
                                                     <!-- End show items on page for mobile -->
                                                 </ul>
 												<!-- End album attributes -->
