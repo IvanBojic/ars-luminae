@@ -1,4 +1,16 @@
 <?php
+header('Content-Type: application/json');
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    $response = [
+        'error' => true,
+        'message' => $errstr,
+        'file' => $errfile,
+        'line' => $errline
+    ];
+    echo json_encode($response);
+    exit;
+});
+
 include_once 'components/php_composer.php'; // Uključite vašu PHP klasu
 
 if (isset($_POST['time']) && isset($_POST['album'])) {
@@ -8,30 +20,15 @@ if (isset($_POST['time']) && isset($_POST['album'])) {
 
     $slike = clsFunctions::procitajSlikeIzFoldera($folder, $time);
 
-    $items_per_page = 10; // Broj stavki po stranici
+    $items_per_page = isset($_POST['items_per_page']) ? intval($_POST['items_per_page']) : 25; // Koristite isti ključ kao u JavaScript kodu
     $current_page = isset($_POST['page']) ? intval($_POST['page']) : 1;
     $total_items = count($slike);
     $total_pages = ceil($total_items / $items_per_page);
 
-    // Ako je filter 'time' postavljen na 'all', vrati sve slike
-    $time = isset($_POST['time']) ? $_POST['time'] : 'all';
-
-    if ($time !== 'all') {
-        // Filtriraj slike po vremenu
-        $slike = array_filter($slike, function($slika) use ($time) {
-            return strpos($slika['created_time'], $time) !== false;
-        });
-    }
-
-    $total_items = count($slike); // Ponovo izračunaj ukupni broj stavki nakon filtriranja
-    $total_pages = ceil($total_items / $items_per_page); // Ponovo izračunaj ukupan broj stranica
-
-// Filtrirajte slike za trenutnu stranicu
+    // Filtrirajte slike za trenutnu stranicu
     $start_index = ($current_page - 1) * $items_per_page;
-    $end_index = min($start_index + $items_per_page, $total_items);
     $filtered_slike = array_slice($slike, $start_index, $items_per_page);
 
-// Funkcija za generisanje HTML-a za paginaciju
     function render_pagination($current_page, $total_pages, $album_naziv) {
         $max_pages_to_show = 5;
         $pages = [];
@@ -79,10 +76,11 @@ if (isset($_POST['time']) && isset($_POST['album'])) {
         'pagination' => [
             'current_page' => $current_page,
             'total_pages' => $total_pages,
-            'html' => render_pagination($current_page, $total_pages, 'koncert luna') // Zamena 'koncert luna' sa pravim imenom albuma
+            'html' => render_pagination($current_page, $total_pages, $album)
         ]
     ];
 
-    echo json_encode($response); // Konvertujte niz u JSON format
+    echo json_encode($response);
 }
+
 ?>

@@ -499,6 +499,90 @@ window.onload = init;
 // Source: http://stackoverflow.com/questions/7208786/how-to-style-the-option-of-a-html-select
 // =============================================================================================
 
+// Funkcija za učitavanje slika
+function loadImages(time, album, page, itemsPerPage) {
+    $.ajax({
+        url: 'api.php', // Putanja do vašeg AJAX handler fajla
+        type: 'POST',
+        data: { time: time, album: album, page: page, items_per_page: itemsPerPage },
+        success: function(response) {
+            var slike, pagination;
+            try {
+                // Parsirajte JSON odgovor
+                var parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                slike = parsedResponse.images;
+                pagination = parsedResponse.pagination;
+
+                // Proverite da li je odgovor niz
+                if (!Array.isArray(slike)) {
+                    console.error('Images response nije niz');
+                    return;
+                }
+
+                $('.isotope-items-wrap').empty(); // Očisti trenutne slike
+
+                // Dodaj filtrirane slike u DOM
+                for (var i = 0; i < slike.length; i++) {
+                    var slika = slike[i];
+                    if (!slika.path || !slika.title) {
+                        console.error('Nedostaju podaci za sliku', slika);
+                        continue;
+                    }
+
+                    // Kreiranje HTML strukture
+                    var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours(); // Pretvorite u sate
+                    var html = `
+                            <div class="isotope-item" data-time="${createdTime}">
+                                <div class="album-single-item">
+                                    <img class="asi-img" src="${slika.path}" alt="image">
+                                    <div class="asi-text-overlay">
+                                        ${slika.created_time}
+                                    </div>
+                                    <div class="asi-cover">
+                                        <div class="asi-info">
+                                            <div class="icon-wrapper">
+                                                <a class="c-link" href="path_to_shopping_cart">
+                                                    <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
+                                                </a>
+                                            </div>
+                                            <div class="icon-wrapper">
+                                                <a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
+                                                    <span class="s-icon"><i class="fas fa-search"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+
+                    $('.isotope-items-wrap').append(html);
+                }
+
+                // Ažuriranje paginacije
+                $('.pagination').html(pagination.html);
+
+                // Dodavanje događaja za klikanje na stranice paginacije
+                $('.pagination-link').click(function(e) {
+                    e.preventDefault();
+                    var page = $(this).data('page');
+                    loadImages(time, album, page, itemsPerPage);
+                });
+
+                // Ponovo inicijalizujte lightGallery za nove elemente
+                $('.isotope-items-wrap').find('.lg-trigger').lightGallery({
+                    selector: 'this'
+                });
+
+            } catch (e) {
+                console.error('Greška pri parsiranju JSON odgovora:', e);
+            }
+        },
+        error: function() {
+            console.error('Greška pri filtriranju slika');
+        }
+    });
+}
+
 // Iterate over each select element
 $('select').each(function () {
 
@@ -554,6 +638,12 @@ $('select').each(function () {
 		$this.val($(this).attr('rel'));
 		$list.hide();
 		/* alert($this.val()); Uncomment this for demonstration! */
+
+        // Pozivanje loadImages funkcije
+        var time = $('.timeline-value.active').data('value') || 'all';
+        var album = $('#album-naziv').val();
+        var itemsPerPage = $(this).attr('rel');
+        loadImages(time, album, 1, itemsPerPage);
 	});
 
 	// Hides the unordered list when clicking outside of it
@@ -752,153 +842,48 @@ function parallax() {
 	}
 }
 
-/*
-
-document.addEventListener('DOMContentLoaded', function() {
-	const filterSelect = document.getElementById('filter-time');
-	const galleryItems = document.querySelectorAll('#gallery-items .photo-item');
-
-	// Kreiramo skup za čuvanje jedinstvenih sati
-	const uniqueHours = new Set();
-
-	// Petlja kroz galerijske stavke za prikupljanje jedinstvenih sati
-	galleryItems.forEach(item => {
-		const createdTime = item.getAttribute('data-created-time');
-		const hour = new Date(createdTime).getHours(); // Ekstrahujemo sat iz vremena
-		uniqueHours.add(hour);
-	});
-
-	// Sortiramo sate i dodajemo ih u filter select
-	Array.from(uniqueHours).sort((a, b) => a - b).forEach(hour => {
-		const option = document.createElement('option');
-		option.value = hour;
-		option.textContent = `${hour}:00`;
-		filterSelect.appendChild(option);
-	});
-
-	filterSelect.addEventListener('change', function() {
-		const selectedHour = parseInt(this.value, 10);
-
-		galleryItems.forEach(item => {
-			const itemTime = new Date(item.getAttribute('data-created-time'));
-			const itemHour = itemTime.getHours();
-
-			if (isNaN(selectedHour) || itemHour === selectedHour) {
-				item.style.display = "block"; // Prikaži stavku
-			} else {
-				item.style.display = "none"; // Sakrij stavku
-			}
-		});
-	});
-});
-*/
-
 $(document).ready(function(){
-	$('.timeline-value').click(function () {
-		var isActive = $(this).hasClass('active');
 
-		// Uklanjanje klase 'active' sa svih elemenata .timeline-value
-		$('.timeline-value').removeClass('active');
+    // Klik na timeline value
+    $('.timeline-value').click(function () {
+        var isActive = $(this).hasClass('active');
 
-		// Ako element nije već aktivan, dodajte mu klasu 'active'
-		if (!isActive) {
-			$(this).addClass('active');
-		} else {
-			// Ako je element već aktivan, resetujemo filtere i prikazujemo sve slike
-			$(this).removeClass('active');
-			loadImages('all', $('#album-naziv').val(), 1);
-			return;
-		}
+        // Uklanjanje klase 'active' sa svih elemenata .timeline-value
+        $('.timeline-value').removeClass('active');
 
-		var time = $(this).data('value');
-		var album = $('#album-naziv').val(); // Dobijanje naziva albuma iz skrivenog inputa
+        // Ako element nije već aktivan, dodajte mu klasu 'active'
+        if (!isActive) {
+            $(this).addClass('active');
+        } else {
+            // Ako je element već aktivan, resetujemo filtere i prikazujemo sve slike
+            $(this).removeClass('active');
+            loadImages('all', $('#album-naziv').val(), 1, $('#show-items-desktop').val());
+            return;
+        }
 
-		// Učitaj slike sa filterom ili bez filtera
-		loadImages(time, album, 1); // Učitaj slike za prvu stranicu
-	});
+        var time = $(this).data('value');
+        var album = $('#album-naziv').val(); // Dobijanje naziva albuma iz skrivenog inputa
+        var itemsPerPage = $('#show-items-desktop').val(); // Dobijanje broja stavki po stranici iz select elementa
 
-	// Funkcija za učitavanje slika
-	function loadImages(time, album, page) {
-		$.ajax({
-			url: 'api.php', // Putanja do vašeg AJAX handler fajla
-			type: 'POST',
-			data: { time: time, album: album, page: page },
-			success: function(response) {
-				console.log('Original Response:', response); // Logovanje originalnog odgovora
+        // Učitaj slike sa filterom ili bez filtera
+        loadImages(time, album, 1, itemsPerPage); // Učitaj slike za prvu stranicu
+    });
 
-				var slike, pagination;
-				try {
-					// Parsirajte JSON odgovor
-					var parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
-					slike = parsedResponse.images;
-					pagination = parsedResponse.pagination;
-					console.log('Parsed Images:', slike);
-					console.log('Parsed Pagination:', pagination);
+    // Događaj za promenu broja stavki po stranici
+    $('#show-items-desktop').on('blur', function () {
+        var time = $('.timeline-value.active').data('value') || 'all';
+        var album = $('#album-naziv').val();
+        var itemsPerPage = $(this).val();
 
-					// Proverite da li je odgovor niz
-					if (!Array.isArray(slike)) {
-						console.error('Images response nije niz');
-						return;
-					}
+        loadImages(time, album, 1, itemsPerPage);
+    });
 
-					$('.isotope-items-wrap').empty(); // Očisti trenutne slike
-
-					// Dodaj filtrirane slike u DOM
-					for (var i = 0; i < slike.length; i++) {
-						var slika = slike[i];
-						if (!slika.path || !slika.title || !slika.created_time) {
-							console.error('Nedostaju podaci za sliku', slika);
-							continue;
-						}
-
-						// Kreiranje HTML strukture
-						var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours(); // Pretvorite u sate
-						var html = `
-                            <div class="isotope-item" data-time="${createdTime}">
-                                <div class="album-single-item">
-                                    <img class="asi-img" src="${slika.path}" alt="image">
-                                    <div class="asi-text-overlay">
-                                        ${slika.created_time}
-                                    </div>
-                                    <div class="asi-cover">
-                                        <div class="asi-info">
-                                            <div class="icon-wrapper">
-                                                <a class="c-link" href="path_to_shopping_cart">
-                                                    <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
-                                                </a>
-                                            </div>
-                                            <div class="icon-wrapper">
-                                                <a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
-                                                    <span class="s-icon"><i class="fas fa-search"></i></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
-
-						$('.isotope-items-wrap').append(html);
-					}
-
-					// Ažuriranje paginacije
-					$('.pagination').html(pagination.html);
-
-					// Dodavanje događaja za klikanje na stranice paginacije
-					$('.pagination-link').click(function(e) {
-						e.preventDefault();
-						var page = $(this).data('page');
-						loadImages(time, album, page);
-					});
-
-				} catch (e) {
-					console.error('Greška pri parsiranju JSON odgovora:', e);
-				}
-			},
-			error: function() {
-				console.error('Greška pri filtriranju slika');
-			}
-		});
-	}
+    // Pozivanje loadImages funkcije prilikom inicijalnog učitavanja stranice sa default vrednostima
+    var initialTime = $('.timeline-value.active').data('value') || 'all';
+    var initialAlbum = $('#album-naziv').val();
+    var initialItemsPerPage = $('#show-items-desktop').val();
+    console.log(initialItemsPerPage)
+    loadImages(initialTime, initialAlbum, 1, initialItemsPerPage);
 });
 
 

@@ -35,9 +35,11 @@ class clsFunctions
                             $timeToFilter = $dateTime->format('H');
                         } else {
                             $timeTaken = 'N/A';
+                            $timeToFilter = "01";
                         }
                     } else {
-                        $timeTaken = '';
+                        $timeTaken = "01:00";
+                        $timeToFilter = "01";
                     }
 
                     // Ako je filter postavljen, preskoči slike koje ne odgovaraju filteru
