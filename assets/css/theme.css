@@ -5519,7 +5519,6 @@ label {
 #map {
 	width: 100%;
 	min-height: 320px;
-	padding-bottom: 30%;
 }
 
 
@@ -6024,4 +6023,7 @@ label {
 	letter-spacing: 3px;
 	text-align: center;
 	padding: 2em 0;
+}
+#captcha {
+	background: #191919;
 }

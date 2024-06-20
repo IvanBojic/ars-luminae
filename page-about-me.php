@@ -50,10 +50,6 @@ include 'header.php';
 						<div class="col-lg-12">
 
 							<h1 class="album-title">About Me</h1>
-							<ol class="breadcrumb">
-								<li><a href="index.php">Home</a></li>
-								<li class="active">Page - About Me</li>
-							</ol>
 
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
@@ -78,7 +74,7 @@ include 'header.php';
 								<div class="row">
 									<div class="col-md-8">
 
-										<h3>John Smith</h3>
+										<h3>Duško Luković</h3>
 										<h6>Photographer / Designer</h6>
 
 										<p>Integer nec rhoncus lacus. Vestibulum suscipit tristique cursus. Nunc tempor, leo ornare dignissim laoreet, ex ligula imperdiet metus, a pellentesque lectus sem eu nunc. Donec malesuada id velit eget laoreet. Nullam posuere diam nec dolor volutpat bibendum. Aliquam efficitur id sapien in feugiat.</p>
@@ -103,7 +99,7 @@ include 'header.php';
 
 									<div class="col-md-4">
 										
-										<img src="assets/img/team/team-1.jpg" alt="image">
+										<img src="assets/img/ja-300x300.jpg" alt="image">
 
 									</div> <!-- /.col -->
 								</div> <!-- /.row -->

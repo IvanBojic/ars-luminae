@@ -499,29 +499,27 @@ window.onload = init;
 // Source: http://stackoverflow.com/questions/7208786/how-to-style-the-option-of-a-html-select
 // =============================================================================================
 
-// Funkcija za učitavanje slika
+// Funkcija za učitavanje slika sa AJAX-a
 function loadImages(time, album, page, itemsPerPage) {
     $.ajax({
-        url: 'api.php', // Putanja do vašeg AJAX handler fajla
+        url: 'api.php',
         type: 'POST',
         data: { time: time, album: album, page: page, items_per_page: itemsPerPage },
         success: function(response) {
             var slike, pagination;
             try {
-                // Parsirajte JSON odgovor
                 var parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
                 slike = parsedResponse.images;
                 pagination = parsedResponse.pagination;
 
-                // Proverite da li je odgovor niz
                 if (!Array.isArray(slike)) {
                     console.error('Images response nije niz');
                     return;
                 }
 
-                $('.isotope-items-wrap').empty(); // Očisti trenutne slike
+                var $container = $('.isotope-items-wrap');
+                $container.empty();
 
-                // Dodaj filtrirane slike u DOM
                 for (var i = 0; i < slike.length; i++) {
                     var slika = slike[i];
                     if (!slika.path || !slika.title) {
@@ -529,39 +527,36 @@ function loadImages(time, album, page, itemsPerPage) {
                         continue;
                     }
 
-                    // Kreiranje HTML strukture
-                    var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours(); // Pretvorite u sate
+                    var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours();
                     var html = `
-                            <div class="isotope-item" data-time="${createdTime}">
-                                <div class="album-single-item">
-                                    <img class="asi-img" src="${slika.path}" alt="image">
-                                    <div class="asi-text-overlay">
-                                        ${slika.created_time}
-                                    </div>
-                                    <div class="asi-cover">
-                                        <div class="asi-info">
-                                            <div class="icon-wrapper">
-                                                <a class="c-link" href="path_to_shopping_cart">
-                                                    <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
-                                                </a>
-                                            </div>
-                                            <div class="icon-wrapper">
-                                                <a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
-                                                    <span class="s-icon"><i class="fas fa-search"></i></span>
-                                                </a>
-                                            </div>
+                        <div class="isotope-item" data-time="${createdTime}">
+                            <div class="album-single-item">
+                                <img class="asi-img" src="${slika.path}" alt="image">
+                                <div class="asi-text-overlay">
+                                    ${slika.created_time}
+                                </div>
+                                <div class="asi-cover">
+                                    <div class="asi-info">
+                                        <div class="icon-wrapper">
+                                            <a class="c-link" href="path_to_shopping_cart">
+                                                <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
+                                            </a>
+                                        </div>
+                                        <div class="icon-wrapper">
+                                            <a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
+                                                <span class="s-icon"><i class="fas fa-search"></i></span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>`;
+                            </div>
+                        </div>`;
 
-                    $('.isotope-items-wrap').append(html);
+                    $container.append(html);
                 }
 
-                // Ažuriranje paginacije
                 $('.pagination').html(pagination.html);
 
-                // Dodavanje događaja za klikanje na stranice paginacije
                 $('.pagination-link').click(function(e) {
                     e.preventDefault();
                     var page = $(this).data('page');
@@ -882,8 +877,10 @@ $(document).ready(function(){
     var initialTime = $('.timeline-value.active').data('value') || 'all';
     var initialAlbum = $('#album-naziv').val();
     var initialItemsPerPage = $('#show-items-desktop').val();
-    console.log(initialItemsPerPage)
-    loadImages(initialTime, initialAlbum, 1, initialItemsPerPage);
+    // TODO: Ispitati kako ovo radi
+    if (window.location.pathname === '/gallery_single.php') {
+        loadImages(initialTime, initialAlbum, 1, initialItemsPerPage);
+    }
 });
 
 

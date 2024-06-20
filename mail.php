@@ -1,58 +1,60 @@
-<?php 
+<?php
 
-// ==================================================
-// Universal PHP Mail Feedback Script
-// More info: https://github.com/agragregra/uniMail
-// ==================================================
-
+include_once 'components/php_composer.php';
+// Univerzalni PHP skript za slanje mejlova sa slikom
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-//Script Foreach
-$c = true;
-if ( $method === 'POST' ) {
+if ($method === 'POST') {
+    $data = $_POST;
 
-	$project_name = trim($_POST["project_name"]);
-	$admin_email  = trim($_POST["admin_email"]);
-	$form_subject = trim($_POST["form_subject"]);
+    // Sanitizacija i priprema podataka
+    $project_name = htmlspecialchars(trim($data["project_name"]));
+    $admin_email  = htmlspecialchars(trim($data["admin_email"]));
+    $form_subject = htmlspecialchars(trim($data["form_subject"]));
+    $name         = htmlspecialchars(trim($data["Name"]));
+    $email        = htmlspecialchars(trim($data["Email"]));
+    $subject      = htmlspecialchars(trim($data["Subject"]));
+    $message      = htmlspecialchars(trim($data["Message"]));
 
-	foreach ( $_POST as $key => $value ) {
-		if ( $value != "" && $key != "project_name" && $key != "admin_email" && $key != "form_subject" ) {
-			$message .= "
-			" . ( ($c = !$c) ? '<tr>':'<tr style="background-color: #f3f3f3;">' ) . "
-			<td style='padding: 10px; border: #e9e9e9 1px solid; width: 100px;'><b>$key</b></td>
-			<td style='padding: 10px; border: #e9e9e9 1px solid;'>$value</td>
-		</tr>
-		";
-	}
+    // Validacija email adrese
+    if (!filter_var($admin_email, FILTER_VALIDATE_EMAIL)) {
+        die('Neispravna mejl adresa.');
+    }
+
+    // Formiranje HTML sadržaja mejla sa slikom
+    $email_content = "
+        <html>
+        <head>
+            <style>
+                /* Stilovi za mejl */
+            </style>
+        </head>
+        <body>
+            <p><img src='http://localhost/ars-luminae/assets/img/ars-luminae-logo.png' alt='Slika' style='width: 100%; height: 50px;'></p>
+            <h2>Poruka sa kontakt forme</h2>
+            <p><strong>Ime i prezime:</strong> $name</p>
+            <p><strong>Email:</strong> $email</p>
+            <p><strong>Naslov:</strong> $subject</p>
+            <p><strong>Poruka:</strong></p>
+            <p>$message</p>
+        </body>
+        </html>
+    ";
+
+    // Headers za HTML mejl
+    $headers = "MIME-Version: 1.0" . PHP_EOL;
+    $headers .= "Content-Type: text/html; charset=UTF-8" . PHP_EOL;
+    $headers .= "From: $project_name <$admin_email>" . PHP_EOL;
+
+    // Slanje mejla
+    if (mail($admin_email, $form_subject, $email_content, $headers)) {
+        echo 'Mejl je uspešno poslat.';
+    } else {
+        echo 'Slanje mejla nije uspelo.';
+    }
+} else {
+    echo 'Nevažeći metod zahteva.';
 }
-} else if ( $method === 'GET' ) {
 
-	$project_name = trim($_GET["project_name"]);
-	$admin_email  = trim($_GET["admin_email"]);
-	$form_subject = trim($_GET["form_subject"]);
-
-	foreach ( $_GET as $key => $value ) {
-		if ( $value != "" && $key != "project_name" && $key != "admin_email" && $key != "form_subject" ) {
-			$message .= "
-			" . ( ($c = !$c) ? '<tr>':'<tr style="background-color: #f3f3f3;">' ) . "
-			<td style='padding: 10px; border: #e9e9e9 1px solid; width: 100px;'><b>$key</b></td>
-			<td style='padding: 10px; border: #e9e9e9 1px solid;'>$value</td>
-		</tr>
-		";
-	}
-}
-}
-
-$message = "<table style='width: 100%;'>$message</table>";
-
-function adopt($text) {
-	return '=?UTF-8?B?'.base64_encode($text).'?=';
-}
-
-$headers = "MIME-Version: 1.0" . PHP_EOL .
-"Content-Type: text/html; charset=utf-8" . PHP_EOL .
-'From: '.adopt($project_name).' <'.$admin_email.'>' . PHP_EOL .
-'Reply-To: '.$admin_email.'' . PHP_EOL;
-
-mail($admin_email, adopt($form_subject), $message, $headers );
+?>

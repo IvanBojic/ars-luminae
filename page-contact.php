@@ -49,11 +49,7 @@ include 'header.php';
 					<div class="row">
 						<div class="col-lg-12">
 
-							<h1 class="album-title">Contact Us</h1>
-							<ol class="breadcrumb">
-								<li><a href="index.php">Home</a></li>
-								<li class="active">Page - Contact Us</li>
-							</ol>
+							<h1 class="album-title">Kontaktirajte nas</h1>
 
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
@@ -79,11 +75,11 @@ include 'header.php';
 									<div class="col-lg-4">
 
 										<address>
-											<i class="fas fa-home"></i> <strong>Telio, Inc.</strong><br>
-											1355 Market Street, Suite 900 <br>
-											San Francisco, CA 94103 <br>
-											<i class="fas fa-phone"></i> (123) 456-7890 <br>
-											<i class="fas fa-envelope"></i> <a href="mailto:#">company@email.com</a>
+											<strong>ARS LUMINAE</strong><br>
+											Photo Duško Luković <br>
+                                            <i class="fas fa-home"></i> 1. Oktobar 4/16, Čačak <br>
+											<i class="fas fa-phone"></i> 060/1-644-844 <br>
+											<i class="fas fa-envelope"></i> <a href="mailto:duskolukovic@gmail.com">duskolukovic@gmail.com</a>
 										</address>
 
 										<div class="social-icons">
@@ -99,10 +95,12 @@ include 'header.php';
 
 									<div class="col-md-8">
 
-										<h4>Don't be shy, tell us what's on your mind.</h4>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-										tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-										consequat.</p>
+										<h4>NE STIDITE SE, KAŽITE NAM ŠTA MISLITE.</h4>
+										<p>Drago mi je, prijatelju! <br>
+                                            Moje ime je Duško Luković. Ja sam profesionalni fotograf iz Čačka, Srbija.
+                                            Ako imate pitanja, sugestije ili samo želite da rezervišete foto sesiju, slobodno koristite kontakt formu ispod.
+                                            Hajde da napravimo nešto sjajno zajedno!
+                                        </p>
 
 									</div> <!-- /.col -->
 								</div> <!-- /.row -->
@@ -115,38 +113,46 @@ include 'header.php';
 										<form id="contact-form">
 
 											<!-- Begin hidden required fields (https://github.com/agragregra/uniMail) -->
-											<input type="hidden" name="project_name" value="yourwebsiteaddress.com"> <!-- Change value to your site name -->
-											<input type="hidden" name="admin_email" value="your@email.com"> <!-- Change value to your email address (where a message will be sent) -->
-											<input type="hidden" name="form_subject" value="Message from yourwebsiteaddress.com"> <!-- Change value to your own message subject -->
+											<input type="hidden" name="project_name" value="duskolukovic.com"> <!-- Change value to your site name -->
+											<input type="hidden" name="admin_email" value="ivan.bojic95@gmail.com"> <!-- Change value to your email address (where a message will be sent) -->
+											<input type="hidden" name="form_subject" value="Message from duskolukovic.com"> <!-- Change value to your own message subject -->
 											<!-- End Hidden Required Fields -->
 
 											<div class="row">
 												<div class="col-lg-4">
 													<div class="form-group">
-														<input type="text" class="form-control" name="Name:" placeholder="Your Name" required="">
+														<input type="text" class="form-control" name="Name" placeholder="Ime i prezime" required="">
 													</div>
 												</div>
 												<div class="col-lg-4">
 													<div class="form-group">
-														<input type="email" class="form-control" name="Email:" placeholder="Your Email" required="">
+														<input type="email" class="form-control" name="Email" placeholder="Email" required="">
 													</div>
 												</div>
 												<div class="col-lg-4">
 													<div class="form-group">
-														<input type="text" class="form-control" name="Subject:" placeholder="Subject" required="">
+														<input type="text" class="form-control" name="Subject" placeholder="Naslov" required="">
 													</div>
 												</div>
 											</div>
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="form-group">
-														<textarea class="form-control" name="Message:" rows="8" placeholder="Your Message (text only)" required=""></textarea>
+														<textarea class="form-control" name="Message" rows="8" placeholder="Vaša poruka" required=""></textarea>
 													</div>
 												</div>
 											</div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <label for="captcha">Koliko je 3 + 4?</label>
+                                                    <input type="text" id="captcha" name="captcha" required>
+                                                    <input type="hidden" name="captcha_result" value="7">
+                                                </div>
+                                            </div>
 											<div class="row">
 												<div class="col-lg-12">
-													<button type="submit" class="btn btn-primary btn-rounded-5x btn-block">Send Message</button>
+													<button type="submit" class="btn btn-primary btn-rounded-5x btn-block">Pošalji</button>
 												</div>
 											</div>
 										</form>
@@ -168,12 +174,9 @@ include 'header.php';
 							<!-- Begin content wrap -->
 							<div class="content-wrap">
 
-								<!-- Begin custom Google Map 
-								=============================
-								* Tutorial: https://developers.google.com/maps/documentation/javascript/tutorial
-								* Styles: https://snazzymaps.com/
-								-->
-								<div id="map"></div>
+								<div id="map">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1208.835650736618!2d20.35095574801754!3d43.8949488106058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475773f193b3bb23%3A0x7286dd3e15419e49!2sArs%20Luminae!5e0!3m2!1ssr!2srs!4v1718876504040!5m2!1ssr!2srs" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
 								<!-- End custom Google Map -->
 
 							</div>

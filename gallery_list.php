@@ -171,39 +171,6 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
 
-					<div class="row">
-						<div class="col-md-12">
-
-							<!-- Begin pagination -->
-							<nav class="pagination-wrap">
-								<ul class="pagination">
-									<li>
-										<a href="" aria-label="Previous">
-											<span aria-hidden="true"><<</span>
-										</a>
-									</li>
-									<li><a href=""><</a></li>
-									<li class="active"><a href="#0">1</a></li>
-									<li><a href="">2</a></li>
-									<li><a href="">3</a></li>
-									<li><a href="#0">...</a></li>
-									<li><a href="">6</a></li>
-									<li><a href="">7</a></li>
-									<li><a href="">8</a></li>
-									<li><a href="">></a></li>
-									<li>
-										<a href="" aria-label="Next">
-											<span aria-hidden="true">>></span>
-										</a>
-									</li>
-								</ul>
-							</nav>
-							<!-- End pagination -->
-
-						</div> <!-- /.col -->
-
-					</div> <!-- /.row -->
-
 				</div> <!-- /.container -->
 			</section>
 			<!-- End content section -->

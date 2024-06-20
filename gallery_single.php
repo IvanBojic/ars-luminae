@@ -7,7 +7,6 @@ $fajl = 'assets/img/album-single/' . $album_naziv;
 $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
 $broj_fotografija = clsFunctions::prebrojSlikeIzFoldera($fajl);
 
-// local storage ako nema tu onda daj 10
 // korpa kroz cookie ide
 $items_per_page = 10; // broj stavki po stranici
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -233,13 +232,7 @@ include 'header.php';
 									* Note2: For masonry layout make sure that your images are the different dimensions.
 									-->
 									<div id="gallery" class="isotope-items-wrap lightgallery">
-
-										<!-- Grid sizer (do not remove!!!) -->
 										<div class="grid-sizer"></div>
-
-										<!-- //////////////////
-										// Begin isotope item. Note: use class "width2" for alternative item width (works best on first item).
-										/////////////////////// -->
                                         <?php foreach ($slike_to_display as $slika) { ?>
                                             <div class="isotope-item" data-time="<?= date('H', strtotime($slika['created_time'])); ?>">
                                                 <div class="album-single-item">
