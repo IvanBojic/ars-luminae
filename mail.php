@@ -31,7 +31,7 @@ if ($method === 'POST') {
             </style>
         </head>
         <body>
-            <p><img src='http://localhost/ars-luminae/assets/img/ars-luminae-logo.png' alt='Slika' style='width: 100%; height: 50px;'></p>
+            <p><img src='https://bojovilinno.com/assets/img/ars-luminae-logo.png' alt='Slika' style='width: 100%; height: 50px;'></p>
             <h2>Poruka sa kontakt forme</h2>
             <p><strong>Ime i prezime:</strong> $name</p>
             <p><strong>Email:</strong> $email</p>

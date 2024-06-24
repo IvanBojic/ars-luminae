@@ -88,7 +88,7 @@ $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
                             data-dots="false"....................(true/false)
                             data-dots-speed="800"................(milliseconds)
                     -->
-                    <div class="owl-carousel dots-rounded dots-right nav-rounded" data-items="1" data-loop="true" data-autoplay="true" data-autoplay-timeout="8000" data-autoplay-hover-pause="true" data-nav="true"  data-animate-in="fadeIn" data-animate-out="fadeOut">
+                    <div class="owl-carousel dots-rounded dots-right nav-rounded custom-nav" data-items="1" data-loop="true" data-autoplay="true" data-autoplay-timeout="8000" data-autoplay-hover-pause="true" data-nav="true"  data-animate-in="fadeIn" data-animate-out="fadeOut">
 
                         <?php foreach ($slike as $slika) { ?>
                             <!-- Begin album list item -->

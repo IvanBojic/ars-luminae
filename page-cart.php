@@ -49,7 +49,7 @@ include 'header.php';
 					<div class="row">
 						<div class="col-lg-12">
 
-							<h1 class="album-title">Kontaktirajte nas</h1>
+							<h1 class="album-title">Korpa</h1>
 
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
@@ -63,9 +63,43 @@ include 'header.php';
 			<!-- ================================
 			/////// Begin content section ///////
 			================================= -->
-			<section id="content-section" class="page page-contact">
+			<section id="content-section" class="page page-cart">
 
-				<div class="container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <!-- Begin content wrap -->
+                            <div class="content-wrap">
+
+                                <div id="cart">
+                                    <div class="row margin-bottom-40">
+                                        <div class="col-lg-4">
+
+                                            <strong>PORUČENE FOTOGRAFIJE</strong>
+
+                                        </div> <!-- /.col -->
+
+                                    </div> <!-- /.row -->
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+
+
+                                        </div> <!-- /.col-->
+                                    </div> <!-- /.row -->
+                                </div>
+                                <!-- End custom Google Map -->
+
+                            </div>
+                            <!-- End content wrap -->
+
+                        </div> <!-- /.col -->
+                    </div> <!-- /.row -->
+                </div> <!-- /.container -->
+
+				<div class="container  margin-top-40">
 					<div class="row">
 						<div class="col-md-12">
 
@@ -74,35 +108,10 @@ include 'header.php';
 								<div class="row margin-bottom-40">
 									<div class="col-lg-4">
 
-										<address>
-											<strong>ARS LUMINAE</strong><br>
-											Photo Duško Luković <br>
-                                            <i class="fas fa-home"></i> 1. Oktobar 4/16, Čačak <br>
-											<i class="fas fa-phone"></i> 060/1-644-844 <br>
-											<i class="fas fa-envelope"></i> <a href="mailto:duskolukovic@gmail.com">duskolukovic@gmail.com</a>
-										</address>
-
-										<div class="social-icons">
-											<ul>
-												<li><a target="_blank" href="https://www.facebook.com" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a></li>
-												<li><a target="_blank" href="https://twitter.com/" title="Follow us on Twitter"><i class="fab fa-twitter"></i></a></li>
-												<li><a target="_blank" href="https://www.pinterest.com" title="Follow us on Pinterest"><i class="fab fa-pinterest-p"></i></a></li>
-												<li><a target="_blank" href="https://www.instagram.com/arsluminaestudio/" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a></li>
-											</ul>
-										</div>
+                                        <strong>UNESITE VAŠE PODATKE</strong>
 
 									</div> <!-- /.col -->
 
-									<div class="col-md-8">
-
-										<h4>NE STIDITE SE, KAŽITE NAM ŠTA MISLITE.</h4>
-										<p>Drago mi je, prijatelju! <br>
-                                            Moje ime je Duško Luković. Ja sam profesionalni fotograf iz Čačka, Srbija.
-                                            Ako imate pitanja, sugestije ili samo želite da rezervišete foto sesiju, slobodno koristite kontakt formu ispod.
-                                            Hajde da napravimo nešto sjajno zajedno!
-                                        </p>
-
-									</div> <!-- /.col -->
 								</div> <!-- /.row -->
 
 								<div class="row">
@@ -110,7 +119,7 @@ include 'header.php';
 
 										<!-- Begin contact form 
 										========================= -->
-										<form id="contact-form">
+										<form id="cart-form">
 
 											<!-- Begin hidden required fields (https://github.com/agragregra/uniMail) -->
 											<input type="hidden" name="project_name" value="duskolukovic.com"> <!-- Change value to your site name -->
@@ -131,6 +140,16 @@ include 'header.php';
 												</div>
 												<div class="col-lg-4">
 													<div class="form-group">
+														<input type="tel" class="form-control" name="Phone" placeholder="Kontakt telefon" required="">
+													</div>
+												</div>
+												<div class="col-lg-4">
+													<div class="form-group">
+														<input type="text" class="form-control" name="Address" placeholder="Adresa za dostavu" required="">
+													</div>
+												</div>
+												<div class="col-lg-4">
+													<div class="form-group">
 														<input type="text" class="form-control" name="Subject" placeholder="Naslov" required="">
 													</div>
 												</div>
@@ -145,9 +164,9 @@ include 'header.php';
 
                                             <div class="row">
                                                 <div class="col-lg-6">
-                                                    <label for="captcha">Koliko je 3 + 4?</label>
+                                                    <label for="captcha">Koliko je 6 + 3?</label>
                                                     <input type="text" id="captcha" name="captcha" required>
-                                                    <input type="hidden" name="captcha_result" value="7">
+                                                    <input type="hidden" name="captcha_result" value="9">
                                                 </div>
                                             </div>
 											<div class="row">
@@ -160,25 +179,6 @@ include 'header.php';
 
 									</div> <!-- /.col-->
 								</div> <!-- /.row -->
-							</div>
-							<!-- End content wrap -->
-
-						</div> <!-- /.col -->
-					</div> <!-- /.row -->
-				</div> <!-- /.container -->
-
-				<div class="container margin-top-40">
-					<div class="row">
-						<div class="col-md-12">
-
-							<!-- Begin content wrap -->
-							<div class="content-wrap">
-
-								<div id="map">
-                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1208.835650736618!2d20.35095574801754!3d43.8949488106058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475773f193b3bb23%3A0x7286dd3e15419e49!2sArs%20Luminae!5e0!3m2!1ssr!2srs!4v1718876504040!5m2!1ssr!2srs" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                </div>
-								<!-- End custom Google Map -->
-
 							</div>
 							<!-- End content wrap -->
 

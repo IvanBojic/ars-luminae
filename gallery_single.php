@@ -100,15 +100,15 @@ include 'header.php';
 							<div class="album-nav">
 
 								<!-- Begin album nav item -->
-								<a href="" class="an-item prev-album bg-image" style="background-image: url(assets/img/album-list/grid/img-2.jpg); background-position: 50% 50%;" title="Previous album">
-									<!-- Element cover -->
+								<!--<a href="" class="an-item prev-album bg-image" style="background-image: url(assets/img/album-list/grid/img-2.jpg); background-position: 50% 50%;" title="Previous album">
+
 									<div class="cover"></div>
 
 									<div class="an-item-info">
 										<span class="an-icon"><i class="fas fa-chevron-left"></i></span>
 										<span class="an-text">Prev</span>
 									</div>
-								</a>
+								</a>-->
 								<!-- End album nav item -->
 
 								<!-- Begin album nav item -->
@@ -124,15 +124,15 @@ include 'header.php';
 								<!-- End album nav item -->
 
 								<!-- Begin album nav item -->
-								<a href="" class="an-item next-album bg-image" style="background-image: url(assets/img/album-list/grid/img-7.jpg); background-position: 50% 50%;" title="Next album">
-									<!-- Element cover -->
+<!--								<a href="" class="an-item next-album bg-image" style="background-image: url(assets/img/album-list/grid/img-7.jpg); background-position: 50% 50%;" title="Next album">
+
 									<div class="cover"></div>
 
 									<div class="an-item-info">
 										<span class="an-icon"><i class="fas fa-chevron-right"></i></span>
 										<span class="an-text">Next</span>
 									</div>
-								</a>
+								</a>-->
 								<!-- End album nav item -->
 
 							</div>

@@ -32,7 +32,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 				<div id="nav" class="navbar-header">
                     <!-- off-canvas menu trigger (menu button) -->
                    <!-- <div id="shopping-cart">-->
-                        <a href="index.php" class="cart-link">
+                        <a href="page-cart.php" class="cart-link">
                             <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
                         </a>
                     <!--</div>-->
