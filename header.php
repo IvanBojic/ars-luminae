@@ -1,7 +1,13 @@
 <?php
 include_once 'components/php_composer.php';
 
+session_start(); // Pokrenite sesiju
+
 $albumi = clsFunctions::procitajFoldere($fajl = null);
+
+// Pročitajte korpu iz sesije
+$cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+$cartItemCount = count($cart); // Izbrojite artikle u korpi
 
 ?>
 
@@ -34,6 +40,13 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
                    <!-- <div id="shopping-cart">-->
                         <a href="page-cart.php" class="cart-link">
                             <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
+                            <?php if ($cartItemCount > 0) { ?>
+                                <span class="cart-counter">
+                                    <strong>
+                                        <?= $cartItemCount; ?>
+                                    </strong>
+                                </span>
+                            <?php } ?>
                         </a>
                     <!--</div>-->
                     <div id="mobile-menu">
@@ -69,7 +82,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 							<a href="#0" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Albumi <span class="caret-2"><i class="fas fa-chevron-down"></i></span></a>
 							<ul class="dropdown-menu">
                                 <?php foreach ($albumi as $album) { ?>
-                                    <li><a href="gallery_single.php?album=<?= $album['title']; ?>"><?= $album['title']; ?></a></li>
+                                    <li><a href="gallery.php?album=<?= $album['title']; ?>"><?= $album['title']; ?></a></li>
                                 <?php } ?>
 							</ul>
 						</li>
@@ -102,53 +115,3 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 </header>
 <!-- End header -->
 
-<!-- ==================================================================================================
-///// Begin off-canvas menu (more info: http://codyhouse.co/gem/secondary-expandable-navigation/) /////
-=================================================================================================== -->
-<nav id="cd-lateral-nav">
-    <div class="nav-inner">
-
-        <!-- Menu header -->
-        <div class="menu-header">Extra Stuff</div>
-
-        <!-- Begin nav links
-        ===================== -->
-        <ul class="cd-navigation">
-
-            <li><a class="link" href="gallery_list.php">Albumi</a></li>
-            <li><a class="link" href="page-contact.php">O nama</a></li>
-
-            <li class="cd-menu-separator"></li>
-
-        </ul>
-        <!-- End nav links -->
-
-        <!-- Begin nav content box -->
-        <div class="cd-content-box">
-
-            <h2 class="cd-menu-heading">Instagram:</h2>
-
-            <!-- Begin thumbnail list
-            ==========================
-            * Use class "col-2", "col-3", "col-4" "col-5" or "col-6" for thumbnail list columns.
-            * Use class "gutter-1", "gutter-2", "gutter-3", "gutter-4" or "gutter-5" to add more space between items.
-            -->
-            <ul class="thumb-list col-3 gutter-3">
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-1.jpg);"></a></li>
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-2.jpg);"></a></li>
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-3.jpg);"></a></li>
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-4.jpg);"></a></li>
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-5.jpg);"></a></li>
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-6.jpg);"></a></li>
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-7.jpg);"></a></li>
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-8.jpg);"></a></li>
-                <li><a target="_blank" href="https://www.instagram.com" class="thumb-list-item bg-image" style="background-image: url(assets/img/album-list/small/img-9.jpg);"></a></li>
-            </ul>
-            <!-- End thumbnail list -->
-
-        </div>
-        <!-- End nav content box -->
-
-    </div> <!-- /.nav-inner -->
-</nav>
-<!-- End off-canvas menu -->

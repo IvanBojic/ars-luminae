@@ -112,7 +112,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 
 											<!-- Begin album list item -->
 											<div class="album-list-item">
-												<a class="ali-link" href="gallery_single.php?album=<?= $album['title']; ?>">
+												<a class="ali-link" href="gallery.php?album=<?= $album['title']; ?>">
 													<div class="ali-img-wrap">
 														<img class="ali-img" src="<?= $imageSrc ?>" alt="image">
 													</div>

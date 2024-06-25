@@ -118,7 +118,7 @@ include 'header.php';
 
 									<div class="an-item-info">
 										<span class="an-icon"><i class="fas fa-th-list"></i></span>
-										<span class="an-text">List</span>
+										<span class="an-text">Lista</span>
 									</div>
 								</a>
 								<!-- End album nav item -->
@@ -243,7 +243,7 @@ include 'header.php';
                                                     <div class="asi-cover">
                                                         <div class="asi-info">
                                                             <div class="icon-wrapper">
-                                                                <a class="c-link" href="path_to_shopping_cart">
+                                                                <a class="c-link add-to-cart-button" href="#">
                                                                     <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
                                                                 </a>
                                                             </div>

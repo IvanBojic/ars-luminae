@@ -5861,6 +5861,9 @@ label {
 	#footer .social-icons {
 		text-align: left;
 	}
+    .cart-counter {
+        right: 50px !important;
+    }
 }
 
 
@@ -6033,4 +6036,34 @@ label {
 }
 .to-album-list {
 	margin-right: 15%;
+}
+.album-single-item .asi-info .add-to-cart-success .c-icon {
+	color: #28a745; /* Zelena boja, primer */
+}
+ul.album-list {
+	display: contents;
+	list-style-type: none;
+}
+ul li.album-item {
+	margin-left: 10px;
+}
+.album-title {
+	margin-top: 5%;
+}
+.cart-counter {
+    border-radius: 100%;
+    background-color: #292929;
+    border: 1px solid #414141;
+    cursor: pointer;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: -5px;
+}
+.remove-item.btn {
+    padding: 5px 5px;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 20%;
+    margin-left: 5%;
 }

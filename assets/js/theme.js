@@ -529,28 +529,28 @@ function loadImages(time, album, page, itemsPerPage) {
 
                     var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours();
                     var html = `
-                        <div class="isotope-item" data-time="${createdTime}">
-                            <div class="album-single-item">
-                                <img class="asi-img" src="${slika.path}" alt="image">
-                                <div class="asi-text-overlay">
-                                    ${slika.created_time}
-                                </div>
-                                <div class="asi-cover">
-                                    <div class="asi-info">
-                                        <div class="icon-wrapper">
-                                            <a class="c-link" href="path_to_shopping_cart">
-                                                <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
-                                            </a>
-                                        </div>
-                                        <div class="icon-wrapper">
-                                            <a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
-                                                <span class="s-icon"><i class="fas fa-search"></i></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
+										<div class="isotope-item" data-time="${createdTime}">
+											<div class="album-single-item">
+												<img class="asi-img" src="${slika.path}" alt="image">
+												<div class="asi-text-overlay">
+													${slika.created_time}
+												</div>
+												<div class="asi-cover">
+													<div class="asi-info">
+														<div class="icon-wrapper">
+															<a class="c-link add-to-cart-button" href="#">
+																<span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
+															</a>
+														</div>
+														<div class="icon-wrapper">
+															<a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
+																<span class="s-icon"><i class="fas fa-search"></i></span>
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>`;
 
                     $container.append(html);
                 }
@@ -577,6 +577,70 @@ function loadImages(time, album, page, itemsPerPage) {
         }
     });
 }
+
+// Add to cart
+$(document).ready(function() {
+	$('.c-link').on('click', function(e) {
+		e.preventDefault();
+
+		var $button = $(this); // Selektujte dugme na koje je kliknuto
+		var imagePath = $(this).closest('.album-single-item').find('.asi-img').attr('src');
+		var imageTime = $(this).closest('.album-single-item').find('.asi-text-overlay').text().trim();
+		var albumName = $('#album-naziv').val(); // Prikupite naziv albuma
+
+		$.ajax({
+			url: 'update_cart.php',
+			type: 'POST',
+			data: {
+				image_path: imagePath,
+				image_time: imageTime,
+				album_name: albumName // Dodajte naziv albuma u podatke
+			},
+
+			success: function(response) {
+				console.log('Raw response:', response); // Dodajte ovu liniju
+				var result;
+				try {
+					result = response;
+				} catch (e) {
+					console.error('Error parsing JSON response:', e);
+					console.log('Response:', response);
+					var alertContainer = $('#alert-container');
+					var alertMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+						'Invalid JSON response from server.' +
+						'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+						'</div>';
+					alertContainer.html(alertMessage);
+					return;
+				}
+
+				var alertContainer = $('#alert-container');
+				var alertClass = (result.status === 'success') ? 'alert-success' : 'alert-danger';
+				var alertMessage = '<div class="alert ' + alertClass + ' alert-dismissible fade show" role="alert">' +
+					result.message +
+					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+					'</div>';
+
+				alertContainer.html(alertMessage);
+
+				if (result.status === 'success') {
+					$button.addClass('add-to-cart-success');
+				}
+			},
+			error: function() {
+				var alertContainer = $('#alert-container');
+				var alertMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+					'An error occurred while adding the image to the cart.' +
+					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+					'</div>';
+
+				alertContainer.html(alertMessage);
+			}
+		});
+	});
+});
+
+
 
 // Iterate over each select element
 $('select').each(function () {
@@ -878,7 +942,7 @@ $(document).ready(function(){
     var initialAlbum = $('#album-naziv').val();
     var initialItemsPerPage = $('#show-items-desktop').val();
     // TODO: Ispitati kako ovo radi
-    if (window.location.pathname === '/gallery_single.php') {
+    if (window.location.pathname === '/gallery.php') {
         loadImages(initialTime, initialAlbum, 1, initialItemsPerPage);
     }
 });
