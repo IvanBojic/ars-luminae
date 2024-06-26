@@ -4,6 +4,8 @@ include_once 'components/php_composer.php';
 
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
+$cartItemCount = count($cart); // Izbrojite artikle u korpi
+
 // Provjera postojanja sesije i inicijalizacija $cart niza
 foreach ($cart as &$item) {
     if (!isset($item['album']) || empty($item['album'])) {
@@ -28,9 +30,7 @@ include 'head.php';
 <body id="body">
 
 <!-- Begin page preloader -->
-<div id="preloader">
-    <div class="pulse bg-main"></div>
-</div>
+
 <!-- End page preloader -->
 
 <?php
@@ -84,46 +84,52 @@ include 'header.php';
                             <div class="row margin-bottom-40">
                                 <div class="col-md-12">
                                     <?php
-                                    $currentAlbum = ''; // Inicijalizujemo promenljivu za trenutni album
+                                    if(isset($cart) && $cart) {
+                                        $currentAlbum = ''; // Inicijalizujemo promenljivu za trenutni album
 
-                                    // Prolazimo kroz niz $cart
-                                    foreach ($cart as $index => $item) {
-                                        // Proveravamo da li je trenutni album različit od albuma u trenutnom $item-u
-                                        if ($currentAlbum !== $item['album']) {
-                                            // Ako nije prvi put da se ulazi u petlju, zatvaramo prethodnu listu
-                                            if ($currentAlbum !== '') {
-                                                echo '</ul>'; // Zatvorite prethodnu listu
+                                        // Prolazimo kroz niz $cart
+                                        foreach ($cart as $index => $item) {
+                                            // Proveravamo da li je trenutni album različit od albuma u trenutnom $item-u
+                                            if ($currentAlbum !== $item['album']) {
+                                                // Ako nije prvi put da se ulazi u petlju, zatvaramo prethodnu listu
+                                                if ($currentAlbum !== '') {
+                                                    echo '</ul>'; // Zatvorite prethodnu listu
+                                                }
+                                                echo '<h3 class="album-title">' . htmlspecialchars($item['album']) . '</h3>'; // Prikažite naziv albuma
+                                                echo '<ul class="album-list">'; // Započnite novu listu
+                                                $currentAlbum = $item['album']; // Ažuriramo trenutni album
                                             }
-                                            echo '<h3 class="album-title">' . htmlspecialchars($item['album']) . '</h3>'; // Prikažite naziv albuma
-                                            echo '<ul class="album-list">'; // Započnite novu listu
-                                            $currentAlbum = $item['album']; // Ažuriramo trenutni album
+
+                                            // Prikazujemo sliku samo ako je unikatna za taj album
+                                            echo '<li class="album-item">';
+                                            echo '<img src="' . htmlspecialchars($item['path']) . '" alt="Image" style="width: 25%; height: auto;">';
+                                            echo '<form method="post" action="remove_from_cart.php" style="display:inline;">';
+                                            echo '<input type="hidden" name="item_index" value="' . $index . '">';
+                                            echo '<button type="submit" class="remove-item btn btn-danger">X</button>';
+                                            echo '</form>';
+                                            echo '</li>';
                                         }
 
-                                        // Prikazujemo sliku samo ako je unikatna za taj album
-                                        echo '<li class="album-item">';
-                                        echo '<img src="' . htmlspecialchars($item['path']) . '" alt="Image" style="width: 25%; height: auto;">';
-                                        echo '<form method="post" action="remove_from_cart.php" style="display:inline;">';
-                                        echo '<input type="hidden" name="item_index" value="' . $index . '">';
-                                        echo '<button type="submit" class="remove-item btn btn-danger">X</button>';
-                                        echo '</form>';
-                                        echo '</li>';
+                                        // Na kraju petlje, zatvaramo poslednju listu ako postoji neki album koji nije zatvoren
+                                        if ($currentAlbum !== '') {
+                                            echo '</ul>';
+                                        }
+                                    } else {
+                                        echo '<img class="empty-cart" src="assets/img/empty_cart.png" alt="image">';
                                     }
 
-                                    // Na kraju petlje, zatvaramo poslednju listu ako postoji neki album koji nije zatvoren
-                                    if ($currentAlbum !== '') {
-                                        echo '</ul>';
-                                    }
                                     ?>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <strong>Cena jedne fotografije:</strong> 200.00RSD<br>
-                                    <strong>Broj poručenih fotografija:</strong> 3<br>
-                                    <strong>Ukupna cena fotografija:</strong> 600.00RSD
+                            <?php if(isset($cart) && $cart) {?>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <strong>Cena jedne fotografije:</strong> 200.00RSD<br>
+                                        <strong>Broj poručenih fotografija:</strong> <?= $cartItemCount; ?><br>
+                                        <strong>Ukupna cena fotografija:</strong> 600.00RSD
+                                    </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                         </div>
                         <!-- End custom Google Map -->
 

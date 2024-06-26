@@ -112,15 +112,15 @@ include 'header.php';
 								<!-- End album nav item -->
 
 								<!-- Begin album nav item -->
-								<a href="gallery_list.php" class="an-item to-album-list bg-image" style="background-image: url(assets/img/album-list/grid/img-4.jpg); background-position: 50% 50%;" title="Back to album list">
-									<!-- Element cover -->
+<!--								<a href="gallery_list.php" class="an-item to-album-list bg-image" style="background-image: url(assets/img/album-list/grid/img-4.jpg); background-position: 50% 50%;" title="Back to album list">
+
 									<div class="cover"></div>
 
 									<div class="an-item-info">
 										<span class="an-icon"><i class="fas fa-th-list"></i></span>
 										<span class="an-text">Lista</span>
 									</div>
-								</a>
+								</a>-->
 								<!-- End album nav item -->
 
 								<!-- Begin album nav item -->

@@ -359,42 +359,245 @@ $(".justified-gallery").justifiedGallery({
 // Note-2: "lazysizes" blugin is recommended: https://github.com/aFarkas/lazysizes
 // =====================================================================================
 
-// init Isotope
-var $container = $('.isotope-items-wrap');
-$container.imagesLoaded(function () {
-	$container.isotope({
-		itemSelector: '.isotope-item',
-		transitionDuration: '0.5s',
-		masonry: {
-			columnWidth: '.grid-sizer',
-			horizontalOrder: false
+$(document).ready(function() {
+	function loadImages(time, album, page, itemsPerPage) {
+		$.ajax({
+			url: 'api.php',
+			type: 'POST',
+			data: { time: time, album: album, page: page, items_per_page: itemsPerPage },
+			success: function(response) {
+				var slike, pagination;
+				try {
+					var parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+					slike = parsedResponse.images;
+					pagination = parsedResponse.pagination;
+
+					if (!Array.isArray(slike)) {
+						console.error('Images response nije niz');
+						return;
+					}
+
+					var $container = $('.isotope-items-wrap');
+					$container.empty();
+
+					// Dodajte grid-sizer element
+					$container.append('<div class="grid-sizer"></div>');
+
+					for (var i = 0; i < slike.length; i++) {
+						var slika = slike[i];
+						if (!slika.path || !slika.title) {
+							console.error('Nedostaju podaci za sliku', slika);
+							continue;
+						}
+
+						var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours();
+						var html = `
+                            <div class="isotope-item" data-time="${createdTime}">
+                                <div class="album-single-item">
+                                    <img class="asi-img" src="${slika.path}" alt="image">
+                                    <div class="asi-text-overlay">
+                                        ${slika.created_time}
+                                    </div>
+                                    <div class="asi-cover">
+                                        <div class="asi-info">
+                                            <div class="icon-wrapper">
+                                                <a class="c-link add-to-cart-button" href="#">
+                                                    <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
+                                                </a>
+                                            </div>
+                                            <div class="icon-wrapper">
+                                                <a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
+                                                    <span class="s-icon"><i class="fas fa-search"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+
+						$container.append(html);
+					}
+
+					$('.pagination').html(pagination.html);
+
+					$('.pagination-link').click(function(e) {
+						e.preventDefault();
+						var page = $(this).data('page');
+						loadImages(time, album, page, itemsPerPage);
+					});
+
+					// Ponovo inicijalizujte lightGallery za nove elemente
+					$('.isotope-items-wrap').find('.lg-trigger').lightGallery({
+						selector: 'this'
+					});
+
+					// Ponovo inicijalizujte Isotope za nove elemente
+					$container.imagesLoaded(function () {
+						$container.isotope('reloadItems').isotope({
+							itemSelector: '.isotope-item',
+							transitionDuration: '0.5s',
+							masonry: {
+								columnWidth: '.grid-sizer',
+								horizontalOrder: true
+							}
+						});
+					});
+
+				} catch (e) {
+					console.error('Greška pri parsiranju JSON odgovora:', e);
+				}
+			},
+			error: function() {
+				console.error('Greška pri filtriranju slika');
+			}
+		});
+	}
+
+	// Inicijalizacija Isotope
+	var $container = $('.isotope-items-wrap');
+	$container.imagesLoaded(function () {
+		$container.isotope({
+			itemSelector: '.isotope-item',
+			transitionDuration: '0.5s',
+			masonry: {
+				columnWidth: '.grid-sizer',
+				horizontalOrder: true
+			}
+		});
+	});
+
+	// Filter
+	$('.isotope-filter-links a').on("click", function () {
+		var selector = $(this).attr('data-filter');
+		$container.isotope({
+			filter: selector
+		});
+		return false;
+	});
+
+	// Filter item active
+	var filterItemActive = $('.isotope-filter-links a');
+	filterItemActive.on('click', function () {
+		var $this = $(this);
+		if (!$this.hasClass('active')) {
+			filterItemActive.removeClass('active');
+			$this.addClass('active');
 		}
 	});
-});
 
-// Filter
-$('.isotope-filter-links a').on("click", function () {
-	var selector = $(this).attr('data-filter');
-	$container.isotope({
-		filter: selector
+	// if isotope exist add "overflow-y: scroll;" to body tag
+	$(".isotope").each(function () {
+		$('body').css('overflow-y', 'scroll');
 	});
-	return false;
-});
 
-// Filter item active
-var filterItemActive = $('.isotope-filter-links a');
-filterItemActive.on('click', function () {
-	var $this = $(this);
-	if (!$this.hasClass('active')) {
-		filterItemActive.removeClass('active');
-		$this.addClass('active');
+	// Klik na timeline value
+	$('.timeline-value').click(function () {
+		var isActive = $(this).hasClass('active');
+
+		// Uklanjanje klase 'active' sa svih elemenata .timeline-value
+		$('.timeline-value').removeClass('active');
+
+		// Ako element nije već aktivan, dodajte mu klasu 'active'
+		if (!isActive) {
+			$(this).addClass('active');
+		} else {
+			// Ako je element već aktivan, resetujemo filtere i prikazujemo sve slike
+			$(this).removeClass('active');
+			loadImages('all', $('#album-naziv').val(), 1, $('#show-items-desktop').val());
+			return;
+		}
+
+		var time = $(this).data('value');
+		var album = $('#album-naziv').val(); // Dobijanje naziva albuma iz skrivenog inputa
+		var itemsPerPage = $('#show-items-desktop').val(); // Dobijanje broja stavki po stranici iz select elementa
+
+		// Učitaj slike sa filterom ili bez filtera
+		loadImages(time, album, 1, itemsPerPage); // Učitaj slike za prvu stranicu
+	});
+
+	// Događaj za promenu broja stavki po stranici
+	$('#show-items-desktop').on('blur', function () {
+		var time = $('.timeline-value.active').data('value') || 'all';
+		var album = $('#album-naziv').val();
+		var itemsPerPage = $(this).val();
+
+		loadImages(time, album, 1, itemsPerPage);
+	});
+
+	// Pozivanje loadImages funkcije prilikom inicijalnog učitavanja stranice sa default vrednostima
+	var initialTime = $('.timeline-value.active').data('value') || 'all';
+	var initialAlbum = $('#album-naziv').val();
+	var initialItemsPerPage = $('#show-items-desktop').val();
+	if (window.location.pathname === '/gallery.php') {
+		loadImages(initialTime, initialAlbum, 1, initialItemsPerPage);
 	}
+
+	// Iterate over each select element
+	$('select').each(function () {
+		// Cache the number of options
+		var $this = $(this),
+			numberOfOptions = $(this).children('option').length;
+
+		// Hides the select element
+		$this.addClass('s-hidden');
+
+		// Wrap the select element in a div
+		$this.wrap('<div class="select"></div>');
+
+		// Insert a styled div to sit over the top of the hidden select element
+		$this.after('<div class="styledSelect"></div>');
+
+		// Cache the styled div
+		var $styledSelect = $this.next('div.styledSelect');
+
+		// Show the first select option in the styled div
+		$styledSelect.text($this.children('option').eq(0).text());
+
+		// Insert an unordered list after the styled div and also cache the list
+		var $list = $('<ul />', {
+			'class': 'options'
+		}).insertAfter($styledSelect);
+
+		// Insert a list item into the unordered list for each select option
+		for (var i = 0; i < numberOfOptions; i++) {
+			$('<li />', {
+				text: $this.children('option').eq(i).text(),
+				rel: $this.children('option').eq(i).val()
+			}).appendTo($list);
+		}
+
+		// Cache the list items
+		var $listItems = $list.children('li');
+
+		// Show the unordered list when the styled div is clicked (also hides it if the div is clicked again)
+		$styledSelect.click(function (e) {
+			e.stopPropagation();
+			$('div.styledSelect.active').each(function () {
+				$(this).removeClass('active').next('ul.options').hide();
+			});
+			$(this).toggleClass('active').next('ul.options').toggle();
+		});
+
+		// Hides the unordered list when a list item is clicked and updates the styled div to show the selected list item
+		// Updates the select element to have the value of the equivalent option
+		$listItems.click(function (e) {
+			e.stopPropagation();
+			$styledSelect.text($(this).text()).removeClass('active');
+			$this.val($(this).attr('rel'));
+			$list.hide();
+			// Trigger change event on select element
+			$this.trigger('change');
+		});
+
+		// Hides the unordered list when clicking outside of it
+		$(document).click(function () {
+			$styledSelect.removeClass('active');
+			$list.hide();
+		});
+	});
 });
 
-// if isotope exist add "overflow-y: scroll;" to body tag
-$(".isotope").each(function () {
-	$('body').css('overflow-y', 'scroll');
-});
+
 
 
 // =====================================================
@@ -500,83 +703,7 @@ window.onload = init;
 // =============================================================================================
 
 // Funkcija za učitavanje slika sa AJAX-a
-function loadImages(time, album, page, itemsPerPage) {
-    $.ajax({
-        url: 'api.php',
-        type: 'POST',
-        data: { time: time, album: album, page: page, items_per_page: itemsPerPage },
-        success: function(response) {
-            var slike, pagination;
-            try {
-                var parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
-                slike = parsedResponse.images;
-                pagination = parsedResponse.pagination;
 
-                if (!Array.isArray(slike)) {
-                    console.error('Images response nije niz');
-                    return;
-                }
-
-                var $container = $('.isotope-items-wrap');
-                $container.empty();
-
-                for (var i = 0; i < slike.length; i++) {
-                    var slika = slike[i];
-                    if (!slika.path || !slika.title) {
-                        console.error('Nedostaju podaci za sliku', slika);
-                        continue;
-                    }
-
-                    var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours();
-                    var html = `
-										<div class="isotope-item" data-time="${createdTime}">
-											<div class="album-single-item">
-												<img class="asi-img" src="${slika.path}" alt="image">
-												<div class="asi-text-overlay">
-													${slika.created_time}
-												</div>
-												<div class="asi-cover">
-													<div class="asi-info">
-														<div class="icon-wrapper">
-															<a class="c-link add-to-cart-button" href="#">
-																<span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
-															</a>
-														</div>
-														<div class="icon-wrapper">
-															<a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
-																<span class="s-icon"><i class="fas fa-search"></i></span>
-															</a>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>`;
-
-                    $container.append(html);
-                }
-
-                $('.pagination').html(pagination.html);
-
-                $('.pagination-link').click(function(e) {
-                    e.preventDefault();
-                    var page = $(this).data('page');
-                    loadImages(time, album, page, itemsPerPage);
-                });
-
-                // Ponovo inicijalizujte lightGallery za nove elemente
-                $('.isotope-items-wrap').find('.lg-trigger').lightGallery({
-                    selector: 'this'
-                });
-
-            } catch (e) {
-                console.error('Greška pri parsiranju JSON odgovora:', e);
-            }
-        },
-        error: function() {
-            console.error('Greška pri filtriranju slika');
-        }
-    });
-}
 
 // Add to cart
 $(document).ready(function() {
@@ -589,7 +716,7 @@ $(document).ready(function() {
 		var albumName = $('#album-naziv').val(); // Prikupite naziv albuma
 
 		$.ajax({
-			url: 'update_cart.php',
+			url: 'add_to_cart.php',
 			type: 'POST',
 			data: {
 				image_path: imagePath,
@@ -639,80 +766,6 @@ $(document).ready(function() {
 		});
 	});
 });
-
-
-
-// Iterate over each select element
-$('select').each(function () {
-
-	// Cache the number of options
-	var $this = $(this),
-		numberOfOptions = $(this).children('option').length;
-
-	// Hides the select element
-	$this.addClass('s-hidden');
-
-	// Wrap the select element in a div
-	$this.wrap('<div class="select"></div>');
-
-	// Insert a styled div to sit over the top of the hidden select element
-	$this.after('<div class="styledSelect"></div>');
-
-	// Cache the styled div
-	var $styledSelect = $this.next('div.styledSelect');
-
-	// Show the first select option in the styled div
-	$styledSelect.text($this.children('option').eq(0).text());
-
-	// Insert an unordered list after the styled div and also cache the list
-	var $list = $('<ul />', {
-		'class': 'options'
-	}).insertAfter($styledSelect);
-
-	// Insert a list item into the unordered list for each select option
-	for (var i = 0; i < numberOfOptions; i++) {
-		$('<li />', {
-			text: $this.children('option').eq(i).text(),
-			rel: $this.children('option').eq(i).val()
-		}).appendTo($list);
-	}
-
-	// Cache the list items
-	var $listItems = $list.children('li');
-
-	// Show the unordered list when the styled div is clicked (also hides it if the div is clicked again)
-	$styledSelect.on("click", function (e) {
-		e.stopPropagation();
-		$('div.styledSelect.active').each(function () {
-			$(this).removeClass('active').next('ul.options').hide();
-		});
-		$(this).toggleClass('active').next('ul.options').toggle();
-	});
-
-	// Hides the unordered list when a list item is clicked and updates the styled div to show the selected list item
-	// Updates the select element to have the value of the equivalent option
-	$listItems.on("click", function (e) {
-		e.stopPropagation();
-		$styledSelect.text($(this).text()).removeClass('active');
-		$this.val($(this).attr('rel'));
-		$list.hide();
-		/* alert($this.val()); Uncomment this for demonstration! */
-
-        // Pozivanje loadImages funkcije
-        var time = $('.timeline-value.active').data('value') || 'all';
-        var album = $('#album-naziv').val();
-        var itemsPerPage = $(this).attr('rel');
-        loadImages(time, album, 1, itemsPerPage);
-	});
-
-	// Hides the unordered list when clicking outside of it
-	$(document).on("click", function () {
-		$styledSelect.removeClass('active');
-		$list.hide();
-	});
-
-});
-
 
 // ==============================================================================
 // Add to favorite button
@@ -900,53 +953,6 @@ function parallax() {
 		$('.parallax').css('top', (scrolled * 0.4) + 'px');
 	}
 }
-
-$(document).ready(function(){
-
-    // Klik na timeline value
-    $('.timeline-value').click(function () {
-        var isActive = $(this).hasClass('active');
-
-        // Uklanjanje klase 'active' sa svih elemenata .timeline-value
-        $('.timeline-value').removeClass('active');
-
-        // Ako element nije već aktivan, dodajte mu klasu 'active'
-        if (!isActive) {
-            $(this).addClass('active');
-        } else {
-            // Ako je element već aktivan, resetujemo filtere i prikazujemo sve slike
-            $(this).removeClass('active');
-            loadImages('all', $('#album-naziv').val(), 1, $('#show-items-desktop').val());
-            return;
-        }
-
-        var time = $(this).data('value');
-        var album = $('#album-naziv').val(); // Dobijanje naziva albuma iz skrivenog inputa
-        var itemsPerPage = $('#show-items-desktop').val(); // Dobijanje broja stavki po stranici iz select elementa
-
-        // Učitaj slike sa filterom ili bez filtera
-        loadImages(time, album, 1, itemsPerPage); // Učitaj slike za prvu stranicu
-    });
-
-    // Događaj za promenu broja stavki po stranici
-    $('#show-items-desktop').on('blur', function () {
-        var time = $('.timeline-value.active').data('value') || 'all';
-        var album = $('#album-naziv').val();
-        var itemsPerPage = $(this).val();
-
-        loadImages(time, album, 1, itemsPerPage);
-    });
-
-    // Pozivanje loadImages funkcije prilikom inicijalnog učitavanja stranice sa default vrednostima
-    var initialTime = $('.timeline-value.active').data('value') || 'all';
-    var initialAlbum = $('#album-naziv').val();
-    var initialItemsPerPage = $('#show-items-desktop').val();
-    // TODO: Ispitati kako ovo radi
-    if (window.location.pathname === '/gallery.php') {
-        loadImages(initialTime, initialAlbum, 1, initialItemsPerPage);
-    }
-});
-
 
 // ===============
 // Window resize

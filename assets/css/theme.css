@@ -2035,6 +2035,10 @@ section {
 .grid-sizer {
 	height: auto;
 }
+.isotope-item img {
+	height: auto;
+	width: 100%;
+}
 .isotope.col-1 .grid-sizer {
 	width: 100%;
 }
@@ -6066,4 +6070,9 @@ ul li.album-item {
     font-weight: 800;
     border-radius: 20%;
     margin-left: 5%;
+}
+.empty-cart {
+	height: 50%;
+	width: 30%;
+	margin-left: 33%;
 }
