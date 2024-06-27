@@ -6069,7 +6069,23 @@ ul li.album-item {
     font-size: 12px;
     font-weight: 800;
     border-radius: 20%;
+    margin-left: 8%;
+}
+#spinner {
+    padding: 5px 5px;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 20%;
     margin-left: 5%;
+	background-color: #292929;
+	border: 1px solid #414141;
+}
+.cart-item {
+	display:inline;
+	margin-top: 10px;
+}
+.cart-item-opt {
+	margin-top: 10px;
 }
 .empty-cart {
 	height: 50%;

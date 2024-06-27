@@ -400,11 +400,11 @@ $(document).ready(function() {
                                     </div>
                                     <div class="asi-cover">
                                         <div class="asi-info">
-                                            <div class="icon-wrapper">
-                                                <a class="c-link add-to-cart-button" href="#">
-                                                    <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
-                                                </a>
-                                            </div>
+											<div class="icon-wrapper">
+												<a class="c-link add-to-cart-button" href="#">
+													<span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
+												</a>
+											</div>
                                             <div class="icon-wrapper">
                                                 <a class="s-link lg-trigger" href="${slika.path}" data-exthumbnail="${slika.path}" data-sub-html="<h4>${slika.created_time}</h4><p>Poručene slike dobijate u formatu 13x18cm i cena je 200.00RSD po komadu.</p>">
                                                     <span class="s-icon"><i class="fas fa-search"></i></span>
@@ -428,7 +428,8 @@ $(document).ready(function() {
 
 					// Ponovo inicijalizujte lightGallery za nove elemente
 					$('.isotope-items-wrap').find('.lg-trigger').lightGallery({
-						selector: 'this'
+						selector: 'this',
+						download: false,
 					});
 
 					// Ponovo inicijalizujte Isotope za nove elemente
@@ -516,7 +517,7 @@ $(document).ready(function() {
 	});
 
 	// Događaj za promenu broja stavki po stranici
-	$('#show-items-desktop').on('blur', function () {
+	$('#show-items-desktop').on('change', function () {
 		var time = $('.timeline-value.active').data('value') || 'all';
 		var album = $('#album-naziv').val();
 		var itemsPerPage = $(this).val();
@@ -596,9 +597,6 @@ $(document).ready(function() {
 		});
 	});
 });
-
-
-
 
 // =====================================================
 // lightGallery (lightbox plugin)

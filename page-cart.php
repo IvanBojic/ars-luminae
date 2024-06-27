@@ -102,11 +102,16 @@ include 'header.php';
 
                                             // Prikazujemo sliku samo ako je unikatna za taj album
                                             echo '<li class="album-item">';
-                                            echo '<img src="' . htmlspecialchars($item['path']) . '" alt="Image" style="width: 25%; height: auto;">';
-                                            echo '<form method="post" action="remove_from_cart.php" style="display:inline;">';
-                                            echo '<input type="hidden" name="item_index" value="' . $index . '">';
-                                            echo '<button type="submit" class="remove-item btn btn-danger">X</button>';
-                                            echo '</form>';
+                                                echo '<div class="row">';
+                                                    echo '<img src="' . htmlspecialchars($item['path']) . '" alt="Image" style="width: 25%; height: auto;">';
+                                                echo '</div>';
+                                                echo '<div class="cart-item-opt row">';
+                                                    echo '<form class="cart-item" method="post" action="remove_from_cart.php">';
+                                                        echo '<input type="hidden" name="item_index" value="' . $index . '">';
+                                                        echo '<input type="number" pattern="[0-9]*" id="spinner" name="value" value="1" min="1" max="200" step="1" oninput="maxLengthCheck(this)" maxlength="3">';
+                                                        echo '<button type="submit" class="remove-item btn btn-danger">X</button>';
+                                                    echo '</form>';
+                                            echo '</div>';
                                             echo '</li>';
                                         }
 

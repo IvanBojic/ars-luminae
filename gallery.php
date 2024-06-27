@@ -8,7 +8,7 @@ $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
 $broj_fotografija = clsFunctions::prebrojSlikeIzFoldera($fajl);
 
 // korpa kroz cookie ide
-$items_per_page = 10; // broj stavki po stranici
+$items_per_page = 25; // broj stavki po stranici
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $total_items = count($slike);
 $total_pages = ceil($total_items / $items_per_page);
