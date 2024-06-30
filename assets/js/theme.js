@@ -360,6 +360,130 @@ $(".justified-gallery").justifiedGallery({
 // =====================================================================================
 
 $(document).ready(function() {
+	const photoPrice = 200; // Cena jedne fotografije
+
+	function renderCart(cartItems) {
+		console.log("Rendering cart with items:", cartItems);
+		const cartContainer = document.getElementById('cart-container');
+		const cartSummary = document.getElementById('cart-summary');
+		cartContainer.innerHTML = ''; // Clear existing content
+
+		// Ako je korpa prazna, prikazujemo sliku prazne korpe
+		if (cartItems.length === 0) {
+			const emptyCartImg = document.createElement('img');
+			emptyCartImg.className = 'empty-cart';
+			emptyCartImg.src = 'assets/img/empty_cart.png';
+			emptyCartImg.alt = 'image';
+			cartContainer.appendChild(emptyCartImg);
+			cartSummary.innerHTML = ''; // Clear summary if cart is empty
+			updateCartCounter(0); // Update cart counter to 0 if cart is empty
+			return;
+		}
+
+		let currentAlbum = ''; // Inicijalizujemo promenljivu za trenutni album
+		let albumList; // Započinje novu listu za album
+
+		cartItems.forEach((item, index) => {
+			// Proveravamo da li je trenutni album različit od albuma u trenutnom item-u
+			if (currentAlbum !== item.album) {
+				// Ako nije prvi put da se ulazi u petlju, zatvaramo prethodnu listu
+				if (currentAlbum !== '') {
+					cartContainer.appendChild(albumList);
+				}
+
+				// Prikazujemo naziv albuma
+				const albumTitle = document.createElement('h3');
+				albumTitle.className = 'album-title';
+				albumTitle.textContent = item.album;
+				cartContainer.appendChild(albumTitle);
+
+				// Započinjemo novu listu sa slikama
+				albumList = document.createElement('ul');
+				albumList.className = 'album-list';
+
+				currentAlbum = item.album; // Ažuriramo trenutni album
+			}
+
+			// Kreiranje list itema za sliku
+			const albumItem = document.createElement('li');
+			albumItem.className = 'album-item';
+
+			const img = document.createElement('img');
+			img.src = item.path;
+			img.alt = 'Image';
+			albumItem.appendChild(img);
+
+			// Kreiranje kontejnera za spinner i dugme za uklanjanje
+			const inputContainer = document.createElement('div');
+			inputContainer.className = 'input-container';
+
+			// Kreiranje spinnera za odabir broja fotografija
+			const spinnerInput = document.createElement('input');
+			spinnerInput.type = 'number';
+			spinnerInput.className = 'spinner-input';
+			spinnerInput.id = 'spinner';
+			spinnerInput.value = 1;
+			spinnerInput.min = 1;
+			spinnerInput.max = 200;
+			inputContainer.appendChild(spinnerInput);
+
+			// Kreiranje dugmeta za uklanjanje iz korpe
+			const removeButton = document.createElement('button');
+			removeButton.className = 'remove-item btn btn-danger';
+			removeButton.textContent = 'X';
+			removeButton.onclick = function() {
+				removeFromCart(index);
+			};
+			inputContainer.appendChild(removeButton);
+
+			albumItem.appendChild(inputContainer);
+			albumList.appendChild(albumItem);
+		});
+
+		// Na kraju petlje, zatvaramo poslednju listu ako postoji neki album koji nije zatvoren
+		if (currentAlbum !== '') {
+			cartContainer.appendChild(albumList);
+		}
+
+		// Ažuriramo i prikazujemo rezime korpe
+		const cartItemCount = cartItems.length;
+		const totalPrice = cartItemCount * photoPrice;
+		cartSummary.innerHTML = `
+                <div class="row">
+                    <div class="col-lg-4">
+                        <strong>Cena jedne fotografije:</strong> ${photoPrice}.00RSD<br>
+                        <strong>Broj poručenih fotografija:</strong> ${cartItemCount}<br>
+                        <strong>Ukupna cena fotografija:</strong> ${totalPrice}.00RSD
+                    </div>
+                </div>
+            `;
+
+		updateCartCounter(cartItemCount); // Update cart counter after rendering cart
+	}
+
+	function removeFromCart(index) {
+		const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+		if (index > -1) {
+			cart.splice(index, 1);
+		}
+		sessionStorage.setItem('cart', JSON.stringify(cart));
+		renderCart(cart);
+		updateCartCounter(cart.length); // Update cart counter after removing item
+	}
+
+	function updateCartCounter(count) {
+		const cartCounter = document.getElementById('cart-counter');
+		cartCounter.textContent = count > 0 ? count : '';
+	}
+
+	const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+	console.log("Initial cart:", cart);
+	updateCartCounter(cart.length); // Initial update of the cart counter
+
+	if (window.location.pathname.includes('/page-cart.php')) {
+		renderCart(cart);
+	}
+
 	function loadImages(time, album, page, itemsPerPage) {
 		$.ajax({
 			url: 'api.php',
@@ -434,7 +558,8 @@ $(document).ready(function() {
 
 					// Ponovo inicijalizujte Isotope za nove elemente
 					$container.imagesLoaded(function () {
-						$container.isotope('reloadItems').isotope({
+						$container.isotope('reloadItems');
+						$container.isotope({
 							itemSelector: '.isotope-item',
 							transitionDuration: '0.5s',
 							masonry: {
@@ -596,6 +721,73 @@ $(document).ready(function() {
 			$list.hide();
 		});
 	});
+
+
+	// Funkcija za učitavanje slika sa AJAX-a
+	$(document).on('click', '.add-to-cart-button', function(e) {
+
+		var $button = $(this); // Selektujte dugme na koje je kliknuto
+		var imagePath = $(this).closest('.album-single-item').find('.asi-img').attr('src');
+		var imageTime = $(this).closest('.album-single-item').find('.asi-text-overlay').text().trim();
+		var albumName = $('#album-naziv').val(); // Prikupite naziv albuma
+
+		console.log('AJAX data:', { image_path: imagePath, image_time: imageTime, album_name: albumName });
+
+		$.ajax({
+			url: 'add_to_cart.php',
+			type: 'POST',
+			data: {
+				image_path: imagePath,
+				image_time: imageTime,
+				album_name: albumName // Dodajte naziv albuma u podatke
+			},
+			success: function(response) {
+				console.log('Raw response:', response);
+
+				var result;
+				try {
+					result = response;
+				} catch (e) {
+					console.error('Error parsing JSON response:', e);
+					console.log('Response:', response);
+					var alertContainer = $('#alert-container');
+					var alertMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+						'Invalid JSON response from server.' +
+						'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+						'</div>';
+					alertContainer.html(alertMessage);
+					return;
+				}
+
+				console.log('Parsed response:', result);
+
+				var alertContainer = $('#alert-container');
+				var alertClass = (result.status === 'success') ? 'alert-success' : 'alert-danger';
+				var alertMessage = '<div class="alert ' + alertClass + ' alert-dismissible fade show" role="alert">' +
+					result.message +
+					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+					'</div>';
+
+				alertContainer.html(alertMessage);
+
+				if (result.status === 'success') {
+					$button.addClass('add-to-cart-success');
+					const cart = result.data;
+					sessionStorage.setItem('cart', JSON.stringify(cart));
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('AJAX error:', status, error);
+				var alertContainer = $('#alert-container');
+				var alertMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+					'An error occurred while adding the image to the cart.' +
+					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+					'</div>';
+
+				alertContainer.html(alertMessage);
+			}
+		});
+	});
 });
 
 // =====================================================
@@ -699,71 +891,6 @@ window.onload = init;
 // Styling a select element
 // Source: http://stackoverflow.com/questions/7208786/how-to-style-the-option-of-a-html-select
 // =============================================================================================
-
-// Funkcija za učitavanje slika sa AJAX-a
-
-
-// Add to cart
-$(document).ready(function() {
-	$('.c-link').on('click', function(e) {
-		e.preventDefault();
-
-		var $button = $(this); // Selektujte dugme na koje je kliknuto
-		var imagePath = $(this).closest('.album-single-item').find('.asi-img').attr('src');
-		var imageTime = $(this).closest('.album-single-item').find('.asi-text-overlay').text().trim();
-		var albumName = $('#album-naziv').val(); // Prikupite naziv albuma
-
-		$.ajax({
-			url: 'add_to_cart.php',
-			type: 'POST',
-			data: {
-				image_path: imagePath,
-				image_time: imageTime,
-				album_name: albumName // Dodajte naziv albuma u podatke
-			},
-
-			success: function(response) {
-				console.log('Raw response:', response); // Dodajte ovu liniju
-				var result;
-				try {
-					result = response;
-				} catch (e) {
-					console.error('Error parsing JSON response:', e);
-					console.log('Response:', response);
-					var alertContainer = $('#alert-container');
-					var alertMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-						'Invalid JSON response from server.' +
-						'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-						'</div>';
-					alertContainer.html(alertMessage);
-					return;
-				}
-
-				var alertContainer = $('#alert-container');
-				var alertClass = (result.status === 'success') ? 'alert-success' : 'alert-danger';
-				var alertMessage = '<div class="alert ' + alertClass + ' alert-dismissible fade show" role="alert">' +
-					result.message +
-					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-					'</div>';
-
-				alertContainer.html(alertMessage);
-
-				if (result.status === 'success') {
-					$button.addClass('add-to-cart-success');
-				}
-			},
-			error: function() {
-				var alertContainer = $('#alert-container');
-				var alertMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-					'An error occurred while adding the image to the cart.' +
-					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-					'</div>';
-
-				alertContainer.html(alertMessage);
-			}
-		});
-	});
-});
 
 // ==============================================================================
 // Add to favorite button

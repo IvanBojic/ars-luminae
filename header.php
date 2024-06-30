@@ -8,7 +8,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 // Pročitajte korpu iz sesije
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 $cartItemCount = count($cart); // Izbrojite artikle u korpi
-
+$img_path = array_column($cart, 'path');
 ?>
 
 <!-- ===================
@@ -38,16 +38,10 @@ $cartItemCount = count($cart); // Izbrojite artikle u korpi
 				<div id="nav" class="navbar-header">
                     <!-- off-canvas menu trigger (menu button) -->
                    <!-- <div id="shopping-cart">-->
-                        <a href="page-cart.php" class="cart-link">
-                            <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
-                            <?php if ($cartItemCount > 0) { ?>
-                                <span class="cart-counter">
-                                    <strong>
-                                        <?= $cartItemCount; ?>
-                                    </strong>
-                                </span>
-                            <?php } ?>
-                        </a>
+                    <a href="page-cart.php" class="cart-link">
+                        <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
+                        <span id="cart-counter" class="cart-counter"></span>
+                    </a>
                     <!--</div>-->
                     <div id="mobile-menu">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">

@@ -38,7 +38,7 @@ include 'header.php';
 				===============================
 				* Use class "parallax" to enable parallax effect.
 				-->
-				<div class="page-header-image parallax bg-image" style="background-image: url(assets/img/headings/heading-6.jpg); background-position: 50% 50%;"></div>
+				<div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/headings/heading-blur-1.jpg); background-position: 50% 50%;"></div>
 				<!-- End page header image -->
 
 				<!-- Element cover -->
