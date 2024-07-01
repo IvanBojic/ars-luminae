@@ -200,20 +200,6 @@ include 'header.php';
                                                         </form>
                                                     </li>
                                                     <!-- End show items on page for desktop -->
-
-                                                    <!-- Begin show items on page for mobile -->
-                                                    <?php /* <li class="hide-from-xl" id="mobile-options">
-                                                        <form class="form-inline show-on-page margin-right-15">
-                                                            <div class="form-group">
-                                                                <label for="show-items-mobile">Prikaži:</label>
-                                                                <select id="show-items-mobile" class="select-styled">
-                                                                    <option value="25">25 fotografija</option>
-                                                                    <option value="50">50 fotografija</option>
-                                                                </select>
-                                                            </div>
-                                                        </form>
-                                                    </li> */ ?>
-                                                    <!-- End show items on page for mobile -->
                                                 </ul>
 												<!-- End album attributes -->
 
@@ -232,7 +218,15 @@ include 'header.php';
 									-->
 									<div id="gallery" class="isotope-items-wrap lightgallery">
 										<div class="grid-sizer"></div>
-                                        <?php foreach ($slike_to_display as $slika) { ?>
+                                        <?php foreach ($slike_to_display as $slika) {
+                                            $in_cart = false;
+                                            foreach ($cart as $item) {
+                                                if ($item['path'] === $slika['path']) {
+                                                    $in_cart = true;
+                                                    break;
+                                                }
+                                            }
+                                            ?>
                                             <div class="isotope-item" data-time="<?= date('H', strtotime($slika['created_time'])); ?>">
                                                 <div class="album-single-item">
                                                     <img class="asi-img" src="<?= $slika['path']; ?>" alt="image">
@@ -242,7 +236,7 @@ include 'header.php';
                                                     <div class="asi-cover">
                                                         <div class="asi-info">
                                                             <div class="icon-wrapper">
-                                                                <a class="c-link add-to-cart-button" href="#">
+                                                                <a class="c-link add-to-cart-button <?= $in_cart ? 'add-to-cart-success' : 'test'; ?>" href="#">
                                                                     <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
                                                                 </a>
                                                             </div>
