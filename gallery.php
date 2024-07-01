@@ -8,7 +8,7 @@ $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
 $broj_fotografija = clsFunctions::prebrojSlikeIzFoldera($fajl);
 
 // korpa kroz cookie ide
-$items_per_page = 25; // broj stavki po stranici
+$items_per_page = 50; // broj stavki po stranici
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $total_items = count($slike);
 $total_pages = ceil($total_items / $items_per_page);
@@ -192,7 +192,6 @@ include 'header.php';
                                                                 <!-- on change -->
                                                                 <label for="show-items-desktop">Prikaži:</label>
                                                                 <select id="show-items-desktop" class="select-styled">
-                                                                    <option value="25">25 fotografija</option>
                                                                     <option value="50">50 fotografija</option>
                                                                     <option value="75">75 fotografija</option>
                                                                     <option value="100">100 fotografija</option>

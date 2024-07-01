@@ -412,13 +412,46 @@ $(document).ready(function() {
 		var itemIndex = cart.findIndex(item => item.path === imagePath && item.album === albumName);
 
 		if (itemIndex > -1) {
-			cart.splice(itemIndex, 1);
-			sessionStorage.setItem('cart', JSON.stringify(cart));
-			$button.removeClass('add-to-cart-success');
-			updateCartCounter(cart.length);
-			if (window.location.pathname.includes('/page-cart.php')) {
-				renderCart(cart);
-			}
+			$.ajax({
+				url: 'remove_from_cart.php',
+				type: 'POST',
+				data: {
+					image_path: imagePath,
+					album_name: albumName
+				},
+				success: function(response) {
+					console.log('Server response:', response); // Dodajte ovu liniju za ispis odgovora
+					var result;
+					try {
+						result = typeof response === 'string' ? JSON.parse(response) : response;
+					} catch (e) {
+						console.error('Error parsing JSON response:', e);
+						return;
+					}
+
+					if (result.status === 'success') {
+						cart = result.data;
+
+						if (!Array.isArray(cart)) {
+							console.error("Cart data is not an array:", cart);
+							cart = [];
+						}
+
+						sessionStorage.setItem('cart', JSON.stringify(cart));
+
+						if (window.location.pathname.includes('/page-cart.php')) {
+							renderCart(cart);
+						}
+						updateCartCounter(cart.length);
+						$button.removeClass('add-to-cart-success');
+					} else {
+						console.error('Error removing item from cart:', result.message);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX error:', status, error);
+				}
+			});
 		} else {
 			$.ajax({
 				url: 'add_to_cart.php',
@@ -429,17 +462,18 @@ $(document).ready(function() {
 					album_name: albumName
 				},
 				success: function(response) {
-					if (typeof response === 'string') {
-						try {
-							response = JSON.parse(response);
-						} catch (e) {
-							console.error('Error parsing JSON response:', e);
-							return;
-						}
+					console.log('Server response:', response); // Dodajte ovu liniju za ispis odgovora
+					var result;
+					try {
+						result = typeof response === 'string' ? JSON.parse(response) : response;
+					} catch (e) {
+						console.error('Error parsing JSON response:', e);
+						return;
 					}
 
-					if (response.status === 'success') {
-						const cart = response.data;
+					if (result.status === 'success') {
+						cart = result.data;
+
 						if (Array.isArray(cart)) {
 							sessionStorage.setItem('cart', JSON.stringify(cart));
 							$button.addClass('add-to-cart-success');
@@ -451,7 +485,7 @@ $(document).ready(function() {
 							console.error("Cart data is not an array:", cart);
 						}
 					} else {
-						console.error('Server error:', response.message);
+						console.error('Server error:', result.message);
 					}
 				},
 				error: function(xhr, status, error) {
