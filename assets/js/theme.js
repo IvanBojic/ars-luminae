@@ -390,6 +390,8 @@ $(document).ready(function() {
 
 	// AddToCart
 	$(document).on('click', '.add-to-cart-button', function(e) {
+		e.preventDefault();
+
 		var $button = $(this);
 		var imagePath = $button.closest('.album-single-item').find('.asi-img').attr('src');
 		var imageTime = $button.closest('.album-single-item').find('.asi-text-overlay').text().trim();
@@ -522,59 +524,57 @@ $(document).ready(function() {
 			return;
 		}
 
-		let currentAlbum = ''; // Inicijalizujemo promenljivu za trenutni album
-		let albumList; // Započinje novu listu za album
-
-		cartItems.forEach((item, index) => {
-			if (currentAlbum !== item.album) {
-				if (currentAlbum !== '') {
-					cartContainer.appendChild(albumList);
-				}
-
-				const albumTitle = document.createElement('h3');
-				albumTitle.className = 'album-title';
-				albumTitle.textContent = item.album;
-				cartContainer.appendChild(albumTitle);
-
-				albumList = document.createElement('ul');
-				albumList.className = 'album-list';
-
-				currentAlbum = item.album; // Ažuriramo trenutni album
+		// Group items by album
+		const albums = cartItems.reduce((acc, item) => {
+			if (!acc[item.album]) {
+				acc[item.album] = [];
 			}
+			acc[item.album].push(item);
+			return acc;
+		}, {});
 
-			const albumItem = document.createElement('li');
-			albumItem.className = 'album-item';
+		for (const [albumName, items] of Object.entries(albums)) {
+			const albumTitle = document.createElement('h3');
+			albumTitle.className = 'album-title';
+			albumTitle.textContent = albumName;
+			cartContainer.appendChild(albumTitle);
 
-			const img = document.createElement('img');
-			img.src = item.path;
-			img.alt = 'Image';
-			albumItem.appendChild(img);
+			const albumList = document.createElement('ul');
+			albumList.className = 'album-list';
 
-			const inputContainer = document.createElement('div');
-			inputContainer.className = 'input-container';
+			items.forEach((item) => {
+				const albumItem = document.createElement('li');
+				albumItem.className = 'album-item';
 
-			const spinnerInput = document.createElement('input');
-			spinnerInput.type = 'number';
-			spinnerInput.className = 'spinner-input';
-			spinnerInput.id = 'spinner';
-			spinnerInput.value = 1;
-			spinnerInput.min = 1;
-			spinnerInput.max = 200;
-			inputContainer.appendChild(spinnerInput);
+				const img = document.createElement('img');
+				img.src = item.path;
+				img.alt = 'Image';
+				albumItem.appendChild(img);
 
-			const removeButton = document.createElement('button');
-			removeButton.className = 'remove-item btn btn-danger';
-			removeButton.textContent = 'X';
-			removeButton.onclick = function() {
-				removeFromCart(item.path, item.album);
-			};
-			inputContainer.appendChild(removeButton);
+				const inputContainer = document.createElement('div');
+				inputContainer.className = 'input-container';
 
-			albumItem.appendChild(inputContainer);
-			albumList.appendChild(albumItem);
-		});
+				const spinnerInput = document.createElement('input');
+				spinnerInput.type = 'number';
+				spinnerInput.className = 'spinner-input';
+				spinnerInput.id = 'spinner';
+				spinnerInput.value = 1;
+				spinnerInput.min = 1;
+				spinnerInput.max = 200;
+				inputContainer.appendChild(spinnerInput);
 
-		if (currentAlbum !== '') {
+				const removeButton = document.createElement('button');
+				removeButton.className = 'remove-item btn btn-danger';
+				removeButton.textContent = 'X';
+				removeButton.onclick = function() {
+					removeFromCart(item.path, item.album);
+				};
+				inputContainer.appendChild(removeButton);
+
+				albumItem.appendChild(inputContainer);
+				albumList.appendChild(albumItem);
+			});
+
 			cartContainer.appendChild(albumList);
 		}
 
