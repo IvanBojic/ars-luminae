@@ -243,7 +243,7 @@ include 'header.php';
                                                     <div class="asi-cover">
                                                         <div class="asi-info">
                                                             <div class="icon-wrapper">
-                                                                <a class="c-link add-to-cart-button <?php if(in_array($slika['path'], $img_path)) { echo 'add-to-cart-success'; } ?>" href="#">
+                                                                <a class="c-link add-to-cart-button" href="#">
                                                                     <span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
                                                                 </a>
                                                             </div>

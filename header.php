@@ -8,7 +8,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 // Pročitajte korpu iz sesije
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 $cartItemCount = count($cart); // Izbrojite artikle u korpi
-$img_path = array_column($cart, 'path');
+
 ?>
 
 <!-- ===================

@@ -360,15 +360,123 @@ $(".justified-gallery").justifiedGallery({
 // =====================================================================================
 
 $(document).ready(function() {
+
+	// START CART FUNCTIONS
 	const photoPrice = 200; // Cena jedne fotografije
 
+	document.addEventListener('DOMContentLoaded', (event) => {
+		sessionStorage.removeItem('cart');
+
+		const cartData = sessionStorage.getItem('cart');
+		let cart = [];
+
+		try {
+			cart = JSON.parse(cartData) || [];
+			if (!Array.isArray(cart)) {
+				console.error('Cart data is not an array:', cart);
+				cart = [];
+			}
+		} catch (e) {
+			console.error('Error parsing cart data from sessionStorage:', e);
+			cart = [];
+		}
+
+		updateCartCounter(cart.length); // Initial update of the cart counter
+
+		if (window.location.pathname.includes('/page-cart.php')) {
+			renderCart(cart);
+		}
+	});
+
+	// AddToCart
+	$(document).on('click', '.add-to-cart-button', function(e) {
+		var $button = $(this);
+		var imagePath = $button.closest('.album-single-item').find('.asi-img').attr('src');
+		var imageTime = $button.closest('.album-single-item').find('.asi-text-overlay').text().trim();
+		var albumName = $('#album-naziv').val();
+
+		var cartData = sessionStorage.getItem('cart');
+		var cart = [];
+
+		try {
+			cart = JSON.parse(cartData);
+			if (!Array.isArray(cart)) {
+				console.error('Cart data is not an array:', cart);
+				cart = [];
+			}
+		} catch (e) {
+			console.error('Error parsing cart data from sessionStorage:', e);
+			cart = [];
+		}
+
+		var itemIndex = cart.findIndex(item => item.path === imagePath && item.album === albumName);
+
+		if (itemIndex > -1) {
+			cart.splice(itemIndex, 1);
+			sessionStorage.setItem('cart', JSON.stringify(cart));
+			$button.removeClass('add-to-cart-success');
+			updateCartCounter(cart.length);
+			if (window.location.pathname.includes('/page-cart.php')) {
+				renderCart(cart);
+			}
+		} else {
+			$.ajax({
+				url: 'add_to_cart.php',
+				type: 'POST',
+				data: {
+					image_path: imagePath,
+					image_time: imageTime,
+					album_name: albumName
+				},
+				success: function(response) {
+					if (typeof response === 'string') {
+						try {
+							response = JSON.parse(response);
+						} catch (e) {
+							console.error('Error parsing JSON response:', e);
+							return;
+						}
+					}
+
+					if (response.status === 'success') {
+						const cart = response.data;
+						if (Array.isArray(cart)) {
+							sessionStorage.setItem('cart', JSON.stringify(cart));
+							$button.addClass('add-to-cart-success');
+							updateCartCounter(cart.length);
+							if (window.location.pathname.includes('/page-cart.php')) {
+								renderCart(cart);
+							}
+						} else {
+							console.error("Cart data is not an array:", cart);
+						}
+					} else {
+						console.error('Server error:', response.message);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX error:', status, error);
+				}
+			});
+		}
+	});
+
 	function renderCart(cartItems) {
+		if (!Array.isArray(cartItems)) {
+			console.error('Expected cartItems to be an array, but received:', cartItems);
+			return;
+		}
 		console.log("Rendering cart with items:", cartItems);
 		const cartContainer = document.getElementById('cart-container');
 		const cartSummary = document.getElementById('cart-summary');
+
+		if (!cartContainer || !cartSummary) {
+			console.error('Cart container or cart summary element not found');
+			return;
+		}
+
 		cartContainer.innerHTML = ''; // Clear existing content
 
-		// Ako je korpa prazna, prikazujemo sliku prazne korpe
 		if (cartItems.length === 0) {
 			const emptyCartImg = document.createElement('img');
 			emptyCartImg.className = 'empty-cart';
@@ -384,27 +492,22 @@ $(document).ready(function() {
 		let albumList; // Započinje novu listu za album
 
 		cartItems.forEach((item, index) => {
-			// Proveravamo da li je trenutni album različit od albuma u trenutnom item-u
 			if (currentAlbum !== item.album) {
-				// Ako nije prvi put da se ulazi u petlju, zatvaramo prethodnu listu
 				if (currentAlbum !== '') {
 					cartContainer.appendChild(albumList);
 				}
 
-				// Prikazujemo naziv albuma
 				const albumTitle = document.createElement('h3');
 				albumTitle.className = 'album-title';
 				albumTitle.textContent = item.album;
 				cartContainer.appendChild(albumTitle);
 
-				// Započinjemo novu listu sa slikama
 				albumList = document.createElement('ul');
 				albumList.className = 'album-list';
 
 				currentAlbum = item.album; // Ažuriramo trenutni album
 			}
 
-			// Kreiranje list itema za sliku
 			const albumItem = document.createElement('li');
 			albumItem.className = 'album-item';
 
@@ -413,11 +516,9 @@ $(document).ready(function() {
 			img.alt = 'Image';
 			albumItem.appendChild(img);
 
-			// Kreiranje kontejnera za spinner i dugme za uklanjanje
 			const inputContainer = document.createElement('div');
 			inputContainer.className = 'input-container';
 
-			// Kreiranje spinnera za odabir broja fotografija
 			const spinnerInput = document.createElement('input');
 			spinnerInput.type = 'number';
 			spinnerInput.className = 'spinner-input';
@@ -427,12 +528,11 @@ $(document).ready(function() {
 			spinnerInput.max = 200;
 			inputContainer.appendChild(spinnerInput);
 
-			// Kreiranje dugmeta za uklanjanje iz korpe
 			const removeButton = document.createElement('button');
 			removeButton.className = 'remove-item btn btn-danger';
 			removeButton.textContent = 'X';
 			removeButton.onclick = function() {
-				removeFromCart(index);
+				removeFromCart(item.path, item.album);
 			};
 			inputContainer.appendChild(removeButton);
 
@@ -440,35 +540,65 @@ $(document).ready(function() {
 			albumList.appendChild(albumItem);
 		});
 
-		// Na kraju petlje, zatvaramo poslednju listu ako postoji neki album koji nije zatvoren
 		if (currentAlbum !== '') {
 			cartContainer.appendChild(albumList);
 		}
 
-		// Ažuriramo i prikazujemo rezime korpe
 		const cartItemCount = cartItems.length;
 		const totalPrice = cartItemCount * photoPrice;
 		cartSummary.innerHTML = `
-                <div class="row">
-                    <div class="col-lg-4">
-                        <strong>Cena jedne fotografije:</strong> ${photoPrice}.00RSD<br>
-                        <strong>Broj poručenih fotografija:</strong> ${cartItemCount}<br>
-                        <strong>Ukupna cena fotografija:</strong> ${totalPrice}.00RSD
-                    </div>
-                </div>
-            `;
+        <div class="row">
+            <div class="col-lg-4">
+                <strong>Cena jedne fotografije:</strong> ${photoPrice}.00RSD<br>
+                <strong>Broj poručenih fotografija:</strong> ${cartItemCount}<br>
+                <strong>Ukupna cena fotografija:</strong> ${totalPrice}.00RSD
+            </div>
+        </div>
+    `;
 
 		updateCartCounter(cartItemCount); // Update cart counter after rendering cart
 	}
 
-	function removeFromCart(index) {
-		const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-		if (index > -1) {
-			cart.splice(index, 1);
-		}
-		sessionStorage.setItem('cart', JSON.stringify(cart));
-		renderCart(cart);
-		updateCartCounter(cart.length); // Update cart counter after removing item
+	function removeFromCart(imagePath, albumName) {
+		$.ajax({
+			url: 'remove_from_cart.php',
+			type: 'POST',
+			data: {
+				image_path: imagePath,
+				album_name: albumName
+			},
+			success: function(response) {
+				console.log('Server response:', response); // Dodajte ovu liniju
+				var result;
+				try {
+					result = typeof response === 'string' ? JSON.parse(response) : response;
+				} catch (e) {
+					console.error('Error parsing JSON response:', e);
+					return;
+				}
+
+				if (result.status === 'success') {
+					let cart = result.data;
+
+					if (!Array.isArray(cart)) {
+						console.error("Cart data is not an array:", cart);
+						cart = [];
+					}
+
+					sessionStorage.setItem('cart', JSON.stringify(cart));
+
+					if (window.location.pathname.includes('/page-cart.php')) {
+						renderCart(cart);
+					}
+					updateCartCounter(cart.length);
+				} else {
+					console.error('Error removing item from cart:', result.message);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('AJAX error:', status, error);
+			}
+		});
 	}
 
 	function updateCartCounter(count) {
@@ -476,13 +606,15 @@ $(document).ready(function() {
 		cartCounter.textContent = count > 0 ? count : '';
 	}
 
-	const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-	console.log("Initial cart:", cart);
-	updateCartCounter(cart.length); // Initial update of the cart counter
+	const initialCart = JSON.parse(sessionStorage.getItem('cart')) || [];
+	console.log("Initial cart:", initialCart);
+	updateCartCounter(initialCart.length);
 
 	if (window.location.pathname.includes('/page-cart.php')) {
-		renderCart(cart);
+		renderCart(initialCart);
 	}
+
+// END CART FUNCTIONS
 
 	function loadImages(time, album, page, itemsPerPage) {
 		$.ajax({
@@ -719,73 +851,6 @@ $(document).ready(function() {
 		$(document).click(function () {
 			$styledSelect.removeClass('active');
 			$list.hide();
-		});
-	});
-
-
-	// Funkcija za učitavanje slika sa AJAX-a
-	$(document).on('click', '.add-to-cart-button', function(e) {
-
-		var $button = $(this); // Selektujte dugme na koje je kliknuto
-		var imagePath = $(this).closest('.album-single-item').find('.asi-img').attr('src');
-		var imageTime = $(this).closest('.album-single-item').find('.asi-text-overlay').text().trim();
-		var albumName = $('#album-naziv').val(); // Prikupite naziv albuma
-
-		console.log('AJAX data:', { image_path: imagePath, image_time: imageTime, album_name: albumName });
-
-		$.ajax({
-			url: 'add_to_cart.php',
-			type: 'POST',
-			data: {
-				image_path: imagePath,
-				image_time: imageTime,
-				album_name: albumName // Dodajte naziv albuma u podatke
-			},
-			success: function(response) {
-				console.log('Raw response:', response);
-
-				var result;
-				try {
-					result = response;
-				} catch (e) {
-					console.error('Error parsing JSON response:', e);
-					console.log('Response:', response);
-					var alertContainer = $('#alert-container');
-					var alertMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-						'Invalid JSON response from server.' +
-						'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-						'</div>';
-					alertContainer.html(alertMessage);
-					return;
-				}
-
-				console.log('Parsed response:', result);
-
-				var alertContainer = $('#alert-container');
-				var alertClass = (result.status === 'success') ? 'alert-success' : 'alert-danger';
-				var alertMessage = '<div class="alert ' + alertClass + ' alert-dismissible fade show" role="alert">' +
-					result.message +
-					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-					'</div>';
-
-				alertContainer.html(alertMessage);
-
-				if (result.status === 'success') {
-					$button.addClass('add-to-cart-success');
-					const cart = result.data;
-					sessionStorage.setItem('cart', JSON.stringify(cart));
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('AJAX error:', status, error);
-				var alertContainer = $('#alert-container');
-				var alertMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-					'An error occurred while adding the image to the cart.' +
-					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-					'</div>';
-
-				alertContainer.html(alertMessage);
-			}
 		});
 	});
 });
