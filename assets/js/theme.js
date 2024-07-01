@@ -391,11 +391,11 @@ $(document).ready(function() {
 	// AddToCart
 	$(document).on('click', '.add-to-cart-button', function(e) {
 		e.preventDefault();
-
 		var $button = $(this);
 		var imagePath = $button.closest('.album-single-item').find('.asi-img').attr('src');
 		var imageTime = $button.closest('.album-single-item').find('.asi-text-overlay').text().trim();
 		var albumName = $('#album-naziv').val();
+		var quantity = 1; // Default quantity
 
 		var cartData = sessionStorage.getItem('cart');
 		var cart = [];
@@ -414,68 +414,36 @@ $(document).ready(function() {
 		var itemIndex = cart.findIndex(item => item.path === imagePath && item.album === albumName);
 
 		if (itemIndex > -1) {
-			$.ajax({
-				url: 'remove_from_cart.php',
-				type: 'POST',
-				data: {
-					image_path: imagePath,
-					album_name: albumName
-				},
-				success: function(response) {
-					console.log('Server response:', response); // Dodajte ovu liniju za ispis odgovora
-					var result;
-					try {
-						result = typeof response === 'string' ? JSON.parse(response) : response;
-					} catch (e) {
-						console.error('Error parsing JSON response:', e);
-						return;
-					}
-
-					if (result.status === 'success') {
-						cart = result.data;
-
-						if (!Array.isArray(cart)) {
-							console.error("Cart data is not an array:", cart);
-							cart = [];
-						}
-
-						sessionStorage.setItem('cart', JSON.stringify(cart));
-
-						if (window.location.pathname.includes('/page-cart.php')) {
-							renderCart(cart);
-						}
-						updateCartCounter(cart.length);
-						$button.removeClass('add-to-cart-success');
-					} else {
-						console.error('Error removing item from cart:', result.message);
-					}
-				},
-				error: function(xhr, status, error) {
-					console.error('AJAX error:', status, error);
-				}
-			});
+			cart.splice(itemIndex, 1); // Remove item if it exists
+			sessionStorage.setItem('cart', JSON.stringify(cart));
+			$button.removeClass('add-to-cart-success');
+			updateCartCounter(cart.length);
+			if (window.location.pathname.includes('/page-cart.php')) {
+				renderCart(cart);
+			}
 		} else {
+			// Add new item
 			$.ajax({
 				url: 'add_to_cart.php',
 				type: 'POST',
 				data: {
 					image_path: imagePath,
 					image_time: imageTime,
-					album_name: albumName
+					album_name: albumName,
+					quantity: quantity
 				},
 				success: function(response) {
-					console.log('Server response:', response); // Dodajte ovu liniju za ispis odgovora
-					var result;
-					try {
-						result = typeof response === 'string' ? JSON.parse(response) : response;
-					} catch (e) {
-						console.error('Error parsing JSON response:', e);
-						return;
+					if (typeof response === 'string') {
+						try {
+							response = JSON.parse(response);
+						} catch (e) {
+							console.error('Error parsing JSON response:', e);
+							return;
+						}
 					}
 
-					if (result.status === 'success') {
-						cart = result.data;
-
+					if (response.status === 'success') {
+						const cart = response.data;
 						if (Array.isArray(cart)) {
 							sessionStorage.setItem('cart', JSON.stringify(cart));
 							$button.addClass('add-to-cart-success');
@@ -487,7 +455,7 @@ $(document).ready(function() {
 							console.error("Cart data is not an array:", cart);
 						}
 					} else {
-						console.error('Server error:', result.message);
+						console.error('Server error:', response.message);
 					}
 				},
 				error: function(xhr, status, error) {
@@ -533,6 +501,8 @@ $(document).ready(function() {
 			return acc;
 		}, {});
 
+		let totalItemCount = 0;
+
 		for (const [albumName, items] of Object.entries(albums)) {
 			const albumTitle = document.createElement('h3');
 			albumTitle.className = 'album-title';
@@ -558,10 +528,15 @@ $(document).ready(function() {
 				spinnerInput.type = 'number';
 				spinnerInput.className = 'spinner-input';
 				spinnerInput.id = 'spinner';
-				spinnerInput.value = 1;
+				spinnerInput.value = item.quantity || 1;
 				spinnerInput.min = 1;
 				spinnerInput.max = 200;
 				inputContainer.appendChild(spinnerInput);
+
+				spinnerInput.addEventListener('input', function() {
+					updateTotalPrice();
+					updateQuantityInSession(item.path, item.album, spinnerInput.value);
+				});
 
 				const removeButton = document.createElement('button');
 				removeButton.className = 'remove-item btn btn-danger';
@@ -578,22 +553,67 @@ $(document).ready(function() {
 			cartContainer.appendChild(albumList);
 		}
 
-		const cartItemCount = cartItems.length;
-		const totalPrice = cartItemCount * photoPrice;
-		cartSummary.innerHTML = `
-        <div class="row">
-            <div class="col-lg-4">
-                <strong>Cena jedne fotografije:</strong> ${photoPrice}.00RSD<br>
-                <strong>Broj poručenih fotografija:</strong> ${cartItemCount}<br>
-                <strong>Ukupna cena fotografija:</strong> ${totalPrice}.00RSD
+		function updateTotalPrice() {
+			const spinnerInputs = document.querySelectorAll('.spinner-input');
+			totalItemCount = Array.from(spinnerInputs).reduce((total, input) => total + parseInt(input.value, 10), 0);
+			const totalPrice = totalItemCount * photoPrice;
+			cartSummary.innerHTML = `
+            <div class="row">
+                <div class="col-lg-4">
+                    <strong>Cena jedne fotografije:</strong> ${photoPrice}.00RSD<br>
+                    <strong>Broj poručenih fotografija:</strong> ${totalItemCount}<br>
+                    <strong>Ukupna cena fotografija:</strong> ${totalPrice}.00RSD
+                </div>
             </div>
-        </div>
-    `;
+        `;
+		}
 
-		updateCartCounter(cartItemCount); // Update cart counter after rendering cart
+		function updateQuantityInSession(imagePath, albumName, quantity) {
+			const cartData = sessionStorage.getItem('cart');
+			let cart = [];
+
+			try {
+				cart = JSON.parse(cartData);
+				if (!Array.isArray(cart)) {
+					console.error('Cart data is not an array:', cart);
+					cart = [];
+				}
+			} catch (e) {
+				console.error('Error parsing cart data from sessionStorage:', e);
+				cart = [];
+			}
+
+			const itemIndex = cart.findIndex(item => item.path === imagePath && item.album === albumName);
+			if (itemIndex > -1) {
+				cart[itemIndex].quantity = parseInt(quantity, 10);
+				sessionStorage.setItem('cart', JSON.stringify(cart));
+			}
+		}
+
+		updateTotalPrice(); // Update total price after rendering cart
 	}
 
 	function removeFromCart(imagePath, albumName) {
+		// Update local cart session first
+		var cartData = sessionStorage.getItem('cart');
+		var cart = [];
+
+		try {
+			cart = JSON.parse(cartData);
+			if (!Array.isArray(cart)) {
+				console.error('Cart data is not an array:', cart);
+				cart = [];
+			}
+		} catch (e) {
+			console.error('Error parsing cart data from sessionStorage:', e);
+			cart = [];
+		}
+
+		// Filter out the item to be removed
+		var updatedCart = cart.filter(item => !(item.path === imagePath && item.album === albumName));
+		sessionStorage.setItem('cart', JSON.stringify(updatedCart));
+
+		// Send AJAX request to server to update backend
 		$.ajax({
 			url: 'remove_from_cart.php',
 			type: 'POST',
@@ -602,7 +622,7 @@ $(document).ready(function() {
 				album_name: albumName
 			},
 			success: function(response) {
-				console.log('Server response:', response); // Dodajte ovu liniju
+				console.log('Server response:', response);
 				var result;
 				try {
 					result = typeof response === 'string' ? JSON.parse(response) : response;
@@ -612,19 +632,19 @@ $(document).ready(function() {
 				}
 
 				if (result.status === 'success') {
-					let cart = result.data;
+					let serverCart = result.data;
 
-					if (!Array.isArray(cart)) {
-						console.error("Cart data is not an array:", cart);
-						cart = [];
+					if (!Array.isArray(serverCart)) {
+						console.error("Server cart data is not an array:", serverCart);
+						serverCart = [];
 					}
 
-					sessionStorage.setItem('cart', JSON.stringify(cart));
+					sessionStorage.setItem('cart', JSON.stringify(serverCart));
 
 					if (window.location.pathname.includes('/page-cart.php')) {
-						renderCart(cart);
+						renderCart(serverCart);
 					}
-					updateCartCounter(cart.length);
+					updateCartCounter(serverCart.length);
 				} else {
 					console.error('Error removing item from cart:', result.message);
 				}
