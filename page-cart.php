@@ -123,41 +123,46 @@ include 'header.php';
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="Name" placeholder="Ime i prezime" required="">
+                                                <input type="text" class="form-control" name="Name" placeholder="Ime i prezime *" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <input type="email" class="form-control" name="Email" placeholder="Email" required="">
+                                                <input type="email" class="form-control" name="Email" placeholder="Email *" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <input type="tel" class="form-control" name="Phone" placeholder="Kontakt telefon" required="">
+                                                <input type="tel" class="form-control" name="Phone" placeholder="Kontakt telefon *" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="Address" placeholder="Adresa za dostavu" required="">
+                                                <input type="text" class="form-control" name="Address" placeholder="Adresa za dostavu *" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="Subject" placeholder="Naslov" required="">
+                                                <input type="text" class="form-control" name="Zip" placeholder="Poštanski broj *" required pattern="\d{5}" title="Unesite tačno 5 cifara">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="City" placeholder="Grad *" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <textarea class="form-control" name="Message" rows="8" placeholder="Vaša poruka" required=""></textarea>
+                                                <textarea class="form-control" name="Message" rows="8" placeholder="Vaša poruka"></textarea>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <label for="captcha">Koliko je 6 + 3?</label>
+                                            <label for="captcha">Koliko je 6 + 3? *</label>
                                             <input type="text" id="captcha" name="captcha" required>
                                             <input type="hidden" name="captcha_result" value="9">
                                         </div>

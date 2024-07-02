@@ -414,13 +414,46 @@ $(document).ready(function() {
 		var itemIndex = cart.findIndex(item => item.path === imagePath && item.album === albumName);
 
 		if (itemIndex > -1) {
-			cart.splice(itemIndex, 1); // Remove item if it exists
-			sessionStorage.setItem('cart', JSON.stringify(cart));
-			$button.removeClass('add-to-cart-success');
-			updateCartCounter(cart.length);
-			if (window.location.pathname.includes('/page-cart.php')) {
-				renderCart(cart);
-			}
+            $.ajax({
+                url: 'remove_from_cart.php',
+                type: 'POST',
+                data: {
+                    image_path: imagePath,
+                    album_name: albumName
+                },
+                success: function(response) {
+                    console.log('Server response:', response);
+                    var result;
+                    try {
+                        result = typeof response === 'string' ? JSON.parse(response) : response;
+                    } catch (e) {
+                        console.error('Error parsing JSON response:', e);
+                        return;
+                    }
+
+                    if (result.status === 'success') {
+                        let serverCart = result.data;
+
+                        if (!Array.isArray(serverCart)) {
+                            console.error("Server cart data is not an array:", serverCart);
+                            serverCart = [];
+                        }
+
+                        sessionStorage.setItem('cart', JSON.stringify(serverCart));
+
+                        if (window.location.pathname.includes('/page-cart.php')) {
+                            renderCart(serverCart);
+                        }
+                        $button.removeClass('add-to-cart-success');
+                        updateCartCounter(serverCart.length);
+                    } else {
+                        console.error('Error removing item from cart:', result.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', status, error);
+                }
+            });
 		} else {
 			// Add new item
 			$.ajax({
@@ -701,6 +734,8 @@ $(document).ready(function() {
 						}
 
 						var createdTime = new Date('1970-01-01T' + slika.created_time + 'Z').getHours();
+                        var inCartClass = slika.in_cart ? 'add-to-cart-success' : '';
+
 						var html = `
                             <div class="isotope-item" data-time="${createdTime}">
                                 <div class="album-single-item">
@@ -711,7 +746,7 @@ $(document).ready(function() {
                                     <div class="asi-cover">
                                         <div class="asi-info">
 											<div class="icon-wrapper">
-												<a class="c-link add-to-cart-button" href="#">
+												<a class="c-link add-to-cart-button ${inCartClass}" href="#">
 													<span class="c-icon"><i class="fas fa-shopping-cart"></i></span>
 												</a>
 											</div>

@@ -11,6 +11,8 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
     exit;
 });
 
+session_start();
+
 include_once 'components/php_composer.php'; // Uključite vašu PHP klasu
 
 if (isset($_POST['time']) && isset($_POST['album'])) {
@@ -20,7 +22,7 @@ if (isset($_POST['time']) && isset($_POST['album'])) {
 
     $slike = clsFunctions::procitajSlikeIzFoldera($folder, $time);
 
-    $items_per_page = isset($_POST['items_per_page']) ? intval($_POST['items_per_page']) : 25; // Koristite isti ključ kao u JavaScript kodu
+    $items_per_page = isset($_POST['items_per_page']) ? intval($_POST['items_per_page']) : 50; // Koristite isti ključ kao u JavaScript kodu
     $current_page = isset($_POST['page']) ? intval($_POST['page']) : 1;
     $total_items = count($slike);
     $total_pages = ceil($total_items / $items_per_page);
@@ -28,6 +30,18 @@ if (isset($_POST['time']) && isset($_POST['album'])) {
     // Filtrirajte slike za trenutnu stranicu
     $start_index = ($current_page - 1) * $items_per_page;
     $filtered_slike = array_slice($slike, $start_index, $items_per_page);
+
+    $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+
+    foreach ($filtered_slike as &$slika) {
+        $slika['in_cart'] = false;
+        foreach ($cart as $item) {
+            if ($item['path'] === $slika['path']) {
+                $slika['in_cart'] = true;
+                break;
+            }
+        }
+    }
 
     function render_pagination($current_page, $total_pages, $album_naziv) {
         $max_pages_to_show = 5;
