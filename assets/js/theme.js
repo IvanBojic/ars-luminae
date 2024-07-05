@@ -361,6 +361,71 @@ $(".justified-gallery").justifiedGallery({
 
 $(document).ready(function() {
 
+	// START SEND MAIL
+	$(document).ready(function() {
+		$('#cart-form').submit(function(e) {
+			e.preventDefault();
+
+			var formData = $(this).serializeArray();
+			var cartData = sessionStorage.getItem('cart') || '[]';
+			formData.push({ name: 'cartData', value: cartData });
+
+			$.ajax({
+				url: 'send_email.php',
+				type: 'POST',
+				data: formData,
+				success: function(response) {
+					alert('Poruka je uspešno poslata.');
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX error:', status, error);
+					alert('Došlo je do greške prilikom slanja poruke.');
+				}
+			});
+		});
+	});
+
+
+	function renderCartForMail() {
+		var cartData = sessionStorage.getItem('cart');
+		var cart = [];
+
+		try {
+			cart = JSON.parse(cartData);
+			if (!Array.isArray(cart)) {
+				console.error('Cart data is not an array:', cart);
+				cart = [];
+			}
+		} catch (e) {
+			console.error('Error parsing cart data from sessionStorage:', e);
+			cart = [];
+		}
+
+		var cartTable = $('#cart-table-body');
+		cartTable.empty(); // Očistite prethodni sadržaj
+
+		cart.forEach(function(item) {
+			var row = `<tr>
+                    <td><img src="${item.path}" alt="${item.album}" width="50"></td>
+                    <td>${item.album}</td>
+                    <td>1</td>
+                </tr>`;
+			cartTable.append(row);
+		});
+
+		// Dodajte deo za cenu
+		$('#total-price').text(calculateTotalForMail(cart));
+	}
+
+	function calculateTotalForMail(cart) {
+		// Pretpostavimo da je cena svakog artikla 10
+		var total = cart.length * 10;
+		return total + ' RSD';
+	}
+
+	// END SEND MAIL
+
+
 	// START CART FUNCTIONS
 	const photoPrice = 200; // Cena jedne fotografije
 
