@@ -6112,3 +6112,7 @@ ul.album-list {
 	top: -10px;
 	right: -5px;
 }
+.form-container .send-success {
+	align-content: center;
+	text-align: center;
+}

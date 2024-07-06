@@ -228,6 +228,7 @@ include 'header.php';
                                             }
                                             ?>
                                             <div class="isotope-item" data-time="<?= date('H', strtotime($slika['created_time'])); ?>">
+                                                <input type="hidden" class="slika-naziv" value="<?php echo htmlspecialchars(isset($slika['title']) ? $slika['title'] : ''); ?>">
                                                 <div class="album-single-item">
                                                     <img class="asi-img" src="<?= $slika['path']; ?>" alt="image">
                                                     <div class="asi-text-overlay">

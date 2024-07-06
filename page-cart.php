@@ -101,7 +101,7 @@ include 'header.php';
                 <div class="col-md-12">
 
                     <!-- Begin content wrap -->
-                    <div class="content-wrap min-height-600">
+                    <div class="content-wrap min-height-600 form-container">
                         <div class="row margin-bottom-40">
                             <div class="col-lg-4">
                                 <strong>UNESITE VAŠE PODATKE</strong>

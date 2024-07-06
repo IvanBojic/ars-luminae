@@ -375,7 +375,13 @@ $(document).ready(function() {
 				type: 'POST',
 				data: formData,
 				success: function(response) {
-					alert('Poruka je uspešno poslata.');
+					// Isprazni kontejner sa formom
+					document.querySelector('.form-container').innerHTML = '<h2 class="send-success">Poruka je uspešno poslata.</h2>';
+
+					// Isprazni sesiju sa podacima iz korpe
+					sessionStorage.removeItem('cart');
+
+					// TODO: isprazniti korpu iz sesije i osveziti prikaz
 				},
 				error: function(xhr, status, error) {
 					console.error('AJAX error:', status, error);
@@ -460,6 +466,7 @@ $(document).ready(function() {
 		var imagePath = $button.closest('.album-single-item').find('.asi-img').attr('src');
 		var imageTime = $button.closest('.album-single-item').find('.asi-text-overlay').text().trim();
 		var albumName = $('#album-naziv').val();
+		var photoName = $button.closest('.isotope-item').find('.slika-naziv').val(); // Use class instead of ID
 		var quantity = 1; // Default quantity
 
 		var cartData = sessionStorage.getItem('cart');
@@ -479,46 +486,46 @@ $(document).ready(function() {
 		var itemIndex = cart.findIndex(item => item.path === imagePath && item.album === albumName);
 
 		if (itemIndex > -1) {
-            $.ajax({
-                url: 'remove_from_cart.php',
-                type: 'POST',
-                data: {
-                    image_path: imagePath,
-                    album_name: albumName
-                },
-                success: function(response) {
-                    console.log('Server response:', response);
-                    var result;
-                    try {
-                        result = typeof response === 'string' ? JSON.parse(response) : response;
-                    } catch (e) {
-                        console.error('Error parsing JSON response:', e);
-                        return;
-                    }
+			$.ajax({
+				url: 'remove_from_cart.php',
+				type: 'POST',
+				data: {
+					image_path: imagePath,
+					album_name: albumName
+				},
+				success: function(response) {
+					console.log('Server response:', response);
+					var result;
+					try {
+						result = typeof response === 'string' ? JSON.parse(response) : response;
+					} catch (e) {
+						console.error('Error parsing JSON response:', e);
+						return;
+					}
 
-                    if (result.status === 'success') {
-                        let serverCart = result.data;
+					if (result.status === 'success') {
+						let serverCart = result.data;
 
-                        if (!Array.isArray(serverCart)) {
-                            console.error("Server cart data is not an array:", serverCart);
-                            serverCart = [];
-                        }
+						if (!Array.isArray(serverCart)) {
+							console.error("Server cart data is not an array:", serverCart);
+							serverCart = [];
+						}
 
-                        sessionStorage.setItem('cart', JSON.stringify(serverCart));
+						sessionStorage.setItem('cart', JSON.stringify(serverCart));
 
-                        if (window.location.pathname.includes('/page-cart.php')) {
-                            renderCart(serverCart);
-                        }
-                        $button.removeClass('add-to-cart-success');
-                        updateCartCounter(serverCart.length);
-                    } else {
-                        console.error('Error removing item from cart:', result.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX error:', status, error);
-                }
-            });
+						if (window.location.pathname.includes('/page-cart.php')) {
+							renderCart(serverCart);
+						}
+						$button.removeClass('add-to-cart-success');
+						updateCartCounter(serverCart.length);
+					} else {
+						console.error('Error removing item from cart:', result.message);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX error:', status, error);
+				}
+			});
 		} else {
 			// Add new item
 			$.ajax({
@@ -528,6 +535,7 @@ $(document).ready(function() {
 					image_path: imagePath,
 					image_time: imageTime,
 					album_name: albumName,
+					photo_name: photoName,
 					quantity: quantity
 				},
 				success: function(response) {
@@ -803,6 +811,7 @@ $(document).ready(function() {
 
 						var html = `
                             <div class="isotope-item" data-time="${createdTime}">
+								<input type="hidden" class="slika-naziv" value="${slika.title}">
                                 <div class="album-single-item">
                                     <img class="asi-img" src="${slika.path}" alt="image">
                                     <div class="asi-text-overlay">

@@ -7,12 +7,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $imagePath = $_POST['image_path'];
         $imageTime = $_POST['image_time'];
         $albumName = $_POST['album_name'];
+        $photoName = $_POST['photo_name'];
         $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
 
         $newItem = [
             'path' => $imagePath,
             'time' => $imageTime,
             'album' => isset($albumName) && $albumName ? $albumName : 'Nepoznat album',
+            'title' => isset($photoName) && $photoName ? $photoName : 'Bez naziva',
             'quantity' => $quantity
         ];
 

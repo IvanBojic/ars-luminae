@@ -29,13 +29,15 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 // Kreirajte telo mejla sa informacijama iz korpe u HTML tabelarnom formatu
 $cartDetails = "<table border='1' cellpadding='5' cellspacing='0' width='100%'>";
-$cartDetails .= "<thead><tr><th>Slika</th><th>Album</th><th>Količina</th></tr></thead>";
+$cartDetails .= "<thead><tr><th>Slika</th><th>Album</th><th>Naziv</th><th>Količina</th></tr></thead>";
 $cartDetails .= "<tbody>";
 
 foreach ($cartItems as $item) {
+    $image_url = "https://bojovilinno.com/" . htmlspecialchars($item['path'], ENT_QUOTES, 'UTF-8');
     $cartDetails .= "<tr>";
-    $cartDetails .= "<td><a href='https://bojovilinno.com/" . htmlspecialchars($item['path'], ENT_QUOTES, 'UTF-8') . "' target='_blank'><img src='" . htmlspecialchars($item['path'], ENT_QUOTES, 'UTF-8') . "' alt='" . htmlspecialchars($item['album'], ENT_QUOTES, 'UTF-8') . "' width='100'></a></td>";
+    $cartDetails .= "<td><a href='$image_url' target='_blank'><img src='$image_url' alt='" . htmlspecialchars($item['album'], ENT_QUOTES, 'UTF-8') . "' width='100'></a></td>";
     $cartDetails .= "<td>" . htmlspecialchars($item['album'], ENT_QUOTES, 'UTF-8') . "</td>";
+    $cartDetails .= "<td>" . htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') . "</td>";
     $cartDetails .= "<td>1</td>"; // Pretpostavimo da je količina uvek 1
     $cartDetails .= "</tr>";
 }
@@ -70,28 +72,29 @@ $mail = new PHPMailer(true);
 
 try {
     // Podešavanja servera
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com'; // Postavite odgovarajući SMTP server
-    $mail->SMTPAuth = true;
-    $mail->Username = 'ivan.bojic95@gmail.com'; // Vaša SMTP email adresa
-    $mail->Password = 'dankabojic'; // Vaša SMTP lozinka
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->SMTPDebug = 2; // 1 = errors and messages, 2 = messages only
+    $mail->isMail();
+    /* $mail->Host = 'smtp.gmail.com';              // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'ivan.bojic95@gmail.com';                 // SMTP username
+    $mail->Password = 'dankabojic';                           // SMTP password
+    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 587;  */
 
     // Primaoci
-    $mail->setFrom($email, $name);
-    $mail->addAddress('ivan.bojic95@gmail.com', 'Admin');
+    $mail->setFrom('ivan.bojic@bojovilinno.com', 'Admin');
+    $mail->addAddress($email, $name);
 
     // Sadržaj
     $mail->isHTML(true); // Postavite na true za HTML sadržaj
     $mail->Subject = 'Poruka sa sajta duskolukovic.com';
     $mail->Body    = $mailBody;
     $mail->CharSet = 'UTF-8'; // Postavite UTF-8 kodiranje
-print_r($mail->Body);
-die();
+
     $mail->send();
     echo 'Poruka je uspešno poslata.';
 } catch (Exception $e) {
     echo "Poruka nije poslata. Greška: {$mail->ErrorInfo}";
 }
+
 ?>
