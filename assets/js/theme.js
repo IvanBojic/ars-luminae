@@ -371,17 +371,51 @@ $(document).ready(function() {
 			formData.push({ name: 'cartData', value: cartData });
 
 			$.ajax({
-				url: 'send_email.php',
+				url: 'ajax/send_email.php',
 				type: 'POST',
 				data: formData,
 				success: function(response) {
-					// Isprazni kontejner sa formom
-					document.querySelector('.form-container').innerHTML = '<h2 class="send-success">Poruka je uspešno poslata.</h2>';
+					console.log(response);
+					// Proverite da li je odgovor JSON objekat
+					try {
+						response = typeof response === 'string' ? JSON.parse(response) : response;
+					} catch (e) {
+						console.error('Error parsing response from send_email.php:', e);
+						return;
+					}
 
-					// Isprazni sesiju sa podacima iz korpe
-					sessionStorage.removeItem('cart');
+					if (response.status === 'success') {
+						// Isprazni kontejner sa formom
+						document.querySelector('.form-container').innerHTML = '<h2 class="send-success">Poruka je uspešno poslata.</h2>';
 
-					// TODO: isprazniti korpu iz sesije i osveziti prikaz
+						// Isprazni sesiju sa podacima iz korpe
+						sessionStorage.removeItem('cart');
+
+						// AJAX zahtev za čišćenje sesije na serveru
+						$.ajax({
+							url: 'ajax/clear_cart.php',
+							type: 'POST',
+							success: function(response) {
+								try {
+									response = typeof response === 'string' ? JSON.parse(response) : response;
+									if (response.status === 'success') {
+										renderCart([]); // Renderujte praznu korpu
+										updateCartCounter(0); // Ažurirajte brojač korpe
+									} else {
+										console.error('Failed to clear cart on server:', response.message);
+									}
+								} catch (e) {
+									console.error('Error parsing response from clear_cart.php:', e);
+								}
+							},
+							error: function(xhr, status, error) {
+								console.error('AJAX error:', status, error);
+							}
+						});
+					} else {
+						// Prikaz poruke o grešci
+						alert(response.message || 'Došlo je do greške prilikom slanja poruke.');
+					}
 				},
 				error: function(xhr, status, error) {
 					console.error('AJAX error:', status, error);
@@ -390,7 +424,6 @@ $(document).ready(function() {
 			});
 		});
 	});
-
 
 	function renderCartForMail() {
 		var cartData = sessionStorage.getItem('cart');
@@ -487,7 +520,7 @@ $(document).ready(function() {
 
 		if (itemIndex > -1) {
 			$.ajax({
-				url: 'remove_from_cart.php',
+				url: 'ajax/remove_from_cart.php',
 				type: 'POST',
 				data: {
 					image_path: imagePath,
@@ -529,7 +562,7 @@ $(document).ready(function() {
 		} else {
 			// Add new item
 			$.ajax({
-				url: 'add_to_cart.php',
+				url: 'ajax/add_to_cart.php',
 				type: 'POST',
 				data: {
 					image_path: imagePath,
@@ -721,7 +754,7 @@ $(document).ready(function() {
 
 		// Send AJAX request to server to update backend
 		$.ajax({
-			url: 'remove_from_cart.php',
+			url: 'ajax/remove_from_cart.php',
 			type: 'POST',
 			data: {
 				image_path: imagePath,
@@ -778,7 +811,7 @@ $(document).ready(function() {
 
 	function loadImages(time, album, page, itemsPerPage) {
 		$.ajax({
-			url: 'api.php',
+			url: 'ajax/api.php',
 			type: 'POST',
 			data: { time: time, album: album, page: page, items_per_page: itemsPerPage },
 			success: function(response) {

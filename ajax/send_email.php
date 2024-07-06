@@ -1,8 +1,15 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
+
+header('Content-Type: application/json');
+
+$response = ['status' => 'error', 'message' => ''];
 
 // Prikupite podatke iz forme
 $name = $_POST['Name'];
@@ -16,7 +23,9 @@ $captcha = $_POST['captcha'];
 $captcha_result = $_POST['captcha_result'];
 
 if ($captcha != $captcha_result) {
-    die('Pogrešan odgovor na pitanje.');
+    $response['message'] = 'Pogrešan odgovor na pitanje.';
+    echo json_encode($response);
+    exit;
 }
 
 // Prikupite artikle iz korpe
@@ -24,7 +33,9 @@ $cartData = isset($_POST['cartData']) ? $_POST['cartData'] : '[]';
 $cartItems = json_decode($cartData, true);
 
 if (json_last_error() !== JSON_ERROR_NONE) {
-    die('Neuspešna konverzija podataka iz korpe.');
+    $response['message'] = 'Neuspešna konverzija podataka iz korpe.';
+    echo json_encode($response);
+    exit;
 }
 
 // Kreirajte telo mejla sa informacijama iz korpe u HTML tabelarnom formatu
@@ -72,12 +83,12 @@ $mail = new PHPMailer(true);
 
 try {
     // Podešavanja servera
-    $mail->SMTPDebug = 2; // 1 = errors and messages, 2 = messages only
+    $mail->SMTPDebug = 0; // Onemogućite debug output
     $mail->isMail();
     /* $mail->Host = 'smtp.gmail.com';              // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
     $mail->Username = 'ivan.bojic95@gmail.com';                 // SMTP username
-    $mail->Password = 'dankabojic';                           // SMTP password
+    $mail->Password = '';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;  */
 
@@ -92,9 +103,11 @@ try {
     $mail->CharSet = 'UTF-8'; // Postavite UTF-8 kodiranje
 
     $mail->send();
-    echo 'Poruka je uspešno poslata.';
+    $response['status'] = 'success';
+    $response['message'] = 'Poruka je uspešno poslata.';
 } catch (Exception $e) {
-    echo "Poruka nije poslata. Greška: {$mail->ErrorInfo}";
+    $response['message'] = "Poruka nije poslata. Greška: {$mail->ErrorInfo}";
 }
 
+echo json_encode($response);
 ?>
