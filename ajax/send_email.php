@@ -7,6 +7,8 @@ use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php';
 
+// Postavljanje Content-Security-Policy header-a
+header("Content-Security-Policy: default-src 'none'; img-src 'self' https://ci3.googleusercontent.com;");
 header('Content-Type: application/json');
 
 $response = ['status' => 'error', 'message' => ''];
@@ -38,19 +40,28 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
+// Definišite cenu jedne fotografije
+$photoPrice = 200;
+$totalItemCount = 0;
+$totalPrice = 0;
+
 // Kreirajte telo mejla sa informacijama iz korpe u HTML tabelarnom formatu
-$cartDetails = "<table border='1' cellpadding='5' cellspacing='0' width='100%'>";
+$cartDetails = "<table border='2' cellpadding='5' cellspacing='0' width='100%'>";
 $cartDetails .= "<thead><tr><th>Slika</th><th>Album</th><th>Naziv</th><th>Količina</th></tr></thead>";
 $cartDetails .= "<tbody>";
 
 foreach ($cartItems as $item) {
-    $image_url = "https://bojovilinno.com/" . htmlspecialchars($item['path'], ENT_QUOTES, 'UTF-8');
+    $image_url = "https://bojovilinno.com/" . $item['path'];
     $cartDetails .= "<tr>";
-    $cartDetails .= "<td><a href='$image_url' target='_blank'><img src='$image_url' alt='" . htmlspecialchars($item['album'], ENT_QUOTES, 'UTF-8') . "' width='100'></a></td>";
+    $cartDetails .= "<td><img src='$image_url' alt='" . htmlspecialchars($item['album'], ENT_QUOTES, 'UTF-8') . "' width='100'></td>";
     $cartDetails .= "<td>" . htmlspecialchars($item['album'], ENT_QUOTES, 'UTF-8') . "</td>";
     $cartDetails .= "<td>" . htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') . "</td>";
-    $cartDetails .= "<td>1</td>"; // Pretpostavimo da je količina uvek 1
+    $cartDetails .= "<td>" . htmlspecialchars($item['quantity'], ENT_QUOTES, 'UTF-8') . "</td>";
     $cartDetails .= "</tr>";
+
+    // Izračunajte ukupnu količinu i cenu
+    $totalItemCount += $item['quantity'];
+    $totalPrice += $photoPrice * $item['quantity'];
 }
 
 $cartDetails .= "</tbody></table>";
@@ -59,7 +70,7 @@ $cartDetails .= "</tbody></table>";
 $mailBody = "
 <div class='container' style='background-color:#999'>
   <div class='row'>
-    <img src='https://bojovilinno.com/assets/img/ars-luminae-logo.png' alt='logo' style='width:100%' />
+    <img src='https://bojovilinno.com/assets/img/ars-luminae-logo.png' alt='logo' style='width:100%'>
   </div>
   <div class='row' style='text-align:center'>
     <h2>Nova porudzbina sa sajta Ars Luminae</h2>
@@ -76,6 +87,13 @@ $mailBody = "
   <div class='row' style='padding:15px'>
     <p><strong>Poručene fotografije:</strong></p>
     $cartDetails
+  </div>
+  <div class='row' style='padding:15px'>
+    <div class='col-lg-4'>
+      <strong>Cena jedne fotografije:</strong> ${photoPrice}.00RSD<br>
+      <strong>Broj poručenih fotografija:</strong> ${totalItemCount}<br>
+      <strong>Ukupna cena fotografija:</strong> ${totalPrice}.00RSD
+    </div>
   </div>
 </div>";
 

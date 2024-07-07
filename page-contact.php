@@ -79,8 +79,10 @@ include 'header.php';
 											Photo Duško Luković <br>
                                             <i class="fas fa-home"></i> 1. Oktobar 4/16, Čačak <br>
 											<i class="fas fa-phone"></i> 060/1-644-844 <br>
-											<i class="fas fa-envelope"></i> <a href="mailto:duskolukovic@gmail.com">duskolukovic@gmail.com</a>
-										</address>
+											<i class="fas fa-envelope"></i> <a href="mailto:duskolukovic@gmail.com">duskolukovic@gmail.com</a> <br>
+                                            PIB: 111088443 | MB: 65182742 <br>
+                                            ŽR: 155-38413-07
+                                        </address>
 
 										<div class="social-icons">
 											<ul>
@@ -96,10 +98,9 @@ include 'header.php';
 									<div class="col-md-8">
 
 										<h4>NE STIDITE SE, KAŽITE NAM ŠTA MISLITE.</h4>
-										<p>Drago mi je, prijatelju! <br>
-                                            Moje ime je Duško Luković. Ja sam profesionalni fotograf iz Čačka, Srbija.
-                                            Ako imate pitanja, sugestije ili samo želite da rezervišete foto sesiju, slobodno koristite kontakt formu ispod.
-                                            Hajde da napravimo nešto sjajno zajedno!
+										<p>
+                                            Mi smo posvećeni beleženju vaših najdragocenijih trenutaka sa pažnjom, kreativnošću i profesionalizmom.
+                                            Ako imate bilo kakvih pitanja, želje ili posebnih zahteva, ne ustručavajte se da nas kontaktirate.
                                         </p>
 
 									</div> <!-- /.col -->

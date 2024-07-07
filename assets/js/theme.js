@@ -822,7 +822,7 @@ $(document).ready(function() {
 					pagination = parsedResponse.pagination;
 
 					if (!Array.isArray(slike)) {
-						console.error('Images response nije niz');
+						//console.error('Images response nije niz');
 						return;
 					}
 

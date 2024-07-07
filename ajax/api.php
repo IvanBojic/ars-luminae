@@ -13,7 +13,7 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 
 session_start();
 
-include_once 'components/php_composer.php'; // Uključite vašu PHP klasu
+include_once '../components/php_composer.php'; // Uključite vašu PHP klasu
 
 if (isset($_POST['time']) && isset($_POST['album'])) {
     $time = $_POST['time'];

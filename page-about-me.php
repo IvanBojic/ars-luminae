@@ -49,7 +49,7 @@ include 'header.php';
 					<div class="row">
 						<div class="col-lg-12">
 
-							<h1 class="album-title">About Me</h1>
+							<h1 class="album-title"></h1>
 
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
@@ -77,11 +77,12 @@ include 'header.php';
 										<h3>Duško Luković</h3>
 										<h6>Photographer / Designer</h6>
 
-										<p>Integer nec rhoncus lacus. Vestibulum suscipit tristique cursus. Nunc tempor, leo ornare dignissim laoreet, ex ligula imperdiet metus, a pellentesque lectus sem eu nunc. Donec malesuada id velit eget laoreet. Nullam posuere diam nec dolor volutpat bibendum. Aliquam efficitur id sapien in feugiat.</p>
-
-										<blockquote>
-											Neque sit amet mauris egestas quis mattis velit fringilla. Curabitur viver justo sed scelerisque. Cras consectetur purus sit amet fermentum. Aenean mattis eu leo quam curcus.
-										</blockquote>
+										<p>
+                                            Drago mi je, prijatelju!<br>
+                                            Moje ime je Duško Luković. Ja sam profesionalni fotograf iz Čačka, Srbija.
+                                            Ako imate pitanja, sugestije ili samo želite da rezervišete foto sesiju, slobodno koristite kontakt formu ispod.
+                                            Hajde da napravimo nešto sjajno zajedno!
+                                        </p>
 
 										<div class="social-icons margin-top-40 margin-bottom-30">
 											<h6 class="head">Find me on:</h6>
