@@ -73,7 +73,7 @@ $mailBody = "
     <img src='https://bojovilinno.com/assets/img/ars-luminae-logo.png' alt='logo' style='width:100%'>
   </div>
   <div class='row' style='text-align:center'>
-    <h2>Nova porudzbina sa sajta Ars Luminae</h2>
+    <h2>Nova porudžbina sa sajta Ars Luminae</h2>
   </div>
   <div class='row' style='padding:15px'>
     <p><strong>Ime i prezime:</strong> " . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</p>
@@ -111,12 +111,12 @@ try {
     $mail->Port = 587;  */
 
     // Primaoci
-    $mail->setFrom('ivan.bojic@bojovilinno.com', 'Admin');
-    $mail->addAddress($email, $name);
+    $mail->setFrom($email, $name);
+    $mail->addAddress('ivan.bojic@bojovilinno.com', 'Admin');
 
     // Sadržaj
     $mail->isHTML(true); // Postavite na true za HTML sadržaj
-    $mail->Subject = 'Poruka sa sajta duskolukovic.com';
+    $mail->Subject = 'Nova porudžbina sa sajta duskolukovic.com';
     $mail->Body    = $mailBody;
     $mail->CharSet = 'UTF-8'; // Postavite UTF-8 kodiranje
 

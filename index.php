@@ -114,7 +114,7 @@ $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
 					<h1 class="intro-title">Ars Luminae</h1>
 					<p class="intro-text">Mi smo Foto Studio Ars Luminae, posvećeni beleženju vaših najvažnijih trenutaka. Pratimo vaša dešavanja s pažnjom i strašću. <br>Budite slobodni da nas kontaktirate.</p>
 					<div class="intro-button-wrap">
-						<a href="gallery-list.php" class="btn btn-default btn-rounded-5x">Izaberite album</a>
+						<a href="gallery-list" class="btn btn-default btn-rounded-5x">Izaberite album</a>
 					</div>
 				</div>
 				<!-- End intro caption -->

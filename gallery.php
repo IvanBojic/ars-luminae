@@ -100,13 +100,13 @@ include 'header.php';
 							<div class="album-nav">
 
 								<!-- Begin album nav item -->
-								<a href="gallery-list.php" class="an-item to-album-list bg-image" style="background-image: url(assets/img/album-list/grid/img-4.jpg); background-position: 50% 50%;" title="Back to album list">
+								<a href="gallery-list" class="an-item to-album-list bg-image" title="Back to album list">
 
 									<div class="cover"></div>
 
 									<div class="an-item-info">
 										<span class="an-icon"><i class="fas fa-th-list"></i></span>
-										<span class="an-text">Lista</span>
+										<span class="an-text">Albumi</span>
 									</div>
 								</a>
 								<!-- End album nav item -->

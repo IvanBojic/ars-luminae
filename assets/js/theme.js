@@ -370,7 +370,7 @@ $(document).ready(function() {
 		formData.push({ name: 'cartData', value: cartData });
 
 		$.ajax({
-			url: 'ajax/send_email.php',
+			url: 'ajax/send_email',
 			type: 'POST',
 			data: formData,
 			success: function(response) {
@@ -392,7 +392,7 @@ $(document).ready(function() {
 
 					// AJAX zahtev za čišćenje sesije na serveru
 					$.ajax({
-						url: 'ajax/clear_cart.php',
+						url: 'ajax/clear_cart',
 						type: 'POST',
 						success: function(response) {
 							try {
@@ -485,7 +485,7 @@ $(document).ready(function() {
 
 		updateCartCounter(cart.length); // Initial update of the cart counter
 
-		if (window.location.pathname.includes('/cart.php')) {
+		if (window.location.pathname.includes('/cart')) {
 			renderCart(cart);
 		}
 	});
@@ -518,7 +518,7 @@ $(document).ready(function() {
 
 		if (itemIndex > -1) {
 			$.ajax({
-				url: 'ajax/remove_from_cart.php',
+				url: 'ajax/remove_from_cart',
 				type: 'POST',
 				data: {
 					image_path: imagePath,
@@ -544,7 +544,7 @@ $(document).ready(function() {
 
 						sessionStorage.setItem('cart', JSON.stringify(serverCart));
 
-						if (window.location.pathname.includes('/cart.php')) {
+						if (window.location.pathname.includes('/cart')) {
 							renderCart(serverCart);
 						}
 						$button.removeClass('add-to-cart-success');
@@ -560,7 +560,7 @@ $(document).ready(function() {
 		} else {
 			// Add new item
 			$.ajax({
-				url: 'ajax/add_to_cart.php',
+				url: 'ajax/add_to_cart',
 				type: 'POST',
 				data: {
 					image_path: imagePath,
@@ -585,7 +585,7 @@ $(document).ready(function() {
 							sessionStorage.setItem('cart', JSON.stringify(cart));
 							$button.addClass('add-to-cart-success');
 							updateCartCounter(cart.length);
-							if (window.location.pathname.includes('/cart.php')) {
+							if (window.location.pathname.includes('/cart')) {
 								renderCart(cart);
 							}
 						} else {
@@ -752,7 +752,7 @@ $(document).ready(function() {
 
 		// Send AJAX request to server to update backend
 		$.ajax({
-			url: 'ajax/remove_from_cart.php',
+			url: 'ajax/remove_from_cart',
 			type: 'POST',
 			data: {
 				image_path: imagePath,
@@ -778,7 +778,7 @@ $(document).ready(function() {
 
 					sessionStorage.setItem('cart', JSON.stringify(serverCart));
 
-					if (window.location.pathname.includes('/cart.php')) {
+					if (window.location.pathname.includes('/cart')) {
 						renderCart(serverCart);
 					}
 					updateCartCounter(serverCart.length);
@@ -801,7 +801,7 @@ $(document).ready(function() {
 	// console.log("Initial cart:", initialCart);
 	updateCartCounter(initialCart.length);
 
-	if (window.location.pathname.includes('/cart.php')) {
+	if (window.location.pathname.includes('/cart')) {
 		renderCart(initialCart);
 	}
 
@@ -809,7 +809,7 @@ $(document).ready(function() {
 
 	function loadImages(time, album, page, itemsPerPage) {
 		$.ajax({
-			url: 'ajax/api.php',
+			url: 'ajax/api',
 			type: 'POST',
 			data: { time: time, album: album, page: page, items_per_page: itemsPerPage },
 			success: function(response) {
@@ -980,7 +980,7 @@ $(document).ready(function() {
 	var initialTime = $('.timeline-value.active').data('value') || 'all';
 	var initialAlbum = $('#album-naziv').val();
 	var initialItemsPerPage = $('#show-items-desktop').val();
-	if (window.location.pathname === '/gallery.php') {
+	if (window.location.pathname === '/gallery') {
 		loadImages(initialTime, initialAlbum, 1, initialItemsPerPage);
 	}
 
@@ -1294,7 +1294,7 @@ $('#contact-form').on('submit', function(event) {
 	event.preventDefault(); // Prevent the default form submission
 
 	$.ajax({
-		url: 'ajax/contact-mail.php', // URL to send the form data to
+		url: 'ajax/contact-mail', // URL to send the form data to
 		type: 'POST', // HTTP method to use
 		data: $(this).serialize(), // Serialize form data
 		success: function(response) {

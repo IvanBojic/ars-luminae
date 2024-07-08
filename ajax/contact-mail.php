@@ -57,8 +57,8 @@ try {
     $mail->Port = 587;  */
 
     // Primaoci
-    $mail->setFrom('ivan.bojic@bojovilinno.com', 'Admin');
-    $mail->addAddress($email, $name);
+    $mail->setFrom($email, $name);
+    $mail->addAddress('ivan.bojic@bojovilinno.com', 'Admin');
 
     // Sadržaj
     $mail->isHTML(true); // Postavite na true za HTML sadržaj
