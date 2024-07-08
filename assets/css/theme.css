@@ -6101,6 +6101,7 @@ ul.album-list {
 	position: relative;
 	display: inline-block;
 	margin: 10px;
+	margin-top: 20px;
 }
 .cart-counter {
 	border-radius: 100%;
@@ -6111,6 +6112,7 @@ ul.album-list {
 	position: absolute;
 	top: -10px;
 	right: -5px;
+    text-align: center;
 }
 .form-container .send-success {
 	align-content: center;

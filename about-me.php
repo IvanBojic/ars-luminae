@@ -38,7 +38,7 @@ include 'header.php';
 				===============================
 				* Use class "parallax" to enable parallax effect.
 				-->
-				<div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/headings/heading-blur-1.jpg); background-position: 50% 50%;"></div>
+				<div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/main/banners/home-4.jpg); background-position: 50% 50%;"></div>
 				<!-- End page header image -->
 
 				<!-- Element cover -->
@@ -49,7 +49,7 @@ include 'header.php';
 					<div class="row">
 						<div class="col-lg-12">
 
-							<h1 class="album-title"></h1>
+							<h1 class="album-title">O nama</h1>
 
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
@@ -87,12 +87,12 @@ include 'header.php';
 										<div class="social-icons margin-top-40 margin-bottom-30">
 											<h6 class="head">Find me on:</h6>
 											<ul>
-												<li><a target="_blank" href="https://www.facebook.com" title="Follow me on Facebook"><i class="fab fa-facebook-f"></i></a></li>
-												<li><a target="_blank" href="https://twitter.com/" title="Follow me on Twitter"><i class="fab fa-twitter"></i></a></li>
-												<li><a target="_blank" href="https://www.pinterest.com" title="Follow me on Pinterest"><i class="fab fa-pinterest-p"></i></a></li>
-												<li><a target="_blank" href="https://www.instagram.com" title="Follow me on Instagram"><i class="fab fa-instagram"></i></a></li>
-												<!-- shange "your@email.com" to your email -->
-												<li><a target="_blank" href="mailto:your@email.com" title="Contact me"><i class="fas fa-envelope"></i></a></li>
+                                                <li><a target="_blank" href="https://www.facebook.com" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                                                <li><a target="_blank" href="https://twitter.com/" title="Follow us on Twitter"><i class="fab fa-twitter"></i></a></li>
+                                                <li><a target="_blank" href="https://www.pinterest.com" title="Follow us on Pinterest"><i class="fab fa-pinterest-p"></i></a></li>
+                                                <li><a target="_blank" href="https://www.instagram.com/arsluminaestudio/" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a></li>
+                                                <!-- shange "your@email.com" to your email -->
+                                                <li><a target="_blank" href="mailto:duskolukovic@gmail.com" title="Kontaktirajte nas"><i class="fas fa-envelope"></i></a></li>
 											</ul>
 										</div>
 

@@ -3,7 +3,7 @@ include_once 'components/php_composer.php';
 
 $album_naziv = $_GET['album'];
 
-$fajl = 'assets/img/album-single/' . $album_naziv;
+$fajl = 'assets/img/albums/' . $album_naziv;
 $slike = clsFunctions::procitajSlikeIzFoldera($fajl);
 $broj_fotografija = clsFunctions::prebrojSlikeIzFoldera($fajl);
 
@@ -65,7 +65,7 @@ include 'header.php';
 				===============================
 				* Use class "parallax" to enable parallax effect.
 				-->
-				<div class="page-header-image parallax bg-image" style="background-image: url(assets/img/headings/heading-blur-1.jpg); background-position: 50% 50%;"></div>
+				<div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/main/banners/home-1.jpg); background-position: 50% 50%;"></div>
 				<!-- End page header image -->
 
 				<!-- Element cover -->
@@ -100,19 +100,7 @@ include 'header.php';
 							<div class="album-nav">
 
 								<!-- Begin album nav item -->
-								<!--<a href="" class="an-item prev-album bg-image" style="background-image: url(assets/img/album-list/grid/img-2.jpg); background-position: 50% 50%;" title="Previous album">
-
-									<div class="cover"></div>
-
-									<div class="an-item-info">
-										<span class="an-icon"><i class="fas fa-chevron-left"></i></span>
-										<span class="an-text">Prev</span>
-									</div>
-								</a>-->
-								<!-- End album nav item -->
-
-								<!-- Begin album nav item -->
-<!--								<a href="gallery_list.php" class="an-item to-album-list bg-image" style="background-image: url(assets/img/album-list/grid/img-4.jpg); background-position: 50% 50%;" title="Back to album list">
+								<a href="gallery-list.php" class="an-item to-album-list bg-image" style="background-image: url(assets/img/album-list/grid/img-4.jpg); background-position: 50% 50%;" title="Back to album list">
 
 									<div class="cover"></div>
 
@@ -120,19 +108,7 @@ include 'header.php';
 										<span class="an-icon"><i class="fas fa-th-list"></i></span>
 										<span class="an-text">Lista</span>
 									</div>
-								</a>-->
-								<!-- End album nav item -->
-
-								<!-- Begin album nav item -->
-<!--								<a href="" class="an-item next-album bg-image" style="background-image: url(assets/img/album-list/grid/img-7.jpg); background-position: 50% 50%;" title="Next album">
-
-									<div class="cover"></div>
-
-									<div class="an-item-info">
-										<span class="an-icon"><i class="fas fa-chevron-right"></i></span>
-										<span class="an-text">Next</span>
-									</div>
-								</a>-->
+								</a>
 								<!-- End album nav item -->
 
 							</div>

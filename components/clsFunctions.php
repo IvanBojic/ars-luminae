@@ -104,7 +104,7 @@ class clsFunctions
 
     public static function procitajFoldere($folder)
     {
-        $folder = 'assets/img/album-single';
+        $folder = 'assets/img/albums';
         $albumi = array();
         $putanjaDoFoldera = __DIR__ . '/../' . $folder; // Prilagodite putanju ako je potrebno
 
@@ -160,7 +160,7 @@ class clsFunctions
     }
 
     public static function getFirstImage($albumTitle) {
-        $imagePath = "assets/img/album-single/$albumTitle/";
+        $imagePath = "assets/img/albums/$albumTitle/";
         $imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Dodajte ostale ekstenzije ako je potrebno
 
         foreach ($imageExtensions as $ext) {
@@ -171,7 +171,7 @@ class clsFunctions
         }
 
         // Defaultna slika ili fallback u slučaju da slika ne postoji
-        return "assets/img/album-list/grid/img-1.jpg";
+        return "assets/img/main/grid/img-1.jpg";
     }
 
     public static function render_pagination($current_page, $total_pages, $album_naziv) {

@@ -45,7 +45,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 				===============================
 				* Use class "parallax" to enable parallax effect.
 				-->
-				<div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/album-list/big/home-3.jpg); background-position: 50% 50%;"></div>
+				<div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/main/banners/home-3.jpg); background-position: 50% 50%;"></div>
 				<!-- End page header image -->
 
 				<!-- Element cover -->
@@ -56,7 +56,7 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 					<div class="row">
 						<div class="col-md-12">
 
-							<h1 class="album-title">Gallery</h1>
+							<h1 class="album-title">Albumi</h1>
 
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->

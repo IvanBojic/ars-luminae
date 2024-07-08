@@ -44,7 +44,7 @@ include 'header.php';
     <section id="page-header-secion" class="alter-heading">
 
         <!-- Begin page header image -->
-        <div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/album-list/big/home-1.jpg); background-position: 50% 50%;"></div>
+        <div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/main/banners/home-1.jpg); background-position: 50% 50%;"></div>
         <!-- End page header image -->
 
         <!-- Element cover -->

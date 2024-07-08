@@ -38,7 +38,7 @@ $cartItemCount = count($cart); // Izbrojite artikle u korpi
 				<div id="nav" class="navbar-header">
                     <!-- off-canvas menu trigger (menu button) -->
                    <!-- <div id="shopping-cart">-->
-                    <a href="page-cart.php" class="cart-link">
+                    <a href="cart.php" class="cart-link">
                         <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
                         <span id="cart-counter" class="cart-counter"></span>
                     </a>
@@ -91,8 +91,8 @@ $cartItemCount = count($cart); // Izbrojite artikle u korpi
 						<li class="dropdown dropdown-hover">
 							<a href="#0" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ARS LUMINAE <span class="caret-2"><i class="fas fa-chevron-down"></i></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="page-about-me.php">O nama</a></li>
-                                <li><a href="page-contact.php">Kontakt</a></li>
+								<li><a href="about-me.php">O nama</a></li>
+                                <li><a href="contact.php">Kontakt</a></li>
                                 <li><a href="privacy.php">Politika privatnosti</a></li>
 							</ul>
 						</li>

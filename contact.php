@@ -38,7 +38,7 @@ include 'header.php';
 				===============================
 				* Use class "parallax" to enable parallax effect.
 				-->
-				<div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/album-list/big/home-2.jpg); background-position: 50% 50%;"></div>
+				<div class="page-header-image parallax bg-image top-center-bg" style="background-image: url(assets/img/main/banners/home-2.jpg); background-position: 50% 50%;"></div>
 				<!-- End page header image -->
 
 				<!-- Element cover -->
@@ -76,20 +76,20 @@ include 'header.php';
 
 										<address>
 											<strong>ARS LUMINAE</strong><br>
+                                            PIB: 111088443 | MB: 65182742 <br>
+                                            ŽR: 155-38413-07 <br> <br>
 											Photo Duško Luković <br>
                                             <i class="fas fa-home"></i> 1. Oktobar 4/16, Čačak <br>
 											<i class="fas fa-phone"></i> 060/1-644-844 <br>
 											<i class="fas fa-envelope"></i> <a href="mailto:duskolukovic@gmail.com">duskolukovic@gmail.com</a> <br>
-                                            PIB: 111088443 | MB: 65182742 <br>
-                                            ŽR: 155-38413-07
                                         </address>
 
 										<div class="social-icons">
 											<ul>
-												<li><a target="_blank" href="https://www.facebook.com" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a></li>
-												<li><a target="_blank" href="https://twitter.com/" title="Follow us on Twitter"><i class="fab fa-twitter"></i></a></li>
-												<li><a target="_blank" href="https://www.pinterest.com" title="Follow us on Pinterest"><i class="fab fa-pinterest-p"></i></a></li>
-												<li><a target="_blank" href="https://www.instagram.com/arsluminaestudio/" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a></li>
+                                                <li><a target="_blank" href="https://www.facebook.com" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                                                <li><a target="_blank" href="https://twitter.com/" title="Follow us on Twitter"><i class="fab fa-twitter"></i></a></li>
+                                                <li><a target="_blank" href="https://www.pinterest.com" title="Follow us on Pinterest"><i class="fab fa-pinterest-p"></i></a></li>
+                                                <li><a target="_blank" href="https://www.instagram.com/arsluminaestudio/" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a></li>
 											</ul>
 										</div>
 
@@ -107,13 +107,13 @@ include 'header.php';
 								</div> <!-- /.row -->
 
 								<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-12 contact-form-container">
 
 										<!-- Begin contact form 
 										========================= -->
 										<form id="contact-form">
 
-											<!-- Begin hidden required fields (https://github.com/agragregra/uniMail) -->
+											<!-- Begin hidden required fields -->
 											<input type="hidden" name="project_name" value="duskolukovic.com"> <!-- Change value to your site name -->
 											<input type="hidden" name="admin_email" value="ivan.bojic95@gmail.com"> <!-- Change value to your email address (where a message will be sent) -->
 											<input type="hidden" name="form_subject" value="Message from duskolukovic.com"> <!-- Change value to your own message subject -->
@@ -122,24 +122,24 @@ include 'header.php';
 											<div class="row">
 												<div class="col-lg-4">
 													<div class="form-group">
-														<input type="text" class="form-control" name="Name" placeholder="Ime i prezime" required="">
+														<input type="text" class="form-control" name="Name" placeholder="Ime i prezime *" required="">
 													</div>
 												</div>
 												<div class="col-lg-4">
 													<div class="form-group">
-														<input type="email" class="form-control" name="Email" placeholder="Email" required="">
+														<input type="email" class="form-control" name="Email" placeholder="Email *" required="">
 													</div>
 												</div>
 												<div class="col-lg-4">
 													<div class="form-group">
-														<input type="text" class="form-control" name="Subject" placeholder="Naslov" required="">
+														<input type="text" class="form-control" name="Subject" placeholder="Naslov *" required="">
 													</div>
 												</div>
 											</div>
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="form-group">
-														<textarea class="form-control" name="Message" rows="8" placeholder="Vaša poruka" required=""></textarea>
+														<textarea class="form-control" name="Message" rows="8" placeholder="Vaša poruka *" required=""></textarea>
 													</div>
 												</div>
 											</div>

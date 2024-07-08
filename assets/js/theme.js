@@ -362,66 +362,64 @@ $(".justified-gallery").justifiedGallery({
 $(document).ready(function() {
 
 	// START SEND MAIL
-	$(document).ready(function() {
-		$('#cart-form').submit(function(e) {
-			e.preventDefault();
+	$('#cart-form').submit(function(e) {
+		e.preventDefault();
 
-			var formData = $(this).serializeArray();
-			var cartData = sessionStorage.getItem('cart') || '[]';
-			formData.push({ name: 'cartData', value: cartData });
+		var formData = $(this).serializeArray();
+		var cartData = sessionStorage.getItem('cart') || '[]';
+		formData.push({ name: 'cartData', value: cartData });
 
-			$.ajax({
-				url: 'ajax/send_email.php',
-				type: 'POST',
-				data: formData,
-				success: function(response) {
-					console.log(response);
-					// Proverite da li je odgovor JSON objekat
-					try {
-						response = typeof response === 'string' ? JSON.parse(response) : response;
-					} catch (e) {
-						console.error('Error parsing response from send_email.php:', e);
-						return;
-					}
-
-					if (response.status === 'success') {
-						// Isprazni kontejner sa formom
-						document.querySelector('.form-container').innerHTML = '<h2 class="send-success">Poruka je uspešno poslata.</h2>';
-
-						// Isprazni sesiju sa podacima iz korpe
-						sessionStorage.removeItem('cart');
-
-						// AJAX zahtev za čišćenje sesije na serveru
-						$.ajax({
-							url: 'ajax/clear_cart.php',
-							type: 'POST',
-							success: function(response) {
-								try {
-									response = typeof response === 'string' ? JSON.parse(response) : response;
-									if (response.status === 'success') {
-										renderCart([]); // Renderujte praznu korpu
-										updateCartCounter(0); // Ažurirajte brojač korpe
-									} else {
-										console.error('Failed to clear cart on server:', response.message);
-									}
-								} catch (e) {
-									console.error('Error parsing response from clear_cart.php:', e);
-								}
-							},
-							error: function(xhr, status, error) {
-								console.error('AJAX error:', status, error);
-							}
-						});
-					} else {
-						// Prikaz poruke o grešci
-						alert(response.message || 'Došlo je do greške prilikom slanja poruke.');
-					}
-				},
-				error: function(xhr, status, error) {
-					console.error('AJAX error:', status, error);
-					alert('Došlo je do greške prilikom slanja poruke.');
+		$.ajax({
+			url: 'ajax/send_email.php',
+			type: 'POST',
+			data: formData,
+			success: function(response) {
+				// console.log(response);
+				// Proverite da li je odgovor JSON objekat
+				try {
+					response = typeof response === 'string' ? JSON.parse(response) : response;
+				} catch (e) {
+					console.error('Error parsing response from send_email.php:', e);
+					return;
 				}
-			});
+
+				if (response.status === 'success') {
+					// Isprazni kontejner sa formom
+					document.querySelector('.form-container').innerHTML = '<h2 class="send-success">Poruka je uspešno poslata.</h2>';
+
+					// Isprazni sesiju sa podacima iz korpe
+					sessionStorage.removeItem('cart');
+
+					// AJAX zahtev za čišćenje sesije na serveru
+					$.ajax({
+						url: 'ajax/clear_cart.php',
+						type: 'POST',
+						success: function(response) {
+							try {
+								response = typeof response === 'string' ? JSON.parse(response) : response;
+								if (response.status === 'success') {
+									renderCart([]); // Renderujte praznu korpu
+									updateCartCounter(0); // Ažurirajte brojač korpe
+								} else {
+									console.error('Failed to clear cart on server:', response.message);
+								}
+							} catch (e) {
+								console.error('Error parsing response from clear_cart.php:', e);
+							}
+						},
+						error: function(xhr, status, error) {
+							console.error('AJAX error:', status, error);
+						}
+					});
+				} else {
+					// Prikaz poruke o grešci
+					alert(response.message || 'Došlo je do greške prilikom slanja poruke.');
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('AJAX error:', status, error);
+				alert('Došlo je do greške prilikom slanja poruke.');
+			}
 		});
 	});
 
@@ -487,7 +485,7 @@ $(document).ready(function() {
 
 		updateCartCounter(cart.length); // Initial update of the cart counter
 
-		if (window.location.pathname.includes('/page-cart.php')) {
+		if (window.location.pathname.includes('/cart.php')) {
 			renderCart(cart);
 		}
 	});
@@ -527,7 +525,7 @@ $(document).ready(function() {
 					album_name: albumName
 				},
 				success: function(response) {
-					console.log('Server response:', response);
+					// console.log('Server response:', response);
 					var result;
 					try {
 						result = typeof response === 'string' ? JSON.parse(response) : response;
@@ -546,7 +544,7 @@ $(document).ready(function() {
 
 						sessionStorage.setItem('cart', JSON.stringify(serverCart));
 
-						if (window.location.pathname.includes('/page-cart.php')) {
+						if (window.location.pathname.includes('/cart.php')) {
 							renderCart(serverCart);
 						}
 						$button.removeClass('add-to-cart-success');
@@ -587,7 +585,7 @@ $(document).ready(function() {
 							sessionStorage.setItem('cart', JSON.stringify(cart));
 							$button.addClass('add-to-cart-success');
 							updateCartCounter(cart.length);
-							if (window.location.pathname.includes('/page-cart.php')) {
+							if (window.location.pathname.includes('/cart.php')) {
 								renderCart(cart);
 							}
 						} else {
@@ -609,7 +607,7 @@ $(document).ready(function() {
 			console.error('Expected cartItems to be an array, but received:', cartItems);
 			return;
 		}
-		console.log("Rendering cart with items:", cartItems);
+		// console.log("Rendering cart with items:", cartItems);
 		const cartContainer = document.getElementById('cart-container');
 		const cartSummary = document.getElementById('cart-summary');
 
@@ -761,7 +759,7 @@ $(document).ready(function() {
 				album_name: albumName
 			},
 			success: function(response) {
-				console.log('Server response:', response);
+				// console.log('Server response:', response);
 				var result;
 				try {
 					result = typeof response === 'string' ? JSON.parse(response) : response;
@@ -780,7 +778,7 @@ $(document).ready(function() {
 
 					sessionStorage.setItem('cart', JSON.stringify(serverCart));
 
-					if (window.location.pathname.includes('/page-cart.php')) {
+					if (window.location.pathname.includes('/cart.php')) {
 						renderCart(serverCart);
 					}
 					updateCartCounter(serverCart.length);
@@ -800,10 +798,10 @@ $(document).ready(function() {
 	}
 
 	const initialCart = JSON.parse(sessionStorage.getItem('cart')) || [];
-	console.log("Initial cart:", initialCart);
+	// console.log("Initial cart:", initialCart);
 	updateCartCounter(initialCart.length);
 
-	if (window.location.pathname.includes('/page-cart.php')) {
+	if (window.location.pathname.includes('/cart.php')) {
 		renderCart(initialCart);
 	}
 
@@ -1292,22 +1290,29 @@ setInterval(function () {
 // ===============================================
 
 //E-mail Ajax Send
-$("#contact-form").submit(function () { //Change (your contact form ID)
-	var th = $(this);
-	$.ajax({
-		type: "POST",
-		url: "mail.php", //Change (mail.php path)
-		data: th.serialize()
-	}).done(function () {
-		alert("Thank you. Your message has been sent!");
-		setTimeout(function () {
-			// Done Functions
-			th.trigger("reset");
-		}, 1000);
-	});
-	return false;
-});
+$('#contact-form').on('submit', function(event) {
+	event.preventDefault(); // Prevent the default form submission
 
+	$.ajax({
+		url: 'ajax/contact-mail.php', // URL to send the form data to
+		type: 'POST', // HTTP method to use
+		data: $(this).serialize(), // Serialize form data
+		success: function(response) {
+			if (response.status === 'success') {
+				// Isprazni kontejner sa formom
+				document.querySelector('.contact-form-container').innerHTML = '<h2 class="send-success">Poruka je uspešno poslata.</h2>';
+
+			} else {
+				// Prikaz poruke o grešci
+				alert(response.message || 'Došlo je do greške prilikom slanja poruke.');
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Prikaz poruke o grešci
+			alert(response.message || 'Došlo je do greške prilikom slanja poruke.');
+		}
+	});
+});
 
 // ======================
 // Scroll to top button
