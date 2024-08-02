@@ -80,7 +80,7 @@ include 'header.php';
                                             ŽR: 155-38413-07 <br> <br>
 											Photo Duško Luković <br>
                                             <i class="fas fa-home"></i> 1. Oktobar 4/16, Čačak <br>
-											<i class="fas fa-phone"></i> 060/1-644-844 <br>
+                                            <i class="fas fa-phone"></i> <a href="tel:+381601644844">060/1-644-844</a> <br>
 											<i class="fas fa-envelope"></i> <a href="mailto:duskolukovic@gmail.com">duskolukovic@gmail.com</a> <br>
                                         </address>
 
