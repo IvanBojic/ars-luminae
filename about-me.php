@@ -78,18 +78,19 @@ include 'header.php';
 										<h6>Photographer / Designer</h6>
 
 										<p>
-                                            Drago mi je, prijatelju!<br>
-                                            Moje ime je Duško Luković. Ja sam profesionalni fotograf iz Čačka, Srbija.
-                                            Ako imate pitanja, sugestije ili samo želite da rezervišete foto sesiju, slobodno koristite kontakt formu ispod.
-                                            Hajde da napravimo nešto sjajno zajedno!
+                                            Dobrodošli na moj sajt! <br>
+                                            Kažu da dela govore više od reči.
+                                            Zato bih voleo da se bolje upoznamo kroz zajedničku strast koju delimo – fotografiju. <br> 
+                                            Tu sam za vas u svakoj važnoj prilici, da na spontan način uhvatim vaš ”momenat”. Filmičan I izgled fotografija je ono ka čemu težim I trudim se da svaka oslikava vaše unutrašnje zadovoljstvo I sreću. 
+                                            Na sajtu možete pogledati moje radove a sa par klikova na link dobićete mogućnost da odaberete fotografiju koju želite u svom albumu. 
+                                            Pozovite da zajedno stvaramo najlepše uspomene. <br>
+                                            Vaš ARS LUMINAE!
                                         </p>
 
 										<div class="social-icons margin-top-40 margin-bottom-30">
 											<h6 class="head">Find me on:</h6>
 											<ul>
-                                                <li><a target="_blank" href="https://www.facebook.com" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a></li>
-                                                <li><a target="_blank" href="https://twitter.com/" title="Follow us on Twitter"><i class="fab fa-twitter"></i></a></li>
-                                                <li><a target="_blank" href="https://www.pinterest.com" title="Follow us on Pinterest"><i class="fab fa-pinterest-p"></i></a></li>
+                                                <li><a target="_blank" href="https://www.facebook.com/dusko.lukovic.5" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a></li>
                                                 <li><a target="_blank" href="https://www.instagram.com/arsluminaestudio/" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a></li>
                                                 <!-- shange "your@email.com" to your email -->
                                                 <li><a target="_blank" href="mailto:duskolukovic@gmail.com" title="Kontaktirajte nas"><i class="fas fa-envelope"></i></a></li>

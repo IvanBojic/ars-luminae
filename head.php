@@ -2,6 +2,16 @@
 
 		<!-- Title -->
 		<title>Ars Luminae - Photo by Dusko Lukovic</title>
+		
+		<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E3FGH6P04G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-E3FGH6P04G');
+</script>
 
 		<!-- Meta -->
 		<meta charset="utf-8">

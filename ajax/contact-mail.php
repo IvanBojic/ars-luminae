@@ -30,7 +30,7 @@ if ($captcha != $captcha_result) {
 $mailBody = "
 <div class='container' style='background-color:#999'>
   <div class='row'>
-    <img src='https://bojovilinno.com/assets/img/ars-luminae-logo.png' alt='logo' style='width:100%'>
+    <img src='https://duskolukovic.com/assets/img/ars-luminae-logo.png' alt='logo' style='width:100%'>
   </div>
   <div class='row' style='text-align:center'>
     <h2>Poruka sa kontakt forme</h2>
@@ -51,14 +51,14 @@ try {
     $mail->isMail();
     /* $mail->Host = 'smtp.gmail.com';              // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'ivan.bojic95@gmail.com';                 // SMTP username
+    $mail->Username = '';                 // SMTP username
     $mail->Password = '';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 587;  */
 
     // Primaoci
     $mail->setFrom($email, $name);
-    $mail->addAddress('ivan.bojic@bojovilinno.com', 'Admin');
+    $mail->addAddress('duskolukovic@gmail.com', 'Admin');
 
     // Sadržaj
     $mail->isHTML(true); // Postavite na true za HTML sadržaj

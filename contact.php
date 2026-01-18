@@ -80,15 +80,13 @@ include 'header.php';
                                             ŽR: 155-38413-07 <br> <br>
 											Photo Duško Luković <br>
                                             <i class="fas fa-home"></i> 1. Oktobar 4/16, Čačak <br>
-                                            <i class="fas fa-phone"></i> <a href="tel:+381601644844">060/1-644-844</a> <br>
+											<i class="fas fa-phone"></i> <a href="tel:+381601644844">060/1-644-844</a> <br>
 											<i class="fas fa-envelope"></i> <a href="mailto:duskolukovic@gmail.com">duskolukovic@gmail.com</a> <br>
                                         </address>
 
 										<div class="social-icons">
 											<ul>
-                                                <li><a target="_blank" href="https://www.facebook.com" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a></li>
-                                                <li><a target="_blank" href="https://twitter.com/" title="Follow us on Twitter"><i class="fab fa-twitter"></i></a></li>
-                                                <li><a target="_blank" href="https://www.pinterest.com" title="Follow us on Pinterest"><i class="fab fa-pinterest-p"></i></a></li>
+                                                <li><a target="_blank" href="https://www.facebook.com/dusko.lukovic.5" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a></li>
                                                 <li><a target="_blank" href="https://www.instagram.com/arsluminaestudio/" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a></li>
 											</ul>
 										</div>

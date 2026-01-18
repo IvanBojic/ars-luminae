@@ -87,7 +87,7 @@ include 'header.php';
 							<!-- Begin author -->
 							<div class="author">
 								<a href="#" class="author-avatar bg-image" style="background-image: url(assets/img/author.jpg); background-position: 50% 50%;"></a>
-								<a href="" class="author-info">- Oficijelni fotograf: Dusko Lukovic</a>
+								<a href="" class="author-info">- Oficijelni fotograf Duško Luković</a>
 							</div>
 							<!-- End author -->
 

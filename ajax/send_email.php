@@ -7,22 +7,24 @@ use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php';
 
-// Postavljanje Content-Security-Policy header-a
-header("Content-Security-Policy: default-src 'none'; img-src 'self' https://ci3.googleusercontent.com;");
 header('Content-Type: application/json');
 
 $response = ['status' => 'error', 'message' => ''];
 
-// Prikupite podatke iz forme
-$name = $_POST['Name'];
-$email = $_POST['Email'];
-$phone = $_POST['Phone'];
-$address = $_POST['Address'];
-$zip = $_POST['Zip'];
-$city = $_POST['City'];
-$message = $_POST['Message'];
-$captcha = $_POST['captcha'];
-$captcha_result = $_POST['captcha_result'];
+$mailConfig = require '../config/mail.php';
+
+/* =========================
+   VALIDACIJA FORME
+========================= */
+$name    = trim($_POST['Name'] ?? '');
+$email   = trim($_POST['Email'] ?? '');
+$phone   = trim($_POST['Phone'] ?? '');
+$address = trim($_POST['Address'] ?? '');
+$zip     = trim($_POST['Zip'] ?? '');
+$city    = trim($_POST['City'] ?? '');
+$message = trim($_POST['Message'] ?? '');
+$captcha = $_POST['captcha'] ?? '';
+$captcha_result = $_POST['captcha_result'] ?? '';
 
 if ($captcha != $captcha_result) {
     $response['message'] = 'Pogrešan odgovor na pitanje.';
@@ -30,102 +32,144 @@ if ($captcha != $captcha_result) {
     exit;
 }
 
-// Prikupite artikle iz korpe
-$cartData = isset($_POST['cartData']) ? $_POST['cartData'] : '[]';
-$cartItems = json_decode($cartData, true);
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    $response['message'] = 'Neuspešna konverzija podataka iz korpe.';
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $response['message'] = 'Neispravna email adresa.';
     echo json_encode($response);
     exit;
 }
 
-// Definišite cenu jedne fotografije
-$photoPrice = 200;
-$totalItemCount = 0;
-$totalPrice = 0;
+/* =========================
+   KORPA
+========================= */
+$cartItems = json_decode($_POST['cartData'] ?? '[]', true);
 
-// Kreirajte telo mejla sa informacijama iz korpe u HTML tabelarnom formatu
-$cartDetails = "<table border='2' cellpadding='5' cellspacing='0' width='100%'>";
-$cartDetails .= "<thead><tr><th>Slika</th><th>Album</th><th>Naziv</th><th>Količina</th></tr></thead>";
-$cartDetails .= "<tbody>";
-
-foreach ($cartItems as $item) {
-    $image_url = "https://bojovilinno.com/" . $item['path'];
-    $cartDetails .= "<tr>";
-    $cartDetails .= "<td><img src='$image_url' alt='" . htmlspecialchars($item['album'], ENT_QUOTES, 'UTF-8') . "' width='100'></td>";
-    $cartDetails .= "<td>" . htmlspecialchars($item['album'], ENT_QUOTES, 'UTF-8') . "</td>";
-    $cartDetails .= "<td>" . htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') . "</td>";
-    $cartDetails .= "<td>" . htmlspecialchars($item['quantity'], ENT_QUOTES, 'UTF-8') . "</td>";
-    $cartDetails .= "</tr>";
-
-    // Izračunajte ukupnu količinu i cenu
-    $totalItemCount += $item['quantity'];
-    $totalPrice += $photoPrice * $item['quantity'];
+if (!is_array($cartItems) || empty($cartItems)) {
+    $response['message'] = 'Korpa je prazna.';
+    echo json_encode($response);
+    exit;
 }
 
-$cartDetails .= "</tbody></table>";
+$photoPrice = 200;
+$totalQty = 0;
+$totalPrice = 0;
 
-// Kreirajte telo mejla sa stilizovanim HTML-om
+$photos = [];
+$cartTable = '';
+
+foreach ($cartItems as $item) {
+    $qty = (int)$item['quantity'];
+    $totalQty += $qty;
+    $totalPrice += $qty * $photoPrice;
+
+    $photos[] = [
+        'album' => $item['album'],
+        'title' => $item['title'],
+        'path'  => $item['path'],
+        'qty'   => $qty
+    ];
+
+    $img = "https://duskolukovic.com/" . $item['path'];
+
+    $cartTable .= "
+    <tr>
+        <td><img src='{$img}' width='100'></td>
+        <td>{$item['album']}</td>
+        <td>{$item['title']}</td>
+        <td>{$qty}</td>
+    </tr>";
+}
+
+/* =========================
+   JSON UPIS PORUDŽBINE
+========================= */
+$orderId = 'ORD-' . date('Ymd-His');
+$orderFile = '../docs/orders.json';
+
+$orderData = [
+    'order_id' => $orderId,
+    'created_at' => date('Y-m-d H:i:s'),
+    'customer' => [
+        'name' => $name,
+        'email' => $email,
+        'phone' => $phone,
+        'address' => $address,
+        'zip' => $zip,
+        'city' => $city,
+        'message' => $message
+    ],
+    'photos' => $photos,
+    'summary' => [
+        'photo_price' => $photoPrice,
+        'total_qty' => $totalQty,
+        'total_price' => $totalPrice
+    ]
+];
+
+$orders = file_exists($orderFile)
+    ? json_decode(file_get_contents($orderFile), true)
+    : [];
+
+$orders[] = $orderData;
+file_put_contents($orderFile, json_encode($orders, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+/* =========================
+   TELO MEJLA
+========================= */
 $mailBody = "
-<div class='container' style='background-color:#999'>
-  <div class='row'>
-    <img src='https://bojovilinno.com/assets/img/ars-luminae-logo.png' alt='logo' style='width:100%'>
-  </div>
-  <div class='row' style='text-align:center'>
-    <h2>Nova porudžbina sa sajta Ars Luminae</h2>
-  </div>
-  <div class='row' style='padding:15px'>
-    <p><strong>Ime i prezime:</strong> " . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</p>
-    <p><strong>Email:</strong> " . htmlspecialchars($email, ENT_QUOTES, 'UTF-8') . "</p>
-    <p><strong>Telefon:</strong> " . htmlspecialchars($phone, ENT_QUOTES, 'UTF-8') . "</p>
-    <p><strong>Adresa:</strong> " . htmlspecialchars($address, ENT_QUOTES, 'UTF-8') . "</p>
-    <p><strong>Poštanski broj:</strong> " . htmlspecialchars($zip, ENT_QUOTES, 'UTF-8') . "</p>
-    <p><strong>Grad:</strong> " . htmlspecialchars($city, ENT_QUOTES, 'UTF-8') . "</p>
-    <p><strong>Poruka:</strong> " . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . "</p>
-  </div>
-  <div class='row' style='padding:15px'>
-    <p><strong>Poručene fotografije:</strong></p>
-    $cartDetails
-  </div>
-  <div class='row' style='padding:15px'>
-    <div class='col-lg-4'>
-      <strong>Cena jedne fotografije:</strong> ${photoPrice}.00RSD<br>
-      <strong>Broj poručenih fotografija:</strong> ${totalItemCount}<br>
-      <strong>Ukupna cena fotografija:</strong> ${totalPrice}.00RSD
-    </div>
-  </div>
-</div>";
+<h2>Nova porudžbina – {$orderId}</h2>
 
+<p><strong>Ime:</strong> {$name}</p>
+<p><strong>Email:</strong> {$email}</p>
+<p><strong>Telefon:</strong> {$phone}</p>
+<p><strong>Adresa:</strong> {$address}, {$zip} {$city}</p>
+
+<hr>
+
+<table border='1' cellpadding='6' cellspacing='0' width='100%'>
+<tr>
+<th>Slika</th><th>Album</th><th>Naziv</th><th>Količina</th>
+</tr>
+{$cartTable}
+</table>
+
+<hr>
+
+<p>
+<strong>Ukupno fotografija:</strong> {$totalQty}<br>
+<strong>Cena:</strong> {$totalPrice} RSD
+</p>
+";
+
+/* =========================
+   SMTP SLANJE
+========================= */
 $mail = new PHPMailer(true);
 
 try {
-    // Podešavanja servera
-    $mail->SMTPDebug = 0; // Onemogućite debug output
-    $mail->isMail();
-    /* $mail->Host = 'smtp.gmail.com';              // Specify main and backup SMTP servers
-    $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'ivan.bojic95@gmail.com';                 // SMTP username
-    $mail->Password = '';                           // SMTP password
-    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-    $mail->Port = 587;  */
+    $mail->isSMTP();
+    $mail->Host = $mailConfig['host'];
+    $mail->SMTPAuth = true;
+    $mail->Username = $mailConfig['username'];
+    $mail->Password = $mailConfig['password'];
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = $mailConfig['port'];
 
-    // Primaoci
-    $mail->setFrom($email, $name);
-    $mail->addAddress('ivan.bojic@bojovilinno.com', 'Admin');
+    $mail->setFrom($mailConfig['from_email'], $mailConfig['from_name']);
+    $mail->addReplyTo($email, $name);
+    $mail->addAddress($mailConfig['admin_email']);
 
-    // Sadržaj
-    $mail->isHTML(true); // Postavite na true za HTML sadržaj
-    $mail->Subject = 'Nova porudžbina sa sajta duskolukovic.com';
-    $mail->Body    = $mailBody;
-    $mail->CharSet = 'UTF-8'; // Postavite UTF-8 kodiranje
+    $mail->isHTML(true);
+    $mail->CharSet = 'UTF-8';
+    $mail->Subject = "Nova porudžbina – {$orderId}";
+    $mail->Body = $mailBody;
 
     $mail->send();
+
     $response['status'] = 'success';
-    $response['message'] = 'Poruka je uspešno poslata.';
+    $response['message'] = 'Porudžbina je uspešno poslata.';
+
 } catch (Exception $e) {
-    $response['message'] = "Poruka nije poslata. Greška: {$mail->ErrorInfo}";
+    $response['message'] = 'SMTP greška: ' . $mail->ErrorInfo;
 }
 
 echo json_encode($response);
-?>

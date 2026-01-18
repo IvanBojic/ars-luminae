@@ -1,0 +1,648 @@
+[
+    {
+        "order_id": "ORD-20251229-095525",
+        "created_at": "2025-12-29 09:55:25",
+        "customer": {
+            "name": "Dusko Lukovic",
+            "email": "duskolukovic@gmail.com",
+            "phone": "0601644844",
+            "address": "1 oktobar 4",
+            "zip": "32000",
+            "city": "Cacak",
+            "message": "TEST TEST"
+        },
+        "photos": [
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4233",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4233.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4231",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4231.JPG",
+                "qty": 3
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4247",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4247.JPG",
+                "qty": 2
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 6,
+            "total_price": 1200
+        }
+    },
+    {
+        "order_id": "ORD-20251229-104111",
+        "created_at": "2025-12-29 10:41:11",
+        "customer": {
+            "name": "Ana Stanic",
+            "email": "anatstanic@gmail.com",
+            "phone": "0656006532",
+            "address": "Dr Dragise Misovica 209",
+            "zip": "32000",
+            "city": "Cacak",
+            "message": "Ukoliko se dostava fotografija placa, obaveztite me kada i gde mogu licno preuzeti fotografije."
+        },
+        "photos": [
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3079",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3079.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3068",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3068.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3071",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3071.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3094",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3094.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3087",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3087.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3090",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3090.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3093",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3093.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3137",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3137.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3116",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3116.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3154",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3154.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3074",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3074.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 11,
+            "total_price": 2200
+        }
+    },
+    {
+        "order_id": "ORD-20251229-123725",
+        "created_at": "2025-12-29 12:37:25",
+        "customer": {
+            "name": "Slađana Stefanović",
+            "email": "sladjana11@gmail.com",
+            "phone": "064 37 32 669",
+            "address": "Učitelja Marinovića 21",
+            "zip": "32000",
+            "city": "Čačak",
+            "message": ""
+        },
+        "photos": [
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_4152",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_4152.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3726",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3726.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3719",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3719.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3720",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3720.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3732",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3732.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 5,
+            "total_price": 1000
+        }
+    },
+    {
+        "order_id": "ORD-20251229-135101",
+        "created_at": "2025-12-29 13:51:01",
+        "customer": {
+            "name": "Ana vulovic",
+            "email": "anadavidovic989@gmail.com",
+            "phone": "0605572943",
+            "address": "Ul.dragoslava bojica 379",
+            "zip": "32000",
+            "city": "Čačak",
+            "message": "Da li mogu naručene slike dobiti na mejl ili viber"
+        },
+        "photos": [
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3267",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3267.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3499",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3499.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_4153",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_4153.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 3,
+            "total_price": 600
+        }
+    },
+    {
+        "order_id": "ORD-20251229-145947",
+        "created_at": "2025-12-29 14:59:47",
+        "customer": {
+            "name": "Suncica",
+            "email": "duskolukovic@gmail.com",
+            "phone": "0601644844",
+            "address": "1 oktobar",
+            "zip": "32000",
+            "city": "Cacak",
+            "message": ""
+        },
+        "photos": [
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4260",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4260.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4308",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4308.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4330",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4330.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4625",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4625.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4238",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4238.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 5,
+            "total_price": 1000
+        }
+    },
+    {
+        "order_id": "ORD-20251229-184008",
+        "created_at": "2025-12-29 18:40:08",
+        "customer": {
+            "name": "Stanić Jelena",
+            "email": "jelenam034@gmail.com",
+            "phone": "0612011062",
+            "address": "Čačanski partizanski odred br.2\/20",
+            "zip": "32000",
+            "city": "Čačak",
+            "message": ""
+        },
+        "photos": [
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4939",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4939.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4934",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4934.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4933",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4933.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4923",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4923.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4960",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4960.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4961",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4961.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4952",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4952.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4943",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4943.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4949",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4949.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4948",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4948.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 10,
+            "total_price": 2000
+        }
+    },
+    {
+        "order_id": "ORD-20251229-212507",
+        "created_at": "2025-12-29 21:25:07",
+        "customer": {
+            "name": "Milena Bojović",
+            "email": "milena.bojovic@yahoo.com",
+            "phone": "065 2808007",
+            "address": "Ratka Stefanovića 12\/30",
+            "zip": "32102",
+            "city": "ČaČak",
+            "message": ""
+        },
+        "photos": [
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3219",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3219.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3560",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3560.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3618",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3618.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3881",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3881.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3924",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3924.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3984",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3984.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_4109",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_4109.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_4208",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_4208.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 8,
+            "total_price": 1600
+        }
+    },
+    {
+        "order_id": "ORD-20260101-184538",
+        "created_at": "2026-01-01 18:45:38",
+        "customer": {
+            "name": "Biljana Cubrijan Ristic",
+            "email": "bilja980@gmail.com",
+            "phone": "062287015",
+            "address": "Kneza Milosa 1A\/10",
+            "zip": "32000",
+            "city": "Cacak",
+            "message": ""
+        },
+        "photos": [
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_4164",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_4164.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_4174",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_4174.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 2,
+            "total_price": 400
+        }
+    },
+    {
+        "order_id": "ORD-20260105-131606",
+        "created_at": "2026-01-05 13:16:06",
+        "customer": {
+            "name": "Mira Lazović",
+            "email": "miralazovic@yahoo.com",
+            "phone": "0638391051",
+            "address": "Kralja Petra I broj 7",
+            "zip": "32000",
+            "city": "Čačak",
+            "message": ""
+        },
+        "photos": [
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4778",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4778.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4780",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4780.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4769",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4769.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4772",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4772.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4774",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4774.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4741",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4741.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4752",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4752.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4755",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4755.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4754",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4754.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4711",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4711.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4714",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4714.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4715",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4715.JPG",
+                "qty": 1
+            },
+            {
+                "album": "87 Star Dance koncert 27 Dec 2025",
+                "title": "ARS_4729",
+                "path": "assets\/img\/albums\/87 Star Dance koncert 27 Dec 2025\/ARS_4729.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 13,
+            "total_price": 2600
+        }
+    },
+    {
+        "order_id": "ORD-20260106-202313",
+        "created_at": "2026-01-06 20:23:13",
+        "customer": {
+            "name": "Nevena Nikolić",
+            "email": "zvoncica27@gmail.com",
+            "phone": "0600905197",
+            "address": "Svetogorska 27",
+            "zip": "32000",
+            "city": "Čačak",
+            "message": "Ako je moguće da uradite slike 15*18"
+        },
+        "photos": [
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_2823",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_2823.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_2846",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_2846.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3068",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3068.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3088",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3088.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_4166",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_4166.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 5,
+            "total_price": 1000
+        }
+    },
+    {
+        "order_id": "ORD-20260108-195355",
+        "created_at": "2026-01-08 19:53:55",
+        "customer": {
+            "name": "Milena",
+            "email": "milena.obradovic29@gmail.com",
+            "phone": "0693118333",
+            "address": "Balkanska 7",
+            "zip": "32000",
+            "city": "Cacak",
+            "message": "Javite ako mogu licno da preuzmem fotografije kada budu spremne.Pozdrav."
+        },
+        "photos": [
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_2877",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_2877.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3054",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3054.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3071",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3071.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_3085",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_3085.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_2883",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_2883.JPG",
+                "qty": 1
+            },
+            {
+                "album": "88 Baletski koncert 26 Dec 2025",
+                "title": "ARS_4166",
+                "path": "assets\/img\/albums\/88 Baletski koncert 26 Dec 2025\/ARS_4166.JPG",
+                "qty": 1
+            }
+        ],
+        "summary": {
+            "photo_price": 200,
+            "total_qty": 6,
+            "total_price": 1200
+        }
+    }
+]

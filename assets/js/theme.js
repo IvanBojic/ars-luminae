@@ -804,7 +804,11 @@ $(document).ready(function() {
 	if (window.location.pathname.includes('/cart')) {
 		renderCart(initialCart);
 	}
-
+	
+    function scrollToTop() {
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    }
+    
 // END CART FUNCTIONS
 
 	function loadImages(time, album, page, itemsPerPage) {
@@ -894,6 +898,9 @@ $(document).ready(function() {
 							}
 						});
 					});
+					
+	                // Pozovite funkciju scrollToTop nakon učitavanja i inicijalizacije slika
+                    scrollToTop();
 
 				} catch (e) {
 					console.error('Greška pri parsiranju JSON odgovora:', e);

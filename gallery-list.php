@@ -121,9 +121,9 @@ $albumi = clsFunctions::procitajFoldere($fajl = null);
 														<div class="ali-meta"><?= $album['count']; ?> fotografija</div>
 													</div>
 												</a>
-												<a href="#0" class="album-share" title="Share this album" data-toggle="modal" data-target="#modal-45776355">
+												<?php /* <a href="#0" class="album-share" title="Share this album" data-toggle="modal" data-target="#modal-45776355">
 													<i class="fas fa-share-alt"></i>
-												</a>
+												</a> */ ?>
 
 												<!-- Begin album share modal -->
 												<div id="modal-45776355" class="modal fade" tabindex="-1" role="dialog">
