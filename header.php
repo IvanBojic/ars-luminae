@@ -3,7 +3,7 @@ include_once 'components/php_composer.php';
 
 session_start(); // Pokrenite sesiju
 
-$albumi = clsFunctions::procitajFoldere($fajl = null);
+$ddl_albumi = clsFunctions::procitajFoldere();
 
 // Pročitajte korpu iz sesije
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
@@ -75,11 +75,20 @@ $cartItemCount = count($cart); // Izbrojite artikle u korpi
 						<li class="dropdown dropdown-hover">
 							<a href="#0" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Albumi <span class="caret-2"><i class="fas fa-chevron-down"></i></span></a>
 							<ul class="dropdown-menu">
-                                <?php foreach ($albumi as $album) { ?>
+                                <?php foreach ($ddl_albumi as $album) { ?>
                                     <li><a href="gallery?album=<?= $album['title']; ?>"><?= $album['title']; ?></a></li>
                                 <?php } ?>
 							</ul>
 						</li>
+						<!-- End dropdown -->
+						
+						<!-- Begin dropdown
+						==============================
+						* Use class "dropdown-hover" to make navigation toggle on desktop hover.
+						* Use class "dropdown-menu-right" to right align the dropdown menu.
+						* Use class "dropdown-menu-dark" to enable dark dropdown menu.
+						-->
+						<li><a href="portfolio">Portfolio</a></li>
 						<!-- End dropdown -->
 
 						<!-- Begin dropdown

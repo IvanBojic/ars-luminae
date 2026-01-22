@@ -6118,3 +6118,12 @@ ul.album-list {
 	align-content: center;
 	text-align: center;
 }
+.album-single-item {
+    max-width: 800px;
+}
+
+.album-single-item .asi-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}

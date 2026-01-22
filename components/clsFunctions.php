@@ -102,35 +102,59 @@ class clsFunctions
         return $slike;
     }
 
-    public static function procitajFoldere($folder)
+    public static function procitajFoldere($folder = null)
     {
-        $folder = 'assets/img/albums';
-        $albumi = array();
-        $putanjaDoFoldera = __DIR__ . '/../' . $folder; // Prilagodite putanju ako je potrebno
+        // Ako je folder prosleđen i nije prazan – koristi njega,
+        // u suprotnom koristi podrazumevani albums folder
+        $folder = (!empty($folder)) ? $folder : 'assets/img/albums';
 
-        // Provera da li je folder validan
+        $folderi = array();
+        $putanjaDoFoldera = __DIR__ . '/../' . $folder;
+
+        // Provera da li folder postoji i da li je direktorijum
         if (is_dir($putanjaDoFoldera)) {
-            $datoteke = scandir($putanjaDoFoldera); // Učitava sve datoteke iz foldera
+            $datoteke = scandir($putanjaDoFoldera);
 
-            // Iteracija kroz sve datoteke
             foreach ($datoteke as $datoteka) {
+                // preskoči . i ..
+                if ($datoteka === '.' || $datoteka === '..') {
+                    continue;
+                }
+
                 $putanjaDoDatoteke = $putanjaDoFoldera . '/' . $datoteka;
 
-                // Provera da li je element direktorijum i da nije '.' ili '..'
-                if (is_dir($putanjaDoDatoteke) && $datoteka !== '.' && $datoteka !== '..') {
-                    $nazivFoldera = basename($datoteka);
-
-                    $folderi[] = [
+                if (is_dir($putanjaDoDatoteke)) {
+                    $folderi[] = array(
                         'path'  => $folder . '/' . $datoteka,
-                        'title' => $nazivFoldera,
+                        'title' => $datoteka,
                         'file'  => $datoteka,
                         'count' => self::prebrojSlikeIzFoldera($putanjaDoDatoteke),
-                    ];
+                    );
                 }
             }
         }
 
         return $folderi;
+    }
+
+    public static function getFolderInfo($folder = null)
+    {
+        // Podrazumevani folder ako nije prosleđen
+        $folder = (!empty($folder)) ? $folder : 'assets/img/albums';
+
+        $putanja = __DIR__ . '/../' . $folder;
+
+        // Ako folder ne postoji ili nije direktorijum
+        if (!is_dir($putanja)) {
+            return null;
+        }
+
+        return [
+            'path'   => $folder,
+            'title'  => basename($folder),
+            'count'  => self::prebrojSlikeIzFoldera($putanja),
+            'exists' => true
+        ];
     }
 
     public static function prebrojSlikeIzFoldera($putanjaDoFoldera)
@@ -159,19 +183,36 @@ class clsFunctions
         return $brojSlika;
     }
 
-    public static function getFirstImage($albumTitle) {
-        $imagePath = "assets/img/albums/$albumTitle/";
-        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Dodajte ostale ekstenzije ako je potrebno
+    public static function getFirstImage($album, $basePath = 'assets/img/albums')
+    {
+        // Ako je prosleđen ceo path (npr. img/portfolio/Album)
+        if (strpos($album, '/') !== false) {
+            $folderPath = $album;
+        } else {
+            // Klasičan slučaj: albums/NazivAlbuma
+            $folderPath = rtrim($basePath, '/') . '/' . $album;
+        }
 
-        foreach ($imageExtensions as $ext) {
-            $imageFile = glob($imagePath . $albumTitle . ".*");
-            if (!empty($imageFile)) {
-                return $imageFile[0]; // Pronađena prva slika
+        // Fizička putanja
+        $dir = __DIR__ . '/../' . $folderPath;
+
+        if (!is_dir($dir)) {
+            return 'assets/img/main/grid/img-1.jpg';
+        }
+
+        $allowedExt = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+        $files = scandir($dir);
+
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') continue;
+
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if (in_array($ext, $allowedExt)) {
+                return $folderPath . '/' . $file;
             }
         }
 
-        // Defaultna slika ili fallback u slučaju da slika ne postoji
-        return "assets/img/main/grid/img-1.jpg";
+        return 'assets/img/main/grid/img-1.jpg';
     }
 
     public static function render_pagination($current_page, $total_pages, $album_naziv) {
@@ -209,6 +250,29 @@ class clsFunctions
                 echo '<li ' . $active_class . '><a href="?album=' . $album_naziv . '&page=' . $page . '">' . $page . '</a></li>';
             }
         }
+    }
+
+    public static function getAlbumMeta($albumName)
+    {
+        $jsonFile = __DIR__ . '/../assets/img/portfolio/albums_meta.json';
+
+        if (!file_exists($jsonFile)) {
+            return null;
+        }
+
+        $data = json_decode(file_get_contents($jsonFile), true);
+
+        if (!is_array($data)) {
+            return null;
+        }
+
+        foreach ($data as $album) {
+            if (!empty($album['item']) && $album['item'] === $albumName) {
+                return $album;
+            }
+        }
+
+        return null;
     }
 
 }

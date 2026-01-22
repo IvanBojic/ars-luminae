@@ -1,0 +1,20 @@
+[
+  {
+    "item": "landscape and city",
+    "description": {
+      "short": "Elegant wedding photography.",
+      "full": "Full wedding story including preparation, ceremony and celebration."
+    },
+    "client": "Private Client",
+    "password": "wedding123"
+  },
+  {
+    "item": "landscape",
+    "description": {
+      "short": "Landscape and city photography.",
+      "full": ""
+    },
+    "client": "Sirabella´s Photography",
+    "password": ""
+  }
+]
