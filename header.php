@@ -1,7 +1,9 @@
 <?php
 include_once 'components/php_composer.php';
 
-session_start(); // Pokrenite sesiju
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $ddl_albumi = clsFunctions::procitajFoldere();
 

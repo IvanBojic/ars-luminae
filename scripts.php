@@ -20,7 +20,55 @@
 <!-- Theme master JS -->
 <script src="assets/js/theme.js"></script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
+    if (typeof ALBUM_NAME === 'undefined') {
+        console.error('ALBUM_NAME nije definisan');
+        return;
+    }
+
+    const form = document.getElementById('albumPasswordForm');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const password = form.querySelector('[name="album_password"]').value.trim();
+        const errorBox = document.getElementById('albumPasswordError');
+
+        errorBox.style.display = 'none';
+        errorBox.textContent = '';
+
+        fetch('./ajax/check_album_password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                album: ALBUM_NAME,
+                password: password
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const btn = document.getElementById('downloadAlbum');
+                if (btn) btn.style.display = 'inline-block';
+                form.remove();
+            } else {
+                errorBox.textContent = data.message || 'Pogrešna lozinka';
+                errorBox.style.display = 'block';
+            }
+        })
+        .catch(() => {
+            errorBox.textContent = 'Greška u komunikaciji sa serverom';
+            errorBox.style.display = 'block';
+        });
+    });
+
+});
+</script>
 
 <!--==============================
 ///// Begin Google Analytics /////

@@ -1,7 +1,9 @@
 <?php
 include_once 'components/php_composer.php';
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 /* -------------------------
    VALIDACIJA FOLDERA
@@ -17,21 +19,6 @@ $albumName = basename($folder);
 $albumMeta = clsFunctions::getAlbumMeta($albumName) ?? [];
 
 $hasPassword = !empty($albumMeta['password']);
-
-/* -------------------------
-   OBRADA LOZINKE
--------------------------- */
-if ($hasPassword && $_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $inputPassword = trim($_POST['album_password'] ?? '');
-    $realPassword  = trim($albumMeta['password']);
-
-    if ($inputPassword !== '' && hash_equals($realPassword, $inputPassword)) {
-        $_SESSION['album_access'][$albumName] = true;
-    } else {
-        $error = 'Pogrešna lozinka';
-    }
-}
 
 $hasAccess = !$hasPassword || !empty($_SESSION['album_access'][$albumName]);
 
@@ -55,6 +42,9 @@ $prevIndex = ($currentIndex > 0) ? $currentIndex - 1 : null;
 $nextIndex = ($currentIndex < $ukupno - 1) ? $currentIndex + 1 : null;
 
 $currentImage = $slike[$currentIndex] ?? null;
+
+$shortDesc = $albumMeta['description']['short'] ?? '';
+$fullDesc  = $albumMeta['description']['full'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -150,40 +140,44 @@ $currentImage = $slike[$currentIndex] ?? null;
 										<!-- End author -->
 
 										<!-- Begin portfolio description -->
-										<div class="album-description margin-top-20">
-											<div class="al-desc-inner">
+										<?php if ($shortDesc || $fullDesc): ?>
+											<div class="album-description margin-top-20">
+												<div class="al-desc-inner">
 
-												<?php if (!empty($albumMeta['description']['short'])): ?>
-													<p><?= htmlspecialchars($albumMeta['description']['short']); ?></p>
+													<?php if ($shortDesc): ?>
+														<p><?= htmlspecialchars($shortDesc); ?></p>
+													<?php endif; ?>
+
+													<?php if ($fullDesc): ?>
+														<div class="al-desc-toggle">
+															<p><?= htmlspecialchars($fullDesc); ?></p>
+														</div>
+													<?php endif; ?>
+
+												</div>
+
+												<?php if ($fullDesc): ?>
+												<div class="al-desc-toggle-trigger">
+													<span class="al-desc-more"><i class="fas fa-chevron-down"></i> More</span>
+													<span class="al-desc-less"><i class="fas fa-chevron-up"></i> Less</span>
+												</div>
 												<?php endif; ?>
-
-												<?php if (!empty($albumMeta['description']['full'])): ?>
-													<div class="al-desc-toggle">
-														<p><?= htmlspecialchars($albumMeta['description']['full']); ?></p>
-													</div>
-												<?php endif; ?>
-
 											</div>
-
-
-											<!-- Begin doggle trigger -->
-											<div class="al-desc-toggle-trigger">
-												<span class="al-desc-more"><i class="fas fa-chevron-down"></i> More</span>
-												<span class="al-desc-less"><i class="fas fa-chevron-up"></i> Less</span>
-											</div>
-											<!-- End doggle trigger -->
-										</div>
+										<?php endif; ?>
 										<!-- End portfolio description -->
 
 										<!-- Begin portfolio atr -->
 										<div class="portfolio-atr margin-top-50">
 											<ul class="list-unstyled">
-												<li>
-													<h4 class="head">Client:</h4>
-													<span class="info">
-														<?= !empty($albumMeta['client']) ? htmlspecialchars($albumMeta['client']) : '—'; ?>
-													</span>
-												</li>
+												<?php if (!empty($albumMeta['client'])): ?>
+													<li>
+														<h4 class="head">Client:</h4>
+														<span class="info">
+															<?= htmlspecialchars($albumMeta['client']); ?>
+														</span>
+													</li>
+												<?php endif; ?>
+
 
 												<?php if (!empty($albumMeta['password'])): ?>
 
@@ -193,7 +187,7 @@ $currentImage = $slike[$currentIndex] ?? null;
 
 														<?php if (!empty($albumMeta['password']) && !$hasAccess): ?>
 
-															<form method="post" class="margin-top-10">
+															<form id="albumPasswordForm" class="margin-top-10">
 																<input type="password"
 																	name="album_password"
 																	placeholder="Unesite lozinku"
@@ -204,19 +198,8 @@ $currentImage = $slike[$currentIndex] ?? null;
 																	Otključaj
 																</button>
 
-																<?php if (!empty($error)): ?>
-																	<p class="text-danger margin-top-5"><?= htmlspecialchars($error); ?></p>
-																<?php endif; ?>
+																<p id="albumPasswordError" class="text-danger margin-top-5" style="display:none;"></p>
 															</form>
-
-														<?php endif; ?>
-
-														<?php if ($hasAccess && !empty($albumMeta['password'])): ?>
-
-															<a href="portfolio/download_album.php?album=<?= urlencode($albumName); ?>"
-															class="btn btn-success margin-top-10">
-															Preuzmi ceo album
-															</a>
 
 														<?php endif; ?>
 
@@ -224,7 +207,7 @@ $currentImage = $slike[$currentIndex] ?? null;
 														id="downloadAlbum"
 														class="btn btn-success margin-top-10"
 														style="display:none;">
-															Preuzmi ceo album
+															Preuzmite ceo album
 														</a>
 
 													</li>
@@ -359,6 +342,10 @@ $currentImage = $slike[$currentIndex] ?? null;
 
         <!-- Scroll to top button -->
         <a href="#body" class="scrolltotop sm-scroll"><i class="fas fa-chevron-up"></i></a>
+
+		<script>
+			const ALBUM_NAME = <?= json_encode($albumName); ?>;
+		</script>
 
         <?php
         /* Including scripts */
