@@ -10,7 +10,7 @@ if (empty($_GET['album'])) {
 
 $album = basename($_GET['album']);
 
-// 🔐 PROVERA SESSION DOZVOLE
+// PROVERA SESSION DOZVOLE
 if (
     empty($_SESSION['album_access']) ||
     empty($_SESSION['album_access'][$album])
@@ -19,23 +19,25 @@ if (
     exit('Nemate dozvolu za preuzimanje ovog albuma.');
 }
 
-// 📁 Putanje
-$baseDir = realpath(__DIR__ . '/portfolio/download');
-$albumDir = realpath($baseDir . '/' . $album);
+// Putanje
+$baseDir = realpath(__DIR__ . '/assets/img/portfolio/download');
+$albumDir = $baseDir . '/' . $album;
 
-// Validacija foldera
-if (!$albumDir || !is_dir($albumDir)) {
+// Validacija foldera - koristi is_dir umesto realpath
+if (!is_dir($albumDir)) {
     http_response_code(404);
     exit('Album ne postoji.');
 }
 
+$albumDirReal = realpath($albumDir);
+
 // Sprečavanje path traversal napada
-if (strpos($albumDir, $baseDir) !== 0) {
+if (!$albumDirReal || strpos($albumDirReal, realpath($baseDir)) !== 0) {
     http_response_code(403);
     exit('Nedozvoljen pristup.');
 }
 
-// 🗜 Kreiranje ZIP-a
+// Kreiranje ZIP-a
 $zipName = $album . '.zip';
 $tmpZip = sys_get_temp_dir() . '/' . uniqid('zip_', true) . '.zip';
 
@@ -46,20 +48,20 @@ if ($zip->open($tmpZip, ZipArchive::CREATE) !== true) {
 }
 
 $iterator = new RecursiveIteratorIterator(
-    new RecursiveDirectoryIterator($albumDir, FilesystemIterator::SKIP_DOTS)
+    new RecursiveDirectoryIterator($albumDirReal, FilesystemIterator::SKIP_DOTS)
 );
 
 foreach ($iterator as $file) {
     if ($file->isFile()) {
         $filePath = $file->getRealPath();
-        $relativePath = substr($filePath, strlen($albumDir) + 1);
+        $relativePath = substr($filePath, strlen($albumDirReal) + 1);
         $zip->addFile($filePath, $relativePath);
     }
 }
 
 $zip->close();
 
-// 📤 Slanje ZIP-a
+// Slanje ZIP-a
 header('Content-Type: application/zip');
 header('Content-Disposition: attachment; filename="' . $zipName . '"');
 header('Content-Length: ' . filesize($tmpZip));
@@ -69,3 +71,4 @@ header('Pragma: no-cache');
 readfile($tmpZip);
 unlink($tmpZip);
 exit;
+?>
