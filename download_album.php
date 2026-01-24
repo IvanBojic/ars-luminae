@@ -21,23 +21,36 @@ if (
 
 // Putanje
 $baseDir = realpath(__DIR__ . '/assets/img/portfolio/download');
-$albumDir = $baseDir . '/' . $album;
+$zipFile = $baseDir . '/' . $album . '.zip';
 
-// Validacija foldera - koristi is_dir umesto realpath
-if (!is_dir($albumDir)) {
+// Validacija ZIP fajla
+if (!file_exists($zipFile) || !is_file($zipFile)) {
     http_response_code(404);
-    exit('Album ne postoji.');
+    exit('ZIP fajl ne postoji.');
 }
 
-$albumDirReal = realpath($albumDir);
-
 // Sprečavanje path traversal napada
-if (!$albumDirReal || strpos($albumDirReal, realpath($baseDir)) !== 0) {
+if (realpath($zipFile) === false || strpos(realpath($zipFile), realpath($baseDir)) !== 0) {
     http_response_code(403);
     exit('Nedozvoljen pristup.');
 }
 
-// Kreiranje ZIP-a
+// Preuzimanje postojećeg ZIP fajla
+$fileName = $album . '.zip';
+
+header('Content-Type: application/zip');
+header('Content-Disposition: attachment; filename="' . $fileName . '"');
+header('Content-Length: ' . filesize($zipFile));
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Pragma: no-cache');
+
+readfile($zipFile);
+exit;
+
+/* 
+// ZAKOMENTARISANO: Kreiranje ZIP-a na letu
+// Umesto toga, koristi postojeće ZIP fajlove u /download direktorijumu
+
 $zipName = $album . '.zip';
 $tmpZip = sys_get_temp_dir() . '/' . uniqid('zip_', true) . '.zip';
 
@@ -60,15 +73,5 @@ foreach ($iterator as $file) {
 }
 
 $zip->close();
-
-// Slanje ZIP-a
-header('Content-Type: application/zip');
-header('Content-Disposition: attachment; filename="' . $zipName . '"');
-header('Content-Length: ' . filesize($tmpZip));
-header('Cache-Control: no-store, no-cache, must-revalidate');
-header('Pragma: no-cache');
-
-readfile($tmpZip);
-unlink($tmpZip);
-exit;
+*/
 ?>
