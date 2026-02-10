@@ -26,9 +26,10 @@ foreach ($albums as $item) {
             exit;
         }
         
-        if (password_verify($password, $item['password'])) {
+        // Direktno poređenje plain text lozinki
+        if ($password === $item['password']) {
 
-            // 🔐 SESSION DOZVOLA
+            // SESSION DOZVOLA
             $_SESSION['album_access'][$album] = true;
 
             echo json_encode(['success' => true]);
@@ -40,3 +41,4 @@ foreach ($albums as $item) {
 }
 
 echo json_encode(['success' => false, 'message' => 'Pogrešna lozinka']);
+?>
